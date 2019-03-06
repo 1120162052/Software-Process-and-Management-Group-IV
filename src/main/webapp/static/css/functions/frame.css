@@ -15,6 +15,7 @@
     top: 4px;
     border-radius: 10px;
 }
+
 .userInfo:hover {
     background: #4b99c6;
     cursor: pointer;
@@ -30,7 +31,7 @@
 }
 
 /* 分类栏normal */
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title{
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title {
     /*background: rgb(45, 62, 74);*/
 }
 
@@ -58,17 +59,10 @@
 
 /* 分类栏被点开时 */
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
-
 }
 
-/* tab内容 */
-.ivu-tabs .ivu-tabs-content-animated, .ivu-tabs-no-animation>.ivu-tabs-content{
-    height: 100%;
-}
-
-/* 标签条 */
-.ivu-tabs-bar{
-    margin-bottom: 0px;
-    padding-left: 10px;
-    padding-top: 5px;
+/* 功能栏高度 */
+.ivu-menu-item {
+    height: 40px;
+    line-height: 0px;
 }

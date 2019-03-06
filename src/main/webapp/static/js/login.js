@@ -1,4 +1,4 @@
-var app = new Vue({
+let app = new Vue({
     el: '#app',
     data: {
         formData: {
@@ -9,10 +9,10 @@ var app = new Vue({
     },
     methods: {
         login: function () {
-            var url = "/login";
-            var data = copy(this.formData);
+            let url = "/login";
+            let data = copy(this.formData);
             this.fullScreenLoading = true;
-            var app = this;
+            let app = this;
             ajaxPost(url, data, function (d) {
                 app.fullScreenLoading = false;
                 if (d.code == 'success') {

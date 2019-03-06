@@ -10,7 +10,8 @@
 <body>
 <div id="app" v-cloak>
     <el-container style="height: 100%">
-        <el-header height="48px" style="background: #007cc4;padding-right: 60px;box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);">
+        <el-header height="48px"
+                   style="background: #007cc4;padding-right: 60px;box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);">
             <span class="title">省人力资源市场数据采集系统</span>
             <el-popover placement="bottom" trigger="hover">
                 <el-button style="margin-left: 32px;" type="danger" size="small" @click="logout">退出</el-button>
@@ -40,13 +41,13 @@
                 </i-Menu>
             </el-aside>
             <el-main style="padding: 0px;height: 100%;overflow-y: hidden">
-                <Tabs type="card" closable :animated="false" @on-tab-remove="handleTabRemove" style="height: 100%"
-                      :before-remove="beforeRemove" v-model="activeTabIndex">
-                    <Tab-Pane v-for="(tab, index) in tabList" :key="tab.id" :label="tab.name" style="height: 100%">
+                <el-tabs v-model="activeTabName" type="card" closable @tab-remove="removeTab" style="height: 100%">
+                    <el-tab-pane :key="tab.name" v-for="(tab, index) in tabList" :label="tab.title" :name="tab.name"
+                                 style="height: 100%">
                         <iframe style="border: 0px;height: 100%;width: 100%;"
                                 :src="tab.url" :id="'iframe' + index"></iframe>
-                    </Tab-Pane>
-                </Tabs>
+                    </el-tab-pane>
+                </el-tabs>
             </el-main>
         </el-container>
     </el-container>
