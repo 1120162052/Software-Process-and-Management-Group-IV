@@ -1,9 +1,8 @@
 -- 初始化数据库
-drop database if exists ssm;
-create database ssm;
-ALTER DATABASE ssm CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
-use ssm;
-
+drop database if exists softwareManagement;
+create database softwareManagement;
+ALTER DATABASE softwareManagement CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
+use softwareManagement;
 
 -- 所有关联：
 -- 1、用户-角色：多对多
@@ -82,11 +81,11 @@ create table sys_map_role_permission(
 
 -- 用户
 insert into sys_entity_user (id, username, password) values ('u1', 'admin', 'admin');
-insert into sys_entity_user (id, username, password) values ('u2', 'zhangsan', '123456')
+insert into sys_entity_user (id, username, password) values ('u2', 'zhangsan', '123456');
 
 -- 角色
 insert into sys_entity_role (id, name, code) values ('r1', '管理员', 'admin');
-insert into sys_entity_role (id, name, code) values ('r2', '普通用户', 'normalUser')
+insert into sys_entity_role (id, name, code) values ('r2', '普通用户', 'normalUser');
 
 -- 权限
 --    1.分类
@@ -100,9 +99,9 @@ insert into sys_entity_permission (id, name, code, type, parent_id, url, index_)
 insert into sys_entity_permission (id, name, code, type, parent_id, url, index_) values ('p5', '测试功能', 'custom:testFunction', 1, 'p4', 'functions/custom/testFunction', 0);
 
 -- 关联：用户-角色
-insert into sys_map_user_role (id, user_id, role_id) values ('ur1', 'u1', 'r1');
-insert into sys_map_user_role (id, user_id, role_id) values ('ur2', 'u2', 'r2');
+insert into sys_map_user_role (id, user_id, role_id) values ('ur1', 'u1', 'r1'); -- admin - 管理员
+insert into sys_map_user_role (id, user_id, role_id) values ('ur2', 'u2', 'r2'); -- zhangsan - 普通用户
 
--- 关联：角色-权限 （管理员不需要和权限关联）
+-- 关联：角色-权限 （管理员角色不需要和权限关联）
 insert into sys_map_role_permission (id, role_id, permission_id) values ('rp1', 'r2', 'p4'); -- 普通用户 - 自定义功能
 insert into sys_map_role_permission (id, role_id, permission_id) values ('rp2', 'r2', 'p5'); -- 普通用户 - 测试功能

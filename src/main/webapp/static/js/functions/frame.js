@@ -24,7 +24,7 @@ var app = new Vue({
             ajaxPost(url, data, function (d) {
                 app.user = d.data.user; // 包含用户信息
                 app.categoryList = d.data.categoryList; // 菜单列表
-            })
+            });
         },
         // 登出
         logout: function () {
