@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.abc.ssm.modules.sys.dao.UserDao">
+
+    <select id="get1" resultType="team.abc.ssm.modules.sys.entity.User" parameterType="string">
+        select
+            a.username as username,
+            a.password as password,
+            <include refid="commonColumnsWithA"/>
+        from sys_entity_user a where a.username = #{0} limit 1
+    </select>
+    
+    <sql id="commonColumns">
+        id as id,
+        common_status as commonStatus,
+        common_create_user_id as commonCreateUserId,
+        common_create_date as commonCreateDate,
+        common_modify_user_id as commonModifyUserId,
+        common_modify_date as commonModifyDate
+    </sql>
+
+    <sql id="commonColumnsWithA">
+        a.id as id,
+        a.common_status as commonStatus,
+        a.common_create_user_id as commonCreateUserId,
+        a.common_create_date as commonCreateDate,
+        a.common_modify_user_id as commonModifyUserId,
+        a.common_modify_date as commonModifyDate
+    </sql>
+</mapper>

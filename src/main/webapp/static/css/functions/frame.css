@@ -1,0 +1,74 @@
+.title {
+    color: white;
+    font-size: 17px;
+    margin-left: 50px;
+    letter-spacing: 4px;
+    line-height: 48px;
+}
+
+/* 右上角头像加username */
+.userInfo {
+    float: right;
+    padding: 0 30px;
+    height: 40px;
+    position: relative;
+    top: 4px;
+    border-radius: 10px;
+}
+.userInfo:hover {
+    background: #4b99c6;
+    cursor: pointer;
+}
+
+/* 菜单文字不可被选中 */
+.ivu-menu, .username, .ivu-tabs-tab {
+    -moz-user-select: none; /*火狐*/
+    -webkit-user-select: none; /*webkit浏览器*/
+    -ms-user-select: none; /*IE10*/
+    -khtml-user-select: none; /*早期浏览器*/
+    user-select: none;
+}
+
+/* 分类栏normal */
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title{
+    /*background: rgb(45, 62, 74);*/
+}
+
+/* 分类栏点开始 */
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
+    background: #272B2E;
+    /*background: rgb(45, 62, 74);*/
+}
+
+/* 分类栏hover */
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title:hover {
+    background: #363E4F
+}
+
+/* 功能栏的颜色 */
+.ivu-menu-item {
+    /*background: #131E26;*/
+    background: black;
+}
+
+/* 功能栏active */
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover {
+    background: #363E4F !important;
+}
+
+/* 分类栏被点开时 */
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
+
+}
+
+/* tab内容 */
+.ivu-tabs .ivu-tabs-content-animated, .ivu-tabs-no-animation>.ivu-tabs-content{
+    height: 100%;
+}
+
+/* 标签条 */
+.ivu-tabs-bar{
+    margin-bottom: 0px;
+    padding-left: 10px;
+    padding-top: 5px;
+}
