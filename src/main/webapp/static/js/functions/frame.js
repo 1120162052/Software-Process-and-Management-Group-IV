@@ -48,7 +48,7 @@ let app = new Vue({
             // 标签页已被打开，则不再添加新的标签页，而是设置目标标签页为active
             if (exist == true) {
                 this.activeTabName = this.tabList[index].name;
-                // this.refreshTab(index);
+                this.refreshTab(this.activeTabName);
             }
             else {
                 let newTabName = 'tab' + this.tabNameCount;
@@ -82,8 +82,8 @@ let app = new Vue({
             this.tabList = tabs.filter(tab => tab.name != targetName);
         },
         // 刷新指定tab的iframe
-        refreshTab: function (index) {
-            document.getElementById('iframe' + index).contentWindow.location.reload(true);
+        refreshTab: function (iframeId) {
+            document.getElementById(iframeId).contentWindow.location.reload(true);
         }
     },
     mounted: function () {

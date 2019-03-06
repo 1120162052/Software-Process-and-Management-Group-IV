@@ -22,7 +22,7 @@
 }
 
 /* 菜单文字不可被选中 */
-.ivu-menu, .username, .ivu-tabs-tab {
+.ivu-menu, .username, .el-tabs__header {
     -moz-user-select: none; /*火狐*/
     -webkit-user-select: none; /*webkit浏览器*/
     -ms-user-select: none; /*IE10*/
@@ -31,14 +31,13 @@
 }
 
 /* 分类栏normal */
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title {
-    /*background: rgb(45, 62, 74);*/
+.ivu-menu-submenu {
+    background: #272B2E;
 }
 
-/* 分类栏点开始 */
+/* 分类栏点开时 */
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
     background: #272B2E;
-    /*background: rgb(45, 62, 74);*/
 }
 
 /* 分类栏hover */
@@ -65,4 +64,12 @@
 .ivu-menu-item {
     height: 40px;
     line-height: 0px;
+}
+
+.el-tabs__header{
+    margin: 0px;
+}
+
+.el-tabs__content{
+    height: 100%;
 }

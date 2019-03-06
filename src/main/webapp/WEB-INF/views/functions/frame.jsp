@@ -45,7 +45,7 @@
                     <el-tab-pane :key="tab.name" v-for="(tab, index) in tabList" :label="tab.title" :name="tab.name"
                                  style="height: 100%">
                         <iframe style="border: 0px;height: 100%;width: 100%;"
-                                :src="tab.url" :id="'iframe' + index"></iframe>
+                                :src="tab.url" :id="tab.name"></iframe>
                     </el-tab-pane>
                 </el-tabs>
             </el-main>
