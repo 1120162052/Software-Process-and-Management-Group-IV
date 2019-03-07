@@ -42,22 +42,26 @@
 
 /* 分类栏hover */
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-item:hover, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu-title:hover {
-    background: #363E4F
+    /*background: #363E4F;*/
+    background: #272B2E;
 }
 
 /* 功能栏的颜色 */
 .ivu-menu-item {
-    /*background: #131E26;*/
     background: black;
 }
 
-/* 功能栏active */
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover {
-    background: #363E4F !important;
+/* 功能栏hover */
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item:hover{
+    background: black !important;
 }
 
-/* 分类栏被点开时 */
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-opened .ivu-menu-submenu-title {
+/* 功能栏active */
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active {
+    background: #363E4F !important;
+}
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover{
+    background: #363E4F !important;
 }
 
 /* 功能栏高度 */

@@ -44,7 +44,7 @@
                 <el-tabs v-model="activeTabName" type="card" closable @tab-remove="removeTab" style="height: 100%">
                     <el-tab-pane :key="tab.name" v-for="(tab, index) in tabList" :label="tab.title" :name="tab.name"
                                  style="height: 100%">
-                        <iframe style="border: 0px;height: 100%;width: 100%;"
+                        <iframe style="border: 0px;height: calc(100% - 45px);width: 100%;"
                                 :src="tab.url" :id="tab.name"></iframe>
                     </el-tab-pane>
                 </el-tabs>
