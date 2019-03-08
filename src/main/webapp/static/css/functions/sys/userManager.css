@@ -1,0 +1,26 @@
+/* table左边的checkbox */
+.el-checkbox {
+    margin: 0px;
+    margin-left: 2px;
+}
+
+/* 设置table行高 */
+.el-table th > .cell {
+    height: 40px;
+    line-height: 40px;
+}
+
+/* 设置table行高 */
+.el-table__row .cell {
+    height: 45px;
+    line-height: 45px;
+}
+
+.el-table--enable-row-transition .el-table__body td, .el-table td, .el-table th {
+    padding: 0px;
+}
+
+/* 设置table悬浮颜色 */
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+    background: #f6faff;
+}

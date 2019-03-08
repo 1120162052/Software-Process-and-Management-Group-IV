@@ -52,7 +52,7 @@
 }
 
 /* 功能栏hover */
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item:hover{
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item:hover {
     background: black !important;
 }
 
@@ -60,7 +60,8 @@
 .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active {
     background: #363E4F !important;
 }
-.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover{
+
+.ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active, .ivu-menu-dark.ivu-menu-vertical .ivu-menu-submenu .ivu-menu-item-active:hover {
     background: #363E4F !important;
 }
 
@@ -80,20 +81,17 @@
 
 /* tab的下横线 */
 .el-tabs--card > .el-tabs__header {
-    /*border-bottom: 1px solid #c3c7cc;*/
     background: #DEE1E6;
 }
 
 .el-tabs--card > .el-tabs__header .el-tabs__item {
-    border-left: 1px solid #c3c7cc;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
 }
 
-.el-tabs--card > .el-tabs__header .el-tabs__item:last-child {
-    border-right: 1px solid #c3c7cc;
-}
-
-.el-tabs__item {
+.el-tabs__item, .el-tabs--card > .el-tabs__header .el-tabs__item:hover {
     color: gray;
+    padding: 0 17px 0 20px !important;
 }
 
 .el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
@@ -105,7 +103,6 @@
 }
 
 .el-tabs--card > .el-tabs__header .el-tabs__item:hover {
-    padding: 0 20px !important;
     border-bottom: 3px solid #70b6ff;
 }
 

@@ -4,12 +4,45 @@
 
     <select id="get1" resultType="team.abc.ssm.modules.sys.entity.User" parameterType="string">
         select
-            a.username as username,
-            a.password as password,
-            <include refid="commonColumnsWithA"/>
+        a.username as username,
+        a.password as password,
+        <include refid="commonColumnsWithA"/>
         from sys_entity_user a where a.username = #{0} limit 1
     </select>
-    
+
+    <select id="get2" resultType="team.abc.ssm.modules.sys.entity.User">
+        select
+        a.username as username,
+        a.password as password,
+        <include refid="commonColumnsWithA"/>
+        from sys_entity_user a
+    </select>
+
+    <select id="get3" resultType="team.abc.ssm.modules.sys.entity.User" parameterType="team.abc.ssm.common.entity.Page">
+        select
+        a.username as username,
+        a.password as password,
+        <include refid="commonColumnsWithA"/>
+        from sys_entity_user a
+        <where>
+            <if test="searchKey != '' and searchKey != null">
+                a.username like concat('%', #{searchKey}, '%')
+            </if>
+        </where>
+        limit #{pageStart}, #{pageSize}
+    </select>
+
+    <select id="get4" resultType="int">
+        select
+        count(*)
+        from sys_entity_user a
+        <where>
+            <if test="searchKey != '' and searchKey != null">
+                a.username like concat('%', #{searchKey}, '%')
+            </if>
+        </where>
+    </select>
+
     <sql id="commonColumns">
         id as id,
         common_status as commonStatus,

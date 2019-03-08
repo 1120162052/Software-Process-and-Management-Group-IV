@@ -11,7 +11,7 @@
 <div id="app" v-cloak>
     <el-container style="height: 100%">
         <el-header height="48px"
-                   style="background: #007cc4;padding-right: 60px;box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);">
+                   style="background: #007cc4;padding-right: 60px;box-shadow: 0 2px 10px 0 rgba(0,0,0,.15);;">
             <span class="title">省人力资源市场数据采集系统</span>
             <el-popover placement="bottom" trigger="hover">
                 <el-button style="margin-left: 32px;" type="danger" size="small" @click="logout">退出</el-button>
