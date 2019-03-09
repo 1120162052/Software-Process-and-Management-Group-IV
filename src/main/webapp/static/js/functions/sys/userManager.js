@@ -124,30 +124,41 @@ let app = new Vue({
         },
         // 删除指定id的用户
         deleteUser: function (val, type = 'multi') {
-            let idList = [];
-            if (type === 'single') {
-                let id = val;
-                idList.push(id);
+            // 未选中任何用户的情况下点选批量删除
+            if (type === 'multi' && val.length == 0) {
+                window.parent.app.showMessage('提示：未选中任何用户', 'warning');
+                return;
             }
-            else {
-                let selectionList = val;
-                if (selectionList.length == 0)
-                    return;
-                for (let i = 0; i < selectionList.length; i++) {
-                    idList.push(selectionList[i].id);
+            window.parent.app.$confirm('确认删除选中的用户', '警告', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                let idList = [];
+                if (type === 'single') {
+                    let id = val;
+                    idList.push(id);
                 }
-            }
-            let url = '/functions/sys/userManager/deleteUser';
-            let data = {
-                idList: idList
-            };
-            let app = this;
-            app.fullScreenLoading = true;
-            ajaxPost(url, data, function (d) {
-                app.fullScreenLoading = false;
-                window.parent.app.showMessage('删除成功！', 'success');
-                app.getUserList();
-            })
+                else {
+                    let selectionList = val;
+                    for (let i = 0; i < selectionList.length; i++) {
+                        idList.push(selectionList[i].id);
+                    }
+                }
+                let url = '/functions/sys/userManager/deleteUser';
+                let data = {
+                    idList: idList
+                };
+                let app = this;
+                app.fullScreenLoading = true;
+                ajaxPost(url, data, function (d) {
+                    app.fullScreenLoading = false;
+                    window.parent.app.showMessage('删除成功！', 'success');
+                    app.getUserList();
+                })
+            }).catch(() => {
+                window.parent.app.showMessage('已取消删除', 'warning');
+            });
         }
     },
     mounted: function () {

@@ -3,7 +3,6 @@
 <mapper namespace="team.abc.ssm.modules">
     <sql id="commonColumns">
         id as id,
-        common_status as commonStatus,
         common_create_user_id as commonCreateUserId,
         common_create_date as commonCreateDate,
         common_modify_user_id as commonModifyUserId,
@@ -13,7 +12,6 @@
 
     <sql id="commonColumnsWithA">
         a.id as id,
-        a.common_status as commonStatus,
         a.common_create_user_id as commonCreateUserId,
         a.common_create_date as commonCreateDate,
         a.common_modify_user_id as commonModifyUserId,

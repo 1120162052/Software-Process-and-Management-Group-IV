@@ -7,7 +7,8 @@ var app = new Vue({
             {
                 url: 'functions/home',
                 title: '首页',
-                name: 'tab0'
+                name: 'tab0',
+                loading: true, // tab页进入加载状态
             }
         ],
         activeTabName: 'tab0',
@@ -48,6 +49,7 @@ var app = new Vue({
             // 标签页已被打开，则不再添加新的标签页，而是设置目标标签页为active
             if (exist == true) {
                 this.activeTabName = this.tabList[index].name;
+                this.tabList[index].loading = true; // tab页进入加载状态
                 this.refreshTab(this.activeTabName);
             }
             else {
@@ -56,7 +58,8 @@ var app = new Vue({
                 this.tabList.push({
                     title: _function.name,
                     url: _function.url,
-                    name: newTabName
+                    name: newTabName,
+                    loading: true // tab页进入加载状态
                 });
                 this.activeTabName = newTabName;
             }

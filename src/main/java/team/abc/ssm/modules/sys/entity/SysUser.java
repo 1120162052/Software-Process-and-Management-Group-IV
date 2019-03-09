@@ -19,7 +19,6 @@ public class SysUser extends DataEntity {
         this.commonModifyUserId = this.commonCreateUserId;
         this.commonCreateDate = new Date();
         this.commonModifyDate = this.commonCreateDate;
-        this.commonStatus = 0;
         this.commonRemarks = "";
     }
 

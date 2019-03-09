@@ -79,13 +79,13 @@ public class UserManagerController extends BaseController {
 
     /**
      * 删除指定id的所有用户
-     * @param idList id数组
+     * @param ids id数组
      * @return 指定id的所有用户都被删除时返回成功
      */
     @RequestMapping(value = "deleteUser", method = RequestMethod.POST)
     @ResponseBody
-    public Object deleteUser(@RequestParam("idList[]") String[] idList) {
-        boolean success = userService.deleteUserByIds(idList);
+    public Object deleteUser(@RequestParam("idList[]") String[] ids) {
+        boolean success = userService.deleteUserByIds(ids);
         if (success)
             return retMsg.Set(MsgType.SUCCESS);
         else

@@ -5,7 +5,6 @@ import java.util.Date;
 public class DataEntity {
 
     protected String id;
-    protected int commonStatus;             // 0或null - 正常, 1 - 删除
     protected String commonCreateUserId;    // 创建者id
     protected Date commonCreateDate;        // 创建日期
     protected String commonModifyUserId;    // 最后修改者id
@@ -22,14 +21,6 @@ public class DataEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public int getCommonStatus() {
-        return commonStatus;
-    }
-
-    public void setCommonStatus(int commonStatus) {
-        this.commonStatus = commonStatus;
     }
 
     public String getCommonCreateUserId() {

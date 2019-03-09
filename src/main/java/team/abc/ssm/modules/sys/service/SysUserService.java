@@ -6,6 +6,7 @@ import team.abc.ssm.common.persistence.Page;
 import team.abc.ssm.modules.sys.dao.SysUserDao;
 import team.abc.ssm.modules.sys.entity.SysUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,7 +16,6 @@ public class SysUserService {
     private SysUserDao userDao;
 
     /**
-     *
      * @param username 用户名
      * @return 对应用户对象
      */
@@ -24,7 +24,6 @@ public class SysUserService {
     }
 
     /**
-     *
      * @return 获取所有用户
      */
     public List<SysUser> getAllUsers() {
@@ -33,6 +32,7 @@ public class SysUserService {
 
     /**
      * 分页 + 搜索(模糊匹配用户名)获取用户列表和总数
+     *
      * @param page 分页参数
      * @return 用户列表以及total
      */
@@ -44,6 +44,7 @@ public class SysUserService {
 
     /**
      * 检测用户名是否重复
+     *
      * @param username 用户名
      * @return 是否
      */
@@ -54,8 +55,9 @@ public class SysUserService {
 
     /**
      * 创建用户
-     * @param username 用户名
-     * @param password 密码
+     *
+     * @param username     用户名
+     * @param password     密码
      * @param createUserId 创建者id
      * @return 成功与否
      */
@@ -67,11 +69,12 @@ public class SysUserService {
 
     /**
      * 删除指定id的所有用户
-     * @param idList id数组
+     *
+     * @param ids id数组
      * @return 指定id的所有用户都被删除时返回true
      */
-    public boolean deleteUserByIds(String[] idList){
-        int count = userDao.deleteUserByIds(idList);
-        return count == idList.length;
+    public boolean deleteUserByIds(String[] ids) {
+        int count = userDao.deleteUserByIds(ids);
+        return count == ids.length;
     }
 }

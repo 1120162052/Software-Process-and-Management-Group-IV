@@ -24,5 +24,5 @@ public interface SysUserDao {
     int addUser(SysUser user);
 
     // 删除指定id的用户
-    int deleteUserByIds(String[] idList);
+    int deleteUserByIds(String[] ids);
 }

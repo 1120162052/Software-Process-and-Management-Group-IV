@@ -24,3 +24,16 @@
 .el-table--enable-row-hover .el-table__body tr:hover > td {
     background: #f6faff;
 }
+
+.el-table--enable-row-transition .el-table__body td, .el-table td, .el-table th{
+    border: 0px !important;
+}
+
+.el-table th.is-leaf, tr .gutter{
+    background: aliceblue;
+}
+
+.el-button--mini{
+    font-size: 11px;
+    padding: 6px 8px;
+}

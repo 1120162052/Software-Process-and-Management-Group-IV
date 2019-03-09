@@ -30,7 +30,7 @@
         from sys_entity_user a
         <where>
             <if test="searchKey != '' and searchKey != null">
-                a.username like concat('%', #{searchKey}, '%')
+                and a.username like concat('%', #{searchKey}, '%')
             </if>
         </where>
         limit #{pageStart}, #{pageSize}
@@ -43,7 +43,7 @@
         from sys_entity_user a
         <where>
             <if test="searchKey != '' and searchKey != null">
-                a.username like concat('%', #{searchKey}, '%')
+                and a.username like concat('%', #{searchKey}, '%')
             </if>
         </where>
     </select>
@@ -54,7 +54,6 @@
             username,
             password,
             id,
-            common_status,
             common_create_user_id,
             common_create_date,
             common_modify_user_id,
@@ -64,7 +63,6 @@
             #{username},
             #{password},
             #{id},
-            #{commonStatus},
             #{commonCreateUserId},
             #{commonCreateDate},
             #{commonModifyUserId},
@@ -73,9 +71,17 @@
         )
     </insert>
 
+    <!-- 删除指定id的用户 -->
+    <update id="deleteUserByIds" parameterType="string">
+        update sys_entity_user set common_status = 1 where id in
+        <foreach collection="array" index="index" item="id"
+                 open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
     <sql id="commonColumns">
         id as id,
-        common_status as commonStatus,
         common_create_user_id as commonCreateUserId,
         common_create_date as commonCreateDate,
         common_modify_user_id as commonModifyUserId,
@@ -85,7 +91,6 @@
 
     <sql id="commonColumnsWithA">
         a.id as id,
-        a.common_status as commonStatus,
         a.common_create_user_id as commonCreateUserId,
         a.common_create_date as commonCreateDate,
         a.common_modify_user_id as commonModifyUserId,

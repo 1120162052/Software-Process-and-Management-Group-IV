@@ -16,7 +16,7 @@
                 <span>添加用户</span>
             </el-button>
             <el-button size="small" type="danger" @click="deleteUser(table.selectionList)">
-                <span>删除用户</span>
+                <span>批量删除</span>
             </el-button>
             <el-button size="small" type="primary" @click="test()">
                 <span>测试</span>
@@ -33,9 +33,9 @@
         </span>
     </div>
     <%-- 表格 --%>
-    <el-table :data="table.data" height="calc(100% - 125px)" v-loading="table.loading"
+    <el-table :data="table.data" height="calc(100% - 135px)" v-loading="table.loading"
               style="width: 100%;overflow-y: hidden;margin-top: 30px;" class="scroll-bar"
-              @selection-change="handleSelectionChange" v-loading="table.loading">
+              @selection-change="handleSelectionChange" stripe>
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column label="用户名" prop="username" width="200"></el-table-column>
         <el-table-column label="密码" prop="password" width="200"></el-table-column>
@@ -44,19 +44,20 @@
                 {{ formatTimestamp(scope.row.commonCreateDate) }}
             </template>
         </el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column label="操作" width="130" header-align="center" align="center">
             <template slot-scope="scope">
                 <el-button type="warning" size="mini" style="position:relative;bottom: 1px;">
                     <span>编辑</span>
                 </el-button>
-                <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 3px;" @click="deleteUser(scope.row.id, 'single')">
+                <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;" @click="deleteUser(scope.row.id, 'single')">
                     <span>删除</span>
                 </el-button>
             </template>
         </el-table-column>
+        <el-table-column width="50"></el-table-column>
     </el-table>
     <%-- 分页 --%>
-    <el-pagination style="text-align: center;margin: 0px auto;margin-top: 8px;"
+    <el-pagination style="text-align: center;margin: 13px auto;"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="table.params.pageIndex"

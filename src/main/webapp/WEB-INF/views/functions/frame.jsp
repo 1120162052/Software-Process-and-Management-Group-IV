@@ -43,9 +43,9 @@
             <el-main style="padding: 0px;height: 100%;overflow-y: hidden">
                 <el-tabs v-model="activeTabName" type="card" closable @tab-remove="removeTab" style="height: 100%">
                     <el-tab-pane :key="tab.name" v-for="(tab, index) in tabList" :label="tab.title" :name="tab.name"
-                                 style="height: 100%">
-                        <iframe style="border: 0px;height: calc(100% - 45px);width: 100%;"
-                                :src="tab.url" :id="tab.name"></iframe>
+                                 style="height: 100%" v-loading="tab.loading">
+                        <iframe style="border: 0px;height: calc(100% - 40px);width: 100%;"
+                                :src="tab.url" :id="tab.name" @load="tab.loading=false"></iframe>
                     </el-tab-pane>
                 </el-tabs>
             </el-main>
