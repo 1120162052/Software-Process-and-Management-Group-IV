@@ -1,13 +1,13 @@
 package team.abc.ssm.modules.web;
 
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import team.abc.ssm.common.web.BaseController;
 
 @Controller
-public class ViewController {
+public class ViewController extends BaseController {
 
     /**
      * 常规页

@@ -33,8 +33,8 @@
         </span>
     </div>
     <%-- 表格 --%>
-    <el-table :data="table.data" height="calc(100% - 110px)" v-loading="table.loading"
-              style="width: 100%;overflow-y: hidden;margin-top: 20px;" class="scroll-bar"
+    <el-table :data="table.data" height="calc(100% - 125px)" v-loading="table.loading"
+              style="width: 100%;overflow-y: hidden;margin-top: 30px;" class="scroll-bar"
               @selection-change="handleSelectionChange" v-loading="table.loading">
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column label="用户名" prop="username" width="200"></el-table-column>
@@ -69,9 +69,9 @@
     <el-dialog title="添加用户" :visible.sync="dialog.addUser.visible" @close="resetAddUserForm()">
         <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
                  :model="dialog.addUser.formData" :rules="dialog.addUser.rules"
-                 ref="form_addUser">
-            <el-form-item label="用户名" prop="username">
-                <el-input v-model="dialog.addUser.formData.username"></el-input>
+                 ref="form_addUser" v-loading="dialog.addUser.loading" status-icon >
+            <el-form-item label="用户名" prop="username" class="is-required">
+                <el-input v-model="dialog.addUser.formData.username" id="input_username"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
                 <el-input v-model="dialog.addUser.formData.password"></el-input>

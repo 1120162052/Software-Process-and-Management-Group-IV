@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.abc.ssm.modules.sys.dao.SysFunctionDao">
+
+    <select id="getFunctionsByUsername" parameterType="string" resultType="team.abc.ssm.modules.sys.entity.SysFunction">
+        select
+        a.name as name,
+        a.code as code,
+        a.type as type,
+        a.parent_id as parentId,
+        a.url as url,
+        a.index_ as index_,
+        <include refid="commonColumnsWithA"/>
+        from sys_entity_user b
+        left join sys_map_user_role c on c.user_id = b.id
+        left join sys_map_role_function d on d.role_id = c.role_id
+        left join sys_entity_function a on a.id = d.function_id
+        where b.username = #{0}
+        group by a.id -- 避免重复获取同一权限
+    </select>
+
+    <select id="getAllFunctions" resultType="team.abc.ssm.modules.sys.entity.SysFunction">
+        select
+        a.name as name,
+        a.code as code,
+        a.type as type,
+        a.parent_id as parentId,
+        a.url as url,
+        a.index_ as index_,
+        <include refid="commonColumnsWithA"/>
+        from sys_entity_function a
+    </select>
+
+    <sql id="commonColumns">
+        id as id,
+        common_status as commonStatus,
+        common_create_user_id as commonCreateUserId,
+        common_create_date as commonCreateDate,
+        common_modify_user_id as commonModifyUserId,
+        common_modify_date as commonModifyDate,
+        common_remarks as commonRemarks
+    </sql>
+
+    <sql id="commonColumnsWithA">
+        a.id as id,
+        a.common_status as commonStatus,
+        a.common_create_user_id as commonCreateUserId,
+        a.common_create_date as commonCreateDate,
+        a.common_modify_user_id as commonModifyUserId,
+        a.common_modify_date as commonModifyDate,
+        a.common_remarks as commonRemarks
+    </sql>
+</mapper>

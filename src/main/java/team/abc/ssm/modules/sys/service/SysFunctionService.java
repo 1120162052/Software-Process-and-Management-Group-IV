@@ -2,53 +2,53 @@ package team.abc.ssm.modules.sys.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.abc.ssm.modules.sys.dao.PermissionDao;
-import team.abc.ssm.modules.sys.entity.Permission;
+import team.abc.ssm.modules.sys.dao.SysFunctionDao;
+import team.abc.ssm.modules.sys.entity.SysFunction;
 
 import java.util.*;
 
 @Service
-public class PermissionService {
+public class SysFunctionService {
 
     @Autowired
-    private PermissionDao permissionDao;
+    private SysFunctionDao functionDao;
 
     @Autowired
-    private RoleService roleService;
+    private SysRoleService roleService;
 
-    // 通过用户名获取该用户拥有的所有权限
-    public Set<String> get1(String username) {
-        List<Permission> permissionList = get2(username);
+    // 通过用户名获取该用户拥有的所有功能
+    public Set<String> getFunctionSetByUsername(String username) {
+        List<SysFunction> functionList = getFunctionsByUsername(username);
         Set<String> result = new HashSet<>();
-        for (Permission permission : permissionList) {
-            result.add(permission.getCode());
+        for (SysFunction function : functionList) {
+            result.add(function.getCode());
         }
         return result;
     }
 
-    // 通过用户名获取该用户拥有的所有权限
-    public List<Permission> get2(String username) {
+    // 通过用户名获取该用户拥有的所有功能
+    public List<SysFunction> getFunctionsByUsername(String username) {
         if (roleService.isAdmin(username)) // 具有特殊角色admin时直接获取所有权限
-            return permissionDao.get2();
+            return functionDao.getAllFunctions();
         else
-            return permissionDao.get1(username);
+            return functionDao.getFunctionsByUsername(username);
     }
 
-    // 通过用户名获取该用户的权限，并构建成一棵二级的菜单树
-    public List<Category> get3(String username) {
+    // 通过用户名获取该用户的功能，并构建成一棵二级的菜单树
+    public List<Category> getFunctionTree(String username) {
         List<Category> categoryList = new ArrayList<>();
-        List<Permission> permissionList = get2(username);
+        List<SysFunction> functionList = getFunctionsByUsername(username);
         // list中添加category
-        for (Permission permission : permissionList) {
-            if (permission.getType() == 0) {
-                categoryList.add(new Category(permission));
+        for (SysFunction function : functionList) {
+            if (function.getType() == 0) {
+                categoryList.add(new Category(function));
             }
         }
         // category中添加function
         for (Category category : categoryList) {
-            for (Permission permission : permissionList) {
-                if (category.getId().equals(permission.getParentId())) {
-                    category.functionList.add(new Function(permission));
+            for (SysFunction function : functionList) {
+                if (category.getId().equals(function.getParentId())) {
+                    category.functionList.add(new Function(function));
                 }
             }
         }
@@ -67,10 +67,10 @@ public class PermissionService {
 
         private List<Function> functionList;
 
-        public Category(Permission permission) {
-            id = permission.getId();
-            name = permission.getName();
-            index = permission.getIndex_();
+        public Category(SysFunction function) {
+            id = function.getId();
+            name = function.getName();
+            index = function.getIndex_();
             functionList = new ArrayList<>();
         }
 
@@ -114,12 +114,12 @@ public class PermissionService {
         private String parentId;
         private int index;
 
-        public Function(Permission permission) {
-            id = permission.getId();
-            name = permission.getName();
-            url = permission.getUrl();
-            parentId = permission.getParentId();
-            index = permission.getIndex_();
+        public Function(SysFunction function) {
+            id = function.getId();
+            name = function.getName();
+            url = function.getUrl();
+            parentId = function.getParentId();
+            index = function.getIndex_();
         }
 
         public String getId() {

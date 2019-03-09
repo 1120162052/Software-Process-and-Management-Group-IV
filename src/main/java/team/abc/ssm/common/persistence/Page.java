@@ -1,4 +1,4 @@
-package team.abc.ssm.common.entity;
+package team.abc.ssm.common.persistence;
 
 import java.util.List;
 

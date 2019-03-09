@@ -1,8 +1,8 @@
 package team.abc.ssm.modules.sys.entity;
 
-import team.abc.ssm.common.entity.BaseEntity;
+import team.abc.ssm.common.persistence.entity.DataEntity;
 
-public class Permission extends BaseEntity {
+public class SysFunction extends DataEntity<SysFunction> {
 
     private String name;
     private String code;

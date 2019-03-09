@@ -25,14 +25,15 @@ function ajaxGet(url, data, successCallback, errorCallback) {
  * @param successCallback 成功回调函数（可选）
  * @param errorCallback 失败回调函数（可选）
  */
-function ajaxPost(url, data, successCallback, errorCallback) {
+function ajaxPost(url, data, successCallback, errorCallback, async=true) {
     $.ajax({
         type: 'POST',
         url: url,
         data: data,
         cache: false,
         success: successCallback,
-        error: errorCallback
+        error: errorCallback,
+        async: async
     })
 }
 
@@ -43,7 +44,7 @@ function ajaxPost(url, data, successCallback, errorCallback) {
  * @param successCallback 成功回调函数（可选）
  * @param errorCallback 失败回调函数（可选）
  */
-function ajaxPostJSON(url, data, successCallback, errorCallback) {
+function ajaxPostJSON(url, data, successCallback, errorCallback, async=true) {
     $.ajax({
         type: 'POST',
         url: url,
@@ -52,7 +53,8 @@ function ajaxPostJSON(url, data, successCallback, errorCallback) {
         success: successCallback,
         error: errorCallback,
         dataType: 'json',
-        contentType: 'application/json;charset=utf-8'
+        contentType: 'application/json;charset=utf-8',
+        async: async
     })
 }
 

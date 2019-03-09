@@ -1,33 +1,26 @@
 let validateUsername = function (rule, value, callback) {
-    if (value == '' || value == null) {
-        callback(new Error('用户名不能为空'));
-        return;
-    }
     let url = '/functions/sys/userManager/validateUsername';
     let data = {
         username: value
     };
+    if (value == null || value.length == 0) {
+        callback(new Error('用户名不能为空'));
+        return;
+    }
     ajaxPost(url, data, function (d) {
-        if (d.code != 'success') {
+        if (d.code == 'error') {
             callback(new Error('用户名已被注册'));
         }
         else {
             callback();
         }
-    });
+    })
 };
 
-let validateNull = function (rule, value, callback) {
-    if (value == '' || value == null) {
-        callback(new Error('用户名不能为空'));
-        return;
-    }
-};
-
-var app = new Vue({
+let app = new Vue({
     el: '#app',
     data: {
-        fullScreenLoading: true,
+        fullScreenLoading: false,
         table: {
             data: [],
             loading: false,
@@ -43,25 +36,25 @@ var app = new Vue({
         dialog: {
             addUser: {
                 visible: false,
+                loading: false,
                 formData: {
                     username: '',
                     password: ''
                 },
                 rules: {
                     username: [
+                        {validator: validateUsername, trigger: 'blur'},
                         {validator: validateUsername, trigger: 'change'},
                     ],
                     password: [
-                        {required: true, message: '密码不合法', trigger: 'blur'},
+                        {required: true, message: '密码不能为空', trigger: 'blur'},
+                        {required: true, message: '密码不能为空', trigger: 'change'},
                     ]
                 },
             }
         }
     },
     methods: {
-        init: function () {
-            this.getUserList();
-        },
         // 处理选中的行变化
         handleSelectionChange: function (val) {
             console.log(val);
@@ -87,13 +80,11 @@ var app = new Vue({
             };
             let app = this;
             this.table.loading = true;
-            setTimeout(function () {
-                ajaxPostJSON(url, data, function (d) {
-                    app.table.loading = false;
-                    app.table.data = d.data.resultList;
-                    app.table.params.total = d.data.total;
-                })
-            }, 0);
+            ajaxPostJSON(url, data, function (d) {
+                app.table.loading = false;
+                app.table.data = d.data.resultList;
+                app.table.params.total = d.data.total;
+            });
         },
         // 添加用户
         addUser: function () {
@@ -106,11 +97,15 @@ var app = new Vue({
                         password: this.dialog.addUser.formData.password
                     };
                     let app = this;
-                    ajaxPost(url, data, function (d) {
-                        app.dialog.addUser.visible = false;
-                        window.parent.app.showMessage('添加成功！', 'success');
-                        app.getUserList(); // 添加完成后刷新页面
-                    });
+                    app.dialog.addUser.loading = true;
+                    setTimeout(function () {
+                        ajaxPost(url, data, function (d) {
+                            app.dialog.addUser.loading = false;
+                            app.dialog.addUser.visible = false;
+                            window.parent.app.showMessage('添加成功！', 'success');
+                            app.getUserList(); // 添加完成后刷新页面
+                        });
+                    }, 1000);
                 } else {
                     console.log("表单数据不合法！");
                     return false;
@@ -128,10 +123,10 @@ var app = new Vue({
         }
     },
     mounted: function () {
-        this.init();
+        this.getUserList();
     }
 });
 
 $(document).ready(function () {
-    app.fullScreenLoading = false;
+
 });

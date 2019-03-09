@@ -1,6 +1,5 @@
 package team.abc.ssm.modules.web.functions;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,9 +7,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import team.abc.ssm.common.web.BaseController;
 import team.abc.ssm.common.web.MsgType;
-import team.abc.ssm.modules.sys.entity.Permission;
-import team.abc.ssm.modules.sys.entity.User;
-import team.abc.ssm.modules.sys.service.PermissionService;
+import team.abc.ssm.modules.sys.entity.SysUser;
+import team.abc.ssm.modules.sys.service.SysFunctionService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,15 +19,15 @@ import java.util.Map;
 public class FrameController extends BaseController {
 
     @Autowired
-    private PermissionService permissionService;
+    private SysFunctionService functionService;
 
     @RequestMapping(value = "init", method = RequestMethod.POST)
     @ResponseBody
     public Object init(){
-        // 获取登陆用户信息
-        User user = getLoginUser();
+        // 获取当前用户信息
+        SysUser user = getCurrentUser();
         // 获取用户拥有的权限信息
-        List<PermissionService.Category> categoryList = permissionService.get3(user.getUsername());
+        List<SysFunctionService.Category> categoryList = functionService.getFunctionTree(user.getUsername());
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         data.put("categoryList", categoryList);

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="team.abc.ssm.modules.sys.dao.UserDao">
+<mapper namespace="team.abc.ssm.modules.sys.dao.SysUserDao">
 
-    <select id="get1" resultType="team.abc.ssm.modules.sys.entity.User" parameterType="string">
+    <!-- 通过用户名获取用户信息 -->
+    <select id="getUserByUsername" resultType="team.abc.ssm.modules.sys.entity.SysUser" parameterType="string">
         select
         a.username as username,
         a.password as password,
@@ -10,7 +11,8 @@
         from sys_entity_user a where a.username = #{0} limit 1
     </select>
 
-    <select id="get2" resultType="team.abc.ssm.modules.sys.entity.User">
+    <!-- 获取所有用户列表 -->
+    <select id="getAllUsers" resultType="team.abc.ssm.modules.sys.entity.SysUser">
         select
         a.username as username,
         a.password as password,
@@ -18,7 +20,9 @@
         from sys_entity_user a
     </select>
 
-    <select id="get3" resultType="team.abc.ssm.modules.sys.entity.User" parameterType="team.abc.ssm.common.entity.Page">
+    <!-- 分页 + 搜索(模糊匹配用户名)获取用户列表 -->
+    <select id="getUsersByPage" parameterType="team.abc.ssm.common.persistence.Page"
+            resultType="team.abc.ssm.modules.sys.entity.SysUser">
         select
         a.username as username,
         a.password as password,
@@ -32,7 +36,8 @@
         limit #{pageStart}, #{pageSize}
     </select>
 
-    <select id="get4" resultType="int">
+    <!-- 模糊搜索结果总数 -->
+    <select id="getSearchTotal" resultType="int">
         select
         count(*)
         from sys_entity_user a
@@ -43,9 +48,10 @@
         </where>
     </select>
 
-    <insert id="add1" parameterType="team.abc.ssm.modules.sys.entity.User">
+    <!-- 添加一名新用户 -->
+    <insert id="addUser" parameterType="team.abc.ssm.modules.sys.entity.SysUser">
         insert into sys_entity_user
-        (username, password, id, common_create_user_id, common_create_date, common_modify_user_id, common_modify_date, common_status)
+        (username, password, id, common_create_user_id, common_create_date, common_modify_user_id, common_modify_date, common_status, )
         values
         (#{username}, #{password}, #{id}, #{commonCreateUserId}, #{commonCreateDate}, #{commonModifyUserId}, #{commonModifyDate}, 1)
     </insert>
@@ -56,7 +62,8 @@
         common_create_user_id as commonCreateUserId,
         common_create_date as commonCreateDate,
         common_modify_user_id as commonModifyUserId,
-        common_modify_date as commonModifyDate
+        common_modify_date as commonModifyDate,
+        common_remarks as commonRemarks
     </sql>
 
     <sql id="commonColumnsWithA">
@@ -65,6 +72,7 @@
         a.common_create_user_id as commonCreateUserId,
         a.common_create_date as commonCreateDate,
         a.common_modify_user_id as commonModifyUserId,
-        a.common_modify_date as commonModifyDate
+        a.common_modify_date as commonModifyDate,
+        a.common_remarks as commonRemarks
     </sql>
 </mapper>

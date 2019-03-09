@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="team.abc.ssm.modules.sys.dao.RoleDao">
+<mapper namespace="team.abc.ssm.modules.sys.dao.SysRoleDao">
 
-    <select id="get1" resultType="team.abc.ssm.modules.sys.entity.Role" parameterType="string">
+    <select id="getRolesByUsername" resultType="team.abc.ssm.modules.sys.entity.SysRole" parameterType="string">
         select
-            a.name as name,
-            a.code as code,
-            <include refid="commonColumnsWithA"/>
+        a.name as name,
+        a.code as code,
+        <include refid="commonColumnsWithA"/>
         from sys_entity_user b
-            left join sys_map_user_role c on c.user_id = b.id
-            left join sys_entity_role a on a.id = c.role_id
+        left join sys_map_user_role c on c.user_id = b.id
+        left join sys_entity_role a on a.id = c.role_id
         where b.username = #{0}
     </select>
 
@@ -19,7 +19,8 @@
         common_create_user_id as commonCreateUserId,
         common_create_date as commonCreateDate,
         common_modify_user_id as commonModifyUserId,
-        common_modify_date as commonModifyDate
+        common_modify_date as commonModifyDate,
+        common_remarks as commonRemarks
     </sql>
 
     <sql id="commonColumnsWithA">
@@ -28,6 +29,7 @@
         a.common_create_user_id as commonCreateUserId,
         a.common_create_date as commonCreateDate,
         a.common_modify_user_id as commonModifyUserId,
-        a.common_modify_date as commonModifyDate
+        a.common_modify_date as commonModifyDate,
+        a.common_remarks as commonRemarks
     </sql>
 </mapper>

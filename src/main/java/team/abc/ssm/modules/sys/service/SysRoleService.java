@@ -2,29 +2,24 @@ package team.abc.ssm.modules.sys.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.abc.ssm.modules.sys.dao.RoleDao;
-import team.abc.ssm.modules.sys.dao.UserDao;
-import team.abc.ssm.modules.sys.entity.Role;
-import team.abc.ssm.modules.sys.entity.User;
+import team.abc.ssm.modules.sys.dao.SysRoleDao;
+import team.abc.ssm.modules.sys.entity.SysRole;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class RoleService {
+public class SysRoleService {
 
     @Autowired
-    private RoleDao roleDao;
-
-    @Autowired
-    private UserService userService;
+    private SysRoleDao roleDao;
 
     // 通过用户名获取该用户拥有的所有角色
-    public Set<String> get1(String username) {
-        List<Role> roleList = roleDao.get1(username);
+    public Set<String> getRolesByUsername(String username) {
+        List<SysRole> roleList = roleDao.getRolesByUsername(username);
         Set<String> result = new HashSet<>();
-        for (Role role : roleList) {
+        for (SysRole role : roleList) {
             result.add(role.getCode());
         }
         return result;
@@ -32,8 +27,8 @@ public class RoleService {
 
     // 通过用户名判断一个用户是否是管理员
     public boolean isAdmin(String username) {
-        List<Role> roleList = roleDao.get1(username);
-        for (Role role : roleList) {
+        List<SysRole> roleList = roleDao.getRolesByUsername(username);
+        for (SysRole role : roleList) {
             if (role.getCode().equals("admin"))
                 return true;
         }

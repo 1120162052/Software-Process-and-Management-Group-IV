@@ -6,21 +6,20 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import team.abc.ssm.modules.sys.service.PermissionService;
-import team.abc.ssm.modules.sys.service.RoleService;
-import team.abc.ssm.modules.sys.service.UserService;
+import team.abc.ssm.modules.sys.service.SysFunctionService;
+import team.abc.ssm.modules.sys.service.SysRoleService;
+import team.abc.ssm.modules.sys.service.SysUserService;
 
-import java.util.List;
 import java.util.Set;
 
 public class SystemAuthorizingRealm extends AuthorizingRealm {
 
     @Autowired
-    private UserService userService;
+    private SysUserService userService;
     @Autowired
-    private RoleService roleService;
+    private SysRoleService roleService;
     @Autowired
-    private PermissionService permissionService;
+    private SysFunctionService functionService;
 
     // 用户角色、权限验证（用户已经登陆）
     @Override
@@ -28,8 +27,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         // 获取当前登陆用户的username
         String username = (String) principalCollection.getPrimaryPrincipal();
         // 首先根据username获取userID，然后获取角色和功能信息
-        Set<String> roles = roleService.get1(username);
-        Set<String> permissions = permissionService.get1(username);
+        Set<String> roles = roleService.getRolesByUsername(username);
+        Set<String> permissions = functionService.getFunctionSetByUsername(username);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setRoles(roles);
         info.setStringPermissions(permissions);
@@ -44,7 +43,7 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         String username = token.getUsername();
         String password = new String(token.getPassword());
         // 根据用户名获取数据库中正确的密码
-        String passwordInDB = userService.get1(username).getPassword();
+        String passwordInDB = userService.getUserByUsername(username).getPassword();
         // 账号不存在或密码错误
         if (passwordInDB == null || !passwordInDB.equals(password)) {
             throw new AuthenticationException();

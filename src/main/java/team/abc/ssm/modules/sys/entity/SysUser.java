@@ -1,17 +1,17 @@
 package team.abc.ssm.modules.sys.entity;
 
-import team.abc.ssm.common.entity.BaseEntity;
+import team.abc.ssm.common.persistence.entity.DataEntity;
 import team.abc.ssm.common.utils.IdGen;
 
 import java.util.Date;
 
-public class User extends BaseEntity {
+public class SysUser extends DataEntity<SysUser> {
 
     private String username;
     private String password;
 
     // 通过username，password创建用户
-    public User(String username, String password, String createUserId) {
+    public SysUser(String username, String password, String createUserId) {
         this.username = username;
         this.password = password;
         this.id = IdGen.uuid();
@@ -21,7 +21,7 @@ public class User extends BaseEntity {
         this.commonModifyDate = this.commonCreateDate;
     }
 
-    public User() {
+    public SysUser() {
 
     }
 
