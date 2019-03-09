@@ -19,4 +19,7 @@ public interface UserDao {
 
     // 模糊搜索结果总数
     int get4(@Param("searchKey") String searchKey);
+
+    // 添加一名新用户
+    int add1(User user);
 }

@@ -80,12 +80,18 @@ create table sys_map_role_permission(
 );
 
 -- 用户
-insert into sys_entity_user (id, username, password) values ('u1', 'admin', 'admin');
-insert into sys_entity_user (id, username, password) values ('u2', 'zhangsan', '123456');
+insert into sys_entity_user (id, username, password, common_create_date) values ('u1', 'admin', 'admin', now());
+insert into sys_entity_user (id, username, password, common_create_date) values ('u2', 'zhangsan', '123456', now());
+insert into sys_entity_user (id, username, password, common_create_date) values ('u3', '省用户1', '123456', now());
+insert into sys_entity_user (id, username, password, common_create_date) values ('u4', '市用户1', '123456', now());
+insert into sys_entity_user (id, username, password, common_create_date) values ('u5', '监测点用户1', '123456', now());
 
 -- 角色
 insert into sys_entity_role (id, name, code) values ('r1', '管理员', 'admin');
 insert into sys_entity_role (id, name, code) values ('r2', '普通用户', 'normalUser');
+insert into sys_entity_role (id, name, code) values ('r3', '省', 'province');
+insert into sys_entity_role (id, name, code) values ('r4', '市', 'city');
+insert into sys_entity_role (id, name, code) values ('r5', '监测点', 'point');
 
 -- 权限
 --    1.分类
@@ -101,6 +107,10 @@ insert into sys_entity_permission (id, name, code, type, parent_id, url, index_)
 -- 关联：用户-角色
 insert into sys_map_user_role (id, user_id, role_id) values ('ur1', 'u1', 'r1'); -- admin - 管理员
 insert into sys_map_user_role (id, user_id, role_id) values ('ur2', 'u2', 'r2'); -- zhangsan - 普通用户
+insert into sys_map_user_role (id, user_id, role_id) values ('ur3', 'u3', 'r3'); -- 省用户1 -- 省
+insert into sys_map_user_role (id, user_id, role_id) values ('ur3_', 'u3', 'r1'); -- 省用户1 -- 管理员
+insert into sys_map_user_role (id, user_id, role_id) values ('ur4', 'u4', 'r4'); -- 市用户1 -- 市
+insert into sys_map_user_role (id, user_id, role_id) values ('ur5', 'u5', 'r5'); -- 监测点用户1 -- 监测点
 
 -- 关联：角色-权限 （管理员角色不需要和权限关联）
 insert into sys_map_role_permission (id, role_id, permission_id) values ('rp1', 'r2', 'p4'); -- 普通用户 - 自定义功能

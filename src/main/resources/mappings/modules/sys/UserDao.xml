@@ -43,6 +43,13 @@
         </where>
     </select>
 
+    <insert id="add1" parameterType="team.abc.ssm.modules.sys.entity.User">
+        insert into sys_entity_user
+        (username, password, id, common_create_user_id, common_create_date, common_modify_user_id, common_modify_date, common_status)
+        values
+        (#{username}, #{password}, #{id}, #{commonCreateUserId}, #{commonCreateDate}, #{commonModifyUserId}, #{commonModifyDate}, 1)
+    </insert>
+
     <sql id="commonColumns">
         id as id,
         common_status as commonStatus,

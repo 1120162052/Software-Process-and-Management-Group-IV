@@ -3,12 +3,12 @@ package team.abc.ssm.common.entity;
 import java.util.Date;
 
 public abstract class BaseEntity {
-    private String id;
-    private int commonStatus;
-    private String commonCreateUserId;
-    private Date commonCreateDate;
-    private String commonModifyUserId;
-    private Date commonModifyDate;
+    protected String id;
+    protected int commonStatus;
+    protected String commonCreateUserId;
+    protected Date commonCreateDate;
+    protected String commonModifyUserId;
+    protected Date commonModifyDate;
 
     public String getId() {
         return id;

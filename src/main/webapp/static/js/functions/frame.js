@@ -1,4 +1,4 @@
-let app = new Vue({
+var app = new Vue({
     el: '#app',
     data: {
         user: '',
@@ -84,6 +84,13 @@ let app = new Vue({
         // 刷新指定tab的iframe
         refreshTab: function (iframeId) {
             document.getElementById(iframeId).contentWindow.location.reload(true);
+        },
+        // 通用方法1：消息提示
+        showMessage: function(message, type){
+            this.$message({
+                message: message,
+                type: type
+            });
         }
     },
     mounted: function () {

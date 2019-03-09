@@ -12,14 +12,14 @@
     <%-- 顶栏 --%>
     <div style="padding: 15px 20px 0px 15px;">
         <span class="button-group">
-            <el-button size="small" type="success" @click="dialog.addUser.visible=true">
+            <el-button size="small" type="success" @click="dialog.addUser.visible = true">
                 <span>添加用户</span>
             </el-button>
             <el-button size="small" type="danger">
                 <span>删除用户</span>
             </el-button>
-            <el-button size="small" type="primary" @click="getUserList()">
-                <span>刷新</span>
+            <el-button size="small" type="primary" @click="test()">
+                <span>测试</span>
             </el-button>
         </span>
         <span style="float: right;margin-right: 10px;">
@@ -66,18 +66,20 @@
                    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <%-- 添加用户弹出框 --%>
-    <el-dialog title="添加用户" :visible.sync="dialog.addUser.visible">
-        <el-form label-position="top" label-width="80px">
-            <el-form-item label="用户名">
+    <el-dialog title="添加用户" :visible.sync="dialog.addUser.visible" @close="resetAddUserForm()">
+        <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
+                 :model="dialog.addUser.formData" :rules="dialog.addUser.rules"
+                 ref="form_addUser">
+            <el-form-item label="用户名" prop="username">
                 <el-input v-model="dialog.addUser.formData.username"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
+            <el-form-item label="密码" prop="password">
                 <el-input v-model="dialog.addUser.formData.password"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button size="small" @click="dialog.addUser.visible = false">取 消</el-button>
-            <el-button size="small" type="primary" @click="dialog.addUser.visible = false">确 定</el-button>
+            <el-button size="small" @click="dialog.addUser.visible=false">取 消</el-button>
+            <el-button size="small" type="primary" @click="addUser()">提 交</el-button>
         </div>
     </el-dialog>
 </div>
