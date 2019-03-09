@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="/static/css/login.css"/>
 </head>
 <body>
-<div id="app" v-cloak v-loading="fullScreenLoading">
-    <el-form ref="form" :model="formData" label-width="100px" class="form">
+<div id="app" v-  v-loading="fullScreenLoading">
+    <el-form ref="form" :model="formData" label-width="100px" class="form" label-align="center">
+        <h3 style="text-align: center; margin-bottom: 20px">人力资源市场管理系统</h3>
         <%-- 阻止浏览器密码保存 --%>
         <%--<input type="text" name="username" hidden/>--%>
         <%--<input type="password" name="password" hidden/>--%>
@@ -21,7 +22,8 @@
                       onfocus="this.type='password'"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" @click="login">登陆</el-button>
+            <el-button type="primary" @click="login" style="width: 150px">登陆</el-button>
+            <el-button type="primary" plain @click="test()" style="width: 150px">lwj测试</el-button>
         </el-form-item>
     </el-form>
 </div>

@@ -13,7 +13,7 @@ import team.abc.ssm.common.web.BaseController;
 import team.abc.ssm.common.web.MsgType;
 
 @Controller
-@RequestMapping("login")
+@RequestMapping("/login")
 public class LoginController extends BaseController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
@@ -34,5 +34,11 @@ public class LoginController extends BaseController {
         } catch (AuthenticationException e) {
             return retMsg.Set(MsgType.ERROR);
         }
+    }
+
+    @RequestMapping(value = "test", method = RequestMethod.POST)
+    @ResponseBody
+    public Object test() {
+        return retMsg.Set(MsgType.SUCCESS);
     }
 }
