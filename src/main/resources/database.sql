@@ -16,11 +16,12 @@ create table sys_entity_user(
   password varchar(100),
 
   id varchar(100) primary key,
-  common_status int default 1         comment '1 - 有效，0 - 无效',
+  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期'
+  common_modify_date datetime         comment '最后修改日期',
+  common_remarks varchar(100)         comment '备注'
 );
 
 -- 角色
@@ -29,15 +30,16 @@ create table sys_entity_role(
   code varchar(100) comment '角色代码，作为角色的标识符',
 
   id varchar(100) primary key,
-  common_status int default 1         comment '1 - 有效，0 - 无效',
+  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期'
+  common_modify_date datetime         comment '最后修改日期',
+  common_remarks varchar(100)         comment '备注'
 );
 
 -- 权限（实际上就是功能）
-create table sys_entity_permission(
+create table sys_entity_function(
   name varchar(100),
   code varchar(100)       comment '功能代码，作为功能的标识符',
   type int                comment '0 - 功能分类，点击展开子功能;1 - 功能，点击进入功能页',
@@ -46,11 +48,12 @@ create table sys_entity_permission(
   index_ int              comment '排序，功能栏上自上而下，从0开始递增(相当于数组中的序号)',
 
   id varchar(100) primary key,
-  common_status int default 1         comment '1 - 有效，0 - 无效',
+  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期'
+  common_modify_date datetime         comment '最后修改日期',
+  common_remarks varchar(100)         comment '备注'
 );
 
 -- 关联：用户-角色
@@ -59,24 +62,26 @@ create table sys_map_user_role(
   role_id varchar(100),
 
   id varchar(100) primary key,
-  common_status int default 1         comment '1 - 有效，0 - 无效',
+  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期'
+  common_modify_date datetime         comment '最后修改日期',
+  common_remarks varchar(100)         comment '备注'
 );
 
 -- 关联：角色-权限
-create table sys_map_role_permission(
+create table sys_map_role_function(
   role_id varchar(100),
-  permission_id varchar(100),
+  function_id varchar(100),
 
   id varchar(100) primary key,
-  common_status int default 1         comment '1 - 有效，0 - 无效',
+  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期'
+  common_modify_date datetime         comment '最后修改日期',
+  common_remarks varchar(100)         comment '备注'
 );
 
 -- 用户
@@ -95,14 +100,14 @@ insert into sys_entity_role (id, name, code) values ('r5', '监测点', 'point')
 
 -- 权限
 --    1.分类
-insert into sys_entity_permission (id, name, code, type, parent_id, url, index_) values ('p1', '系统功能', 'sys:default', 0, null, null, 0);
-insert into sys_entity_permission (id, name, code, type, parent_id, url, index_) values ('p4', '自定义功能', 'custom:default', 0, null, null, 1);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p1', '系统功能', 'sys:default', 0, null, null, 0);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p4', '自定义功能', 'custom:default', 0, null, null, 1);
 --    2.系统功能
-insert into sys_entity_permission (id, name, code, type, parent_id, url, index_) values ('p2', '用户管理', 'sys:user', 1, 'p1', 'functions/sys/userManager', 0);
-insert into sys_entity_permission (id, name, code, type, parent_id, url, index_) values ('p3', '角色管理', 'sys:role', 1, 'p1', 'functions/sys/roleManager', 1);
-insert into sys_entity_permission (id, name, code, type, parent_id, url, index_) values ('p6', '功能管理', 'sys:function', 1, 'p1', 'function/sys/functionManager', 2);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p2', '用户管理', 'sys:user', 1, 'p1', 'functions/sys/userManager', 0);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p3', '角色管理', 'sys:role', 1, 'p1', 'functions/sys/roleManager', 1);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p6', '功能管理', 'sys:function', 1, 'p1', 'function/sys/functionManager', 2);
 --    3.自定义功能
-insert into sys_entity_permission (id, name, code, type, parent_id, url, index_) values ('p5', '测试功能', 'custom:testFunction', 1, 'p4', 'functions/custom/testFunction', 0);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p5', '测试功能', 'custom:testFunction', 1, 'p4', 'functions/custom/testFunction', 0);
 
 -- 关联：用户-角色
 insert into sys_map_user_role (id, user_id, role_id) values ('ur1', 'u1', 'r1'); -- admin - 管理员
@@ -113,5 +118,5 @@ insert into sys_map_user_role (id, user_id, role_id) values ('ur4', 'u4', 'r4');
 insert into sys_map_user_role (id, user_id, role_id) values ('ur5', 'u5', 'r5'); -- 监测点用户1 -- 监测点
 
 -- 关联：角色-权限 （管理员角色不需要和权限关联）
-insert into sys_map_role_permission (id, role_id, permission_id) values ('rp1', 'r2', 'p4'); -- 普通用户 - 自定义功能
-insert into sys_map_role_permission (id, role_id, permission_id) values ('rp2', 'r2', 'p5'); -- 普通用户 - 测试功能
+insert into sys_map_role_function (id, role_id, function_id) values ('rp1', 'r2', 'p4'); -- 普通用户 - 自定义功能
+insert into sys_map_role_function (id, role_id, function_id) values ('rp2', 'r2', 'p5'); -- 普通用户 - 测试功能

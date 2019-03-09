@@ -15,7 +15,7 @@
             <el-button size="small" type="success" @click="dialog.addUser.visible = true">
                 <span>添加用户</span>
             </el-button>
-            <el-button size="small" type="danger">
+            <el-button size="small" type="danger" @click="deleteUser(table.selectionList)">
                 <span>删除用户</span>
             </el-button>
             <el-button size="small" type="primary" @click="test()">
@@ -49,7 +49,7 @@
                 <el-button type="warning" size="mini" style="position:relative;bottom: 1px;">
                     <span>编辑</span>
                 </el-button>
-                <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 3px;">
+                <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 3px;" @click="deleteUser(scope.row.id, 'single')">
                     <span>删除</span>
                 </el-button>
             </template>

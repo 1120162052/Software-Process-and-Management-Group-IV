@@ -50,10 +50,27 @@
 
     <!-- 添加一名新用户 -->
     <insert id="addUser" parameterType="team.abc.ssm.modules.sys.entity.SysUser">
-        insert into sys_entity_user
-        (username, password, id, common_create_user_id, common_create_date, common_modify_user_id, common_modify_date, common_status, )
-        values
-        (#{username}, #{password}, #{id}, #{commonCreateUserId}, #{commonCreateDate}, #{commonModifyUserId}, #{commonModifyDate}, 1)
+        insert into sys_entity_user (
+            username,
+            password,
+            id,
+            common_status,
+            common_create_user_id,
+            common_create_date,
+            common_modify_user_id,
+            common_modify_date,
+            common_remarks
+        ) values (
+            #{username},
+            #{password},
+            #{id},
+            #{commonStatus},
+            #{commonCreateUserId},
+            #{commonCreateDate},
+            #{commonModifyUserId},
+            #{commonModifyDate},
+            #{commonRemarks}
+        )
     </insert>
 
     <sql id="commonColumns">

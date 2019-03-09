@@ -57,7 +57,6 @@ let app = new Vue({
     methods: {
         // 处理选中的行变化
         handleSelectionChange: function (val) {
-            console.log(val);
             this.table.selectionList = val;
         },
         // 处理pageSize变化
@@ -98,14 +97,16 @@ let app = new Vue({
                     };
                     let app = this;
                     app.dialog.addUser.loading = true;
-                    setTimeout(function () {
-                        ajaxPost(url, data, function (d) {
-                            app.dialog.addUser.loading = false;
-                            app.dialog.addUser.visible = false;
-                            window.parent.app.showMessage('添加成功！', 'success');
-                            app.getUserList(); // 添加完成后刷新页面
-                        });
-                    }, 1000);
+                    ajaxPost(url, data, function (d) {
+                        app.dialog.addUser.loading = false;
+                        app.dialog.addUser.visible = false;
+                        window.parent.app.showMessage('添加成功！', 'success');
+                        app.getUserList(); // 添加完成后刷新页面
+                    }, function () {
+                        app.dialog.addUser.loading = false;
+                        app.dialog.addUser.visible = false;
+                        window.parent.app.showMessage('添加失败！', 'error');
+                    });
                 } else {
                     console.log("表单数据不合法！");
                     return false;
@@ -120,6 +121,33 @@ let app = new Vue({
         test: function () {
             this.dialog.addUser.visible = true;
             this.$refs['form_addUser'].resetFields();
+        },
+        // 删除指定id的用户
+        deleteUser: function (val, type = 'multi') {
+            let idList = [];
+            if (type === 'single') {
+                let id = val;
+                idList.push(id);
+            }
+            else {
+                let selectionList = val;
+                if (selectionList.length == 0)
+                    return;
+                for (let i = 0; i < selectionList.length; i++) {
+                    idList.push(selectionList[i].id);
+                }
+            }
+            let url = '/functions/sys/userManager/deleteUser';
+            let data = {
+                idList: idList
+            };
+            let app = this;
+            app.fullScreenLoading = true;
+            ajaxPost(url, data, function (d) {
+                app.fullScreenLoading = false;
+                window.parent.app.showMessage('删除成功！', 'success');
+                app.getUserList();
+            })
         }
     },
     mounted: function () {

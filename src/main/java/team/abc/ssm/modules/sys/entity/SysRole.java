@@ -1,8 +1,8 @@
 package team.abc.ssm.modules.sys.entity;
 
-import team.abc.ssm.common.persistence.entity.DataEntity;
+import team.abc.ssm.common.persistence.DataEntity;
 
-public class SysRole extends DataEntity<SysRole> {
+public class SysRole extends DataEntity {
 
     private String name;
     private String code;

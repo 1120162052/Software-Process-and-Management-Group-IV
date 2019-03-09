@@ -1,11 +1,11 @@
 package team.abc.ssm.modules.sys.entity;
 
-import team.abc.ssm.common.persistence.entity.DataEntity;
+import team.abc.ssm.common.persistence.DataEntity;
 import team.abc.ssm.common.utils.IdGen;
 
 import java.util.Date;
 
-public class SysUser extends DataEntity<SysUser> {
+public class SysUser extends DataEntity {
 
     private String username;
     private String password;
@@ -19,6 +19,8 @@ public class SysUser extends DataEntity<SysUser> {
         this.commonModifyUserId = this.commonCreateUserId;
         this.commonCreateDate = new Date();
         this.commonModifyDate = this.commonCreateDate;
+        this.commonStatus = 0;
+        this.commonRemarks = "";
     }
 
     public SysUser() {

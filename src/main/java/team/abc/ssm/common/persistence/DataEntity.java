@@ -1,9 +1,10 @@
-package team.abc.ssm.common.persistence.entity;
+package team.abc.ssm.common.persistence;
 
 import java.util.Date;
 
-public class DataEntity<T> extends BaseEntity<T> {
+public class DataEntity {
 
+    protected String id;
     protected int commonStatus;             // 0或null - 正常, 1 - 删除
     protected String commonCreateUserId;    // 创建者id
     protected Date commonCreateDate;        // 创建日期
@@ -13,6 +14,14 @@ public class DataEntity<T> extends BaseEntity<T> {
 
     public DataEntity() {
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int getCommonStatus() {
