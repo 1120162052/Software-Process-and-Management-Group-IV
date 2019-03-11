@@ -18,9 +18,9 @@
             <el-button size="small" type="danger" @click="deleteUser(table.selectionList)">
                 <span>批量删除</span>
             </el-button>
-            <el-button size="small" type="primary" @click="test()">
-                <span>测试</span>
-            </el-button>
+            <%--<el-button size="small" type="primary" @click="test()">--%>
+                <%--<span>测试</span>--%>
+            <%--</el-button>--%>
         </span>
         <span style="float: right;margin-right: 10px;">
             <el-input size="small" placeholder="请输入用户名搜索相关用户" suffix-icon="el-icon-search"
@@ -77,6 +77,9 @@
             <el-form-item label="密码" prop="password">
                 <el-input v-model="dialog.addUser.formData.password"></el-input>
             </el-form-item>
+            <el-form-item label="相关角色">
+
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button size="small" @click="dialog.addUser.visible=false">取 消</el-button>
@@ -84,20 +87,20 @@
         </div>
     </el-dialog>
     <%-- 编辑用户窗口 --%>
-    <el-dialog title="编辑用户" :visible.sync="dialog.editUser.visible" @close="resetForm('form_editUser')">
+    <el-dialog title="编辑用户" :visible.sync="dialog.editUser.visible">
         <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
                  :model="dialog.editUser.formData" :rules="dialog.editUser.rules"
-                 ref="form_editUser" v-loading="dialog.editUser.loading" status-icon >
+                 ref="form_editUser" v-loading="dialog.editUser.loading" status-icon>
             <el-form-item label="用户名" prop="username" class="is-required">
-                <el-input v-model="dialog.addUser.formData.username"></el-input>
+                <el-input v-model="dialog.editUser.formData.username" disabled></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
-                <el-input v-model="dialog.addUser.formData.password"></el-input>
+                <el-input v-model="dialog.editUser.formData.password"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button size="small" @click="dialog.addUser.visible=false">取 消</el-button>
-            <el-button size="small" type="primary" @click="addUser()">提 交</el-button>
+            <el-button size="small" @click="dialog.editUser.visible=false">取 消</el-button>
+            <el-button size="small" type="primary" @click="editUser()">提 交</el-button>
         </div>
     </el-dialog>
 </div>

@@ -68,14 +68,19 @@
                 #{commonRemarks})
     </insert>
 
+    <!-- 更新指定id用户的信息 -->
+    <update id="updateUser" parameterType="team.abc.ssm.modules.sys.entity.SysUser">
+        update sys_entity_user set password = #{password} where id = #{id}
+    </update>
+
     <!-- 删除指定id的用户 -->
-    <update id="deleteUserByIds" parameterType="string">
+    <delete id="deleteUserByIds" parameterType="string">
         delete from sys_entity_user where id in
         <foreach collection="array" index="index" item="id"
                  open="(" separator="," close=")">
             #{id}
         </foreach>
-    </update>
+    </delete>
 
     <sql id="commonColumns">
         id as id,

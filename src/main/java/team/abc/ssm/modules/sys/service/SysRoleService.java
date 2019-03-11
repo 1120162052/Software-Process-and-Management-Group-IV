@@ -25,6 +25,11 @@ public class SysRoleService {
         return result;
     }
 
+    // 获取所有角色
+    public List<SysRole> getAllRoles(){
+        return roleDao.getAllRoles();
+    }
+
     // 通过用户名判断一个用户是否是管理员
     public boolean isAdmin(String username) {
         List<SysRole> roleList = roleDao.getRolesByUsername(username);

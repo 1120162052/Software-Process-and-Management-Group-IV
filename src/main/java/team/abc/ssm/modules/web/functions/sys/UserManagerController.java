@@ -6,7 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import team.abc.ssm.common.persistence.Page;
 import team.abc.ssm.common.web.BaseController;
 import team.abc.ssm.common.web.MsgType;
+import team.abc.ssm.modules.sys.entity.SysRole;
 import team.abc.ssm.modules.sys.entity.SysUser;
+import team.abc.ssm.modules.sys.service.SysRoleService;
 import team.abc.ssm.modules.sys.service.SysUserService;
 
 import java.util.List;
@@ -17,6 +19,9 @@ public class UserManagerController extends BaseController {
 
     @Autowired
     private SysUserService userService;
+
+    @Autowired
+    private SysRoleService roleService;
 
     /**
      * 分页+模糊搜索获取用户列表
@@ -61,6 +66,29 @@ public class UserManagerController extends BaseController {
     }
 
     /**
+     * 编辑用户信息
+     *
+     * @param userId   用户id
+     * @param password 密码
+     * @return 更新成功与否
+     */
+    @RequestMapping(value = "editUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Object editUser(
+            @RequestParam("id") String userId,
+            @RequestParam("password") String password
+    ) {
+        if (password == null || password.equals("")) {
+            return retMsg.Set(MsgType.ERROR);
+        }
+        boolean success = userService.updateUser(userId, password);
+        if (success)
+            return retMsg.Set(MsgType.SUCCESS);
+        else
+            return retMsg.Set(MsgType.ERROR);
+    }
+
+    /**
      * 检测用户名是否合法
      *
      * @param username 用户名
@@ -79,6 +107,7 @@ public class UserManagerController extends BaseController {
 
     /**
      * 删除指定id的所有用户
+     *
      * @param ids id数组
      * @return 指定id的所有用户都被删除时返回成功
      */
@@ -90,5 +119,12 @@ public class UserManagerController extends BaseController {
             return retMsg.Set(MsgType.SUCCESS);
         else
             return retMsg.Set(MsgType.ERROR);
+    }
+
+    @RequestMapping(value = "getRoleList", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getRoleList() {
+        List<SysRole> roleList = roleService.getAllRoles();
+        return retMsg.Set(MsgType.SUCCESS, roleList);
     }
 }

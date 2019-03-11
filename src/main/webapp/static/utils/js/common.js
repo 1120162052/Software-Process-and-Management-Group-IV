@@ -63,13 +63,13 @@ function ajaxPostJSON(url, data, successCallback, errorCallback, async=true) {
  * @param timestamp
  */
 function formatTimestamp(timestamp) {
-    var date = new Date(timestamp);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-    var D = date.getDate() + ' ';
-    var h = date.getHours() + ':';
-    var m = date.getMinutes() + ':';
-    var s = date.getSeconds();
+    let date = new Date(timestamp); // 时间戳为10位需*1000，时间戳为13位的话不需乘1000
+    let Y = date.getFullYear() + '-';
+    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+    let D = date.getDate() + ' ';
+    let h = (date.getHours() < 10 ? '0' : '') + date.getHours() + ':';
+    let m = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes() + ':';
+    let s = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
     return Y + M + D + h + m + s;
 }
 

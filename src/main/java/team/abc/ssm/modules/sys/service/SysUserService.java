@@ -68,6 +68,20 @@ public class SysUserService {
     }
 
     /**
+     * 更新用户信息
+     * @param userId 用户id
+     * @param password 密码
+     * @return 成功与否
+     */
+    public boolean updateUser(String userId, String password) {
+        SysUser user = new SysUser();
+        user.setId(userId);
+        user.setPassword(password);
+        int count = userDao.updateUser(user);
+        return count == 1;
+    }
+
+    /**
      * 删除指定id的所有用户
      *
      * @param ids id数组

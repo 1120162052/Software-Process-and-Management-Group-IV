@@ -13,6 +13,15 @@
         where b.username = #{0}
     </select>
 
+    <!-- 获取所有角色 -->
+    <select id="getAllRoles" resultType="team.abc.ssm.modules.sys.entity.SysRole">
+        select
+        a.name as name,
+        a.code as code,
+        <include refid="commonColumnsWithA"/>
+        from sys_entity_role a
+    </select>
+
     <sql id="commonColumns">
         id as id,
         common_create_user_id as commonCreateUserId,

@@ -1,14 +1,20 @@
+/**
+ * 验证用户名
+ * @param rule
+ * @param value
+ * @param callback
+ */
 let validateUsername = function (rule, value, callback) {
     let url = '/functions/sys/userManager/validateUsername';
     let data = {
         username: value
     };
-    if (value == null || value.length == 0) {
+    if (value == null || value.length === 0) {
         callback(new Error('用户名不能为空'));
         return;
     }
     ajaxPost(url, data, function (d) {
-        if (d.code == 'error') {
+        if (d.code === 'error') {
             callback(new Error('用户名已被注册'));
         } else {
             callback();
@@ -37,8 +43,10 @@ let app = new Vue({
                 visible: false,
                 loading: false,
                 formData: {
+                    id: '',
                     username: '',
-                    password: ''
+                    password: '',
+                    roleList: []
                 },
                 rules: {
                     username: [
@@ -56,8 +64,8 @@ let app = new Vue({
                 loading: false,
                 formData: {
                     id: '', // 动态初始化为当前选择的用户的id
-                    username: '', // 不可编辑
-                    password: ''
+                    username: 'null', // 不可编辑
+                    password: 'null'
                 },
                 rules: {
                     password: [
@@ -66,6 +74,9 @@ let app = new Vue({
                     ]
                 }
             }
+        },
+        options: {
+            roleList: [], // 页面初始化时从后端获取
         }
     },
     methods: {
@@ -99,7 +110,7 @@ let app = new Vue({
                 app.table.params.total = d.data.total;
             });
         },
-        // 添加用户
+        // 添加用户信息提交
         addUser: function () {
             // 首先检测表单数据是否合法
             this.$refs['form_addUser'].validate((valid) => {
@@ -127,14 +138,37 @@ let app = new Vue({
                 }
             });
         },
-        // 重置表单
-        resetForm: function(ref){
-            this.$refs[ref].resetFields();
+        // 编辑用户信息提交
+        editUser: function () {
+            // 首先检测表单数据是否合法
+            this.$refs['form_editUser'].validate((valid) => {
+                if (valid) {
+                    let url = "/functions/sys/userManager/editUser";
+                    let data = {
+                        id: this.dialog.editUser.formData.id,
+                        password: this.dialog.editUser.formData.password
+                    };
+                    let app = this;
+                    app.dialog.editUser.loading = true;
+                    ajaxPost(url, data, function (d) {
+                        app.dialog.editUser.loading = false;
+                        app.dialog.editUser.visible = false;
+                        window.parent.app.showMessage('编辑成功！', 'success');
+                        app.getUserList(); // 编辑完成后刷新页面
+                    }, function () {
+                        app.dialog.editUser.loading = false;
+                        app.dialog.editUser.visible = false;
+                        window.parent.app.showMessage('编辑失败！', 'error');
+                    });
+                } else {
+                    console.log("表单数据不合法！");
+                    return false;
+                }
+            });
         },
-        // 测试按钮
-        test: function () {
-            this.dialog.addUser.visible = true;
-            this.$refs['form_addUser'].resetFields();
+        // 重置表单
+        resetForm: function (ref) {
+            this.$refs[ref].resetFields();
         },
         // 删除指定id的用户
         deleteUser: function (val, type = 'multi') {
@@ -176,11 +210,29 @@ let app = new Vue({
         // 打开编辑用户窗口
         openEditUser: function (userInfo) {
             this.dialog.editUser.visible = true;
-
+            this.dialog.editUser.formData = {
+                id: userInfo.id,
+                username: userInfo.username,
+                password: userInfo.password
+            }
+        },
+        // 测试按钮
+        test: function () {
+            this.dialog.addUser.visible = true;
+            this.$refs['form_addUser'].resetFields();
         },
     },
     mounted: function () {
-        this.getUserList();
+        // 获取角色列表
+        let url = '/functions/sys/userManager/getRoleList';
+        let data = null;
+        let app = this;
+        app.fullScreenLoading = true;
+        ajaxPost(url, data, function (d) {
+            app.fullScreenLoading = false;
+            app.options.roleList = d.data;
+            app.getUserList();
+        });
     }
 });
 
