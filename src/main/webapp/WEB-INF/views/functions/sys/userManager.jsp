@@ -77,9 +77,6 @@
             <el-form-item label="密码" prop="password">
                 <el-input v-model="dialog.addUser.formData.password"></el-input>
             </el-form-item>
-            <el-form-item label="相关角色">
-
-            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button size="small" @click="dialog.addUser.visible=false">取 消</el-button>
@@ -88,19 +85,53 @@
     </el-dialog>
     <%-- 编辑用户窗口 --%>
     <el-dialog title="编辑用户" :visible.sync="dialog.editUser.visible">
-        <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
+        <el-form label-position="left" label-width="80px"
+                 style="padding: 0 100px;height: 350px;overflow-y: scroll;"
                  :model="dialog.editUser.formData" :rules="dialog.editUser.rules"
-                 ref="form_editUser" v-loading="dialog.editUser.loading" status-icon>
+                 ref="form_editUser" v-loading="dialog.editUser.loading" status-icon size="medium">
             <el-form-item label="用户名" prop="username" class="is-required">
                 <el-input v-model="dialog.editUser.formData.username" disabled></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
                 <el-input v-model="dialog.editUser.formData.password"></el-input>
             </el-form-item>
+            <%-- 一个角色都没有时显示 --%>
+            <el-form-item v-if="dialog.editUser.formData.roleList.length == 0" label="相关角色">
+                <el-dropdown @command="addRoleIntoUser" placement="right" trigger="click">
+                    <el-button>添加</el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item v-for="(role2, index) in dialog.editUser.roleOptions"
+                                          :command="role2">
+                            {{ role2.name }}
+                        </el-dropdown-item>
+                        <el-dropdown-item v-if="dialog.editUser.roleOptions.length == 0">
+                            没有角色啦
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </el-form-item>
+            <el-form-item v-for="(role, index) in dialog.editUser.formData.roleList"
+                          :label="index == 0 ? '相关角色' : ''" :key="role.id">
+                <el-input v-model="role.name" :disabled="true" style="width: 195px;"></el-input>
+                <el-button @click="deleteRoleFromUser(role)">删除</el-button>
+                <el-dropdown v-if="index == dialog.editUser.formData.roleList.length - 1" @command="addRoleIntoUser"
+                             placement="right" trigger="click">
+                    <el-button>添加</el-button>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item v-for="(role2, index) in dialog.editUser.roleOptions"
+                                          :command="role2">
+                            {{ role2.name }}
+                        </el-dropdown-item>
+                        <el-dropdown-item v-if="dialog.editUser.roleOptions.length == 0" command="noRole">
+                            没有角色啦
+                        </el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button size="small" @click="dialog.editUser.visible=false">取 消</el-button>
-            <el-button size="small" type="primary" @click="editUser()">提 交</el-button>
+            <el-button size="medium" @click="dialog.editUser.visible=false">取 消</el-button>
+            <el-button size="medium" type="primary" @click="editUser()" style="margin-left: 10px;">提 交</el-button>
         </div>
     </el-dialog>
 </div>

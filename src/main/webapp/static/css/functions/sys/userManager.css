@@ -37,3 +37,23 @@
     font-size: 11px;
     padding: 6px 8px;
 }
+
+/* 取消button间的自动间隔 */
+.el-button+.el-button{
+    margin-left: 0px;
+}
+
+/* 弹窗 */
+.el-dialog{
+    width: 654px;
+    margin-top: 30px !important;
+}
+
+/* 弹窗固定上下移动 */
+.el-dialog__wrapper{
+    /*overflow-y: hidden;*/
+}
+
+.el-form{
+    padding: 0px 90px !important;
+}

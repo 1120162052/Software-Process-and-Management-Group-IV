@@ -68,20 +68,16 @@ public class UserManagerController extends BaseController {
     /**
      * 编辑用户信息
      *
-     * @param userId   用户id
-     * @param password 密码
+     * @param user 用户对象
      * @return 更新成功与否
      */
     @RequestMapping(value = "editUser", method = RequestMethod.POST)
     @ResponseBody
-    public Object editUser(
-            @RequestParam("id") String userId,
-            @RequestParam("password") String password
-    ) {
-        if (password == null || password.equals("")) {
+    public Object editUser(@RequestBody SysUser user) {
+        if (user.getPassword() == null || user.getPassword().equals("")) {
             return retMsg.Set(MsgType.ERROR);
         }
-        boolean success = userService.updateUser(userId, password);
+        boolean success = userService.updateUser(user, getCurrentUser().getId());
         if (success)
             return retMsg.Set(MsgType.SUCCESS);
         else

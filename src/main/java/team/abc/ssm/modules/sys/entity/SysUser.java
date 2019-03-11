@@ -4,11 +4,14 @@ import team.abc.ssm.common.persistence.DataEntity;
 import team.abc.ssm.common.utils.IdGen;
 
 import java.util.Date;
+import java.util.List;
 
 public class SysUser extends DataEntity {
 
     private String username;
     private String password;
+
+    private List<SysRole> roleList; // 相关角色列表
 
     // 通过username，password创建用户
     public SysUser(String username, String password, String createUserId) {
@@ -40,5 +43,13 @@ public class SysUser extends DataEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<SysRole> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<SysRole> roleList) {
+        this.roleList = roleList;
     }
 }

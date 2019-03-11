@@ -2,31 +2,50 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.abc.ssm.modules.sys.dao.SysUserDao">
 
+    <resultMap id="sysUserBean" type="team.abc.ssm.modules.sys.entity.SysUser">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="common_create_date" property="commonCreateDate"/>
+        <result column="common_create_user_id" property="commonCreateUserId"/>
+        <result column="common_modify_date" property="commonModifyDate"/>
+        <result column="common_modify_user_id" property="commonModifyUserId"/>
+        <!-- 用户相关的角色列表 -->
+        <collection property="roleList" ofType="team.abc.ssm.modules.sys.entity.SysRole">
+            <id column="roleId" property="id"/>
+            <result column="roleName" property="name"/>
+        </collection>
+    </resultMap>
+
     <!-- 通过用户名获取用户信息 -->
-    <select id="getUserByUsername" resultType="team.abc.ssm.modules.sys.entity.SysUser" parameterType="string">
-        select
-        a.username as username,
-        a.password as password,
-        <include refid="commonColumnsWithA"/>
-        from sys_entity_user a where a.username = #{0} limit 1
+    <select id="getUserByUsername" parameterType="string" resultMap="sysUserBean">
+        select a.*,
+               c.id   as roleId,
+               c.name as roleName,
+               c.code as roleCode
+        from sys_entity_user a
+                 left join sys_map_user_role b on a.id = b.user_id
+                 left join sys_entity_role c on b.role_id = c.id
+        where a.username = #{0}
+        limit 1
     </select>
 
     <!-- 获取所有用户列表 -->
-    <select id="getAllUsers" resultType="team.abc.ssm.modules.sys.entity.SysUser">
-        select
-        a.username as username,
-        a.password as password,
-        <include refid="commonColumnsWithA"/>
+    <select id="getAllUsers" resultMap="sysUserBean">
+        select a.*,
+               c.id   as roleId,
+               c.name as roleName,
+               c.code as roleCode
         from sys_entity_user a
+                 left join sys_map_user_role b on a.id = b.user_id
+                 left join sys_entity_role c on b.role_id = c.id
     </select>
 
     <!-- 分页 + 搜索(模糊匹配用户名)获取用户列表 -->
     <select id="getUsersByPage" parameterType="team.abc.ssm.common.persistence.Page"
             resultType="team.abc.ssm.modules.sys.entity.SysUser">
         select
-        a.username as username,
-        a.password as password,
-        <include refid="commonColumnsWithA"/>
+        a.id
         from sys_entity_user a
         <where>
             <if test="searchKey != '' and searchKey != null">
@@ -34,6 +53,20 @@
             </if>
         </where>
         limit #{pageStart}, #{pageSize}
+    </select>
+
+    <select id="getUsersByIds" resultMap="sysUserBean">
+        select a.*,
+               c.id   as roleId,
+               c.name as roleName,
+               c.code as roleCode
+        from sys_entity_user a
+                 left join sys_map_user_role b on a.id = b.user_id
+                 left join sys_entity_role c on b.role_id = c.id
+        where a.id in
+        <foreach collection="userList" open="(" separator="," close=")" item="user">
+            #{user.id}
+        </foreach>
     </select>
 
     <!-- 模糊搜索结果总数 -->
@@ -70,7 +103,9 @@
 
     <!-- 更新指定id用户的信息 -->
     <update id="updateUser" parameterType="team.abc.ssm.modules.sys.entity.SysUser">
-        update sys_entity_user set password = #{password} where id = #{id}
+        update sys_entity_user
+        set password = #{password}
+        where id = #{id}
     </update>
 
     <!-- 删除指定id的用户 -->
@@ -81,6 +116,24 @@
             #{id}
         </foreach>
     </delete>
+
+    <!-- 删除所有目标用户和角色的关联 -->
+    <delete id="deleteAllUserRoleMap" parameterType="team.abc.ssm.modules.sys.entity.SysUser">
+        delete
+        from sys_map_user_role
+        where user_id = #{id}
+    </delete>
+
+    <!-- 添加目标用户和响应角色的关联 -->
+    <insert id="addUserRoleMap">
+        insert into sys_map_user_role (user_id, role_id, id, common_create_user_id, common_create_date,
+        common_modify_user_id, common_modify_date, common_remarks)
+        values
+        <foreach collection="urList" separator="," item="ur">
+            (#{ur.userId}, #{ur.roleId}, #{ur.id}, #{ur.commonCreateUserId}, #{ur.commonCreateDate},
+            #{ur.commonModifyUserId}, #{ur.commonModifyDate}, #{ur.commonRemarks})
+        </foreach>
+    </insert>
 
     <sql id="commonColumns">
         id as id,

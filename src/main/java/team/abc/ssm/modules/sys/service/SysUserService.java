@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.abc.ssm.common.persistence.Page;
 import team.abc.ssm.modules.sys.dao.SysUserDao;
+import team.abc.ssm.modules.sys.entity.SysRole;
 import team.abc.ssm.modules.sys.entity.SysUser;
+import team.abc.ssm.modules.sys.entity.map.SysUserRoleMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,10 @@ public class SysUserService {
      * @return 用户列表以及total
      */
     public Page getUsersByPage(Page<SysUser> page) {
-        page.setResultList(userDao.getUsersByPage(page));
+        // 先获取分页的users
+        List<SysUser> userList = userDao.getUsersByPage(page);
+        // 再查询具体内容
+        page.setResultList(userDao.getUsersByIds(userList));
         page.setTotal(userDao.getSearchTotal(page.getSearchKey()));
         return page;
     }
@@ -68,17 +73,39 @@ public class SysUserService {
     }
 
     /**
-     * 更新用户信息
-     * @param userId 用户id
-     * @param password 密码
+     * @param user   用户对象
+     * @param userId 创建者id（当前登陆用户）
      * @return 成功与否
      */
-    public boolean updateUser(String userId, String password) {
-        SysUser user = new SysUser();
-        user.setId(userId);
-        user.setPassword(password);
+    public boolean updateUser(SysUser user, String userId) {
+        // 更新user的内部信息
         int count = userDao.updateUser(user);
-        return count == 1;
+        boolean success1 = count == 1;
+        // 更新user和role的关联信息
+        boolean success2 = updateUserRoleMap(user, userId);
+        return success1 && success2;
+    }
+
+    /**
+     * 采用先删所有后加的更新方式
+     *
+     * @param user         需要和角色关联的用户（包含了需要关联的角色列表）
+     * @param createUserId 创建者id（当前登陆用户）
+     * @return 成功与否
+     */
+    private boolean updateUserRoleMap(SysUser user, String createUserId) {
+        // 删除所有目标用户和角色的关联
+        userDao.deleteAllUserRoleMap(user);
+        // 角色列表为空直接返回成功
+        if (user.getRoleList().size() == 0) return true;
+        // 添加关联
+        List<SysUserRoleMap> urList = new ArrayList<>();
+        for (SysRole role : user.getRoleList()) {
+            SysUserRoleMap ur = new SysUserRoleMap(user.getId(), role.getId(), createUserId);
+            urList.add(ur);
+        }
+        int count = userDao.addUserRoleMap(urList);
+        return count == urList.size();
     }
 
     /**

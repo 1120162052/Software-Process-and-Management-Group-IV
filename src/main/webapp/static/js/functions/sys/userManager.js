@@ -65,14 +65,16 @@ let app = new Vue({
                 formData: {
                     id: '', // 动态初始化为当前选择的用户的id
                     username: 'null', // 不可编辑
-                    password: 'null'
+                    password: 'null',
+                    roleList: []
                 },
                 rules: {
                     password: [
                         {required: true, message: '密码不能为空', trigger: 'blur'},
                         {required: true, message: '密码不能为空', trigger: 'change'},
                     ]
-                }
+                },
+                roleOptions: [],
             }
         },
         options: {
@@ -144,13 +146,10 @@ let app = new Vue({
             this.$refs['form_editUser'].validate((valid) => {
                 if (valid) {
                     let url = "/functions/sys/userManager/editUser";
-                    let data = {
-                        id: this.dialog.editUser.formData.id,
-                        password: this.dialog.editUser.formData.password
-                    };
+                    let data = this.dialog.editUser.formData;
                     let app = this;
                     app.dialog.editUser.loading = true;
-                    ajaxPost(url, data, function (d) {
+                    ajaxPostJSON(url, data, function (d) {
                         app.dialog.editUser.loading = false;
                         app.dialog.editUser.visible = false;
                         window.parent.app.showMessage('编辑成功！', 'success');
@@ -210,17 +209,44 @@ let app = new Vue({
         // 打开编辑用户窗口
         openEditUser: function (userInfo) {
             this.dialog.editUser.visible = true;
-            this.dialog.editUser.formData = {
-                id: userInfo.id,
-                username: userInfo.username,
-                password: userInfo.password
+            this.dialog.editUser.formData = copy(userInfo);
+            let roleOptions = [];
+            let roleList = userInfo.roleList;
+            // 选择用户没有的角色添加到选项中
+            for (let i = 0; i < this.options.roleList.length; i++) {
+                let exist = false;
+                for (let j = 0; j < roleList.length; j++) {
+                    if (this.options.roleList[i].name === roleList[j].name) {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist) {
+                    roleOptions.push(this.options.roleList[i]);
+                }
             }
+            this.dialog.editUser.roleOptions = roleOptions;
         },
         // 测试按钮
         test: function () {
             this.dialog.addUser.visible = true;
             this.$refs['form_addUser'].resetFields();
         },
+        // 删除用户的角色
+        deleteRoleFromUser: function (role) {
+            // 将删除的角色添加到选项中
+            this.dialog.editUser.roleOptions.push(role);
+            // 删除用户的角色
+            this.dialog.editUser.formData.roleList = this.dialog.editUser.formData.roleList.filter(item => item.id !== role.id);
+        },
+        // 添加用户的角色
+        addRoleIntoUser: function (role) {
+            if (role === 'noRole') return;
+            // 将添加的角色从选项中删除
+            this.dialog.editUser.roleOptions = this.dialog.editUser.roleOptions.filter(item => item.id !== role.id);
+            // 添加用户的角色
+            this.dialog.editUser.formData.roleList.push(role);
+        }
     },
     mounted: function () {
         // 获取角色列表
