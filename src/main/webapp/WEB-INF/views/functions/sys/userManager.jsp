@@ -46,7 +46,7 @@
         </el-table-column>
         <el-table-column label="操作" width="130" header-align="center" align="center">
             <template slot-scope="scope">
-                <el-button type="warning" size="mini" style="position:relative;bottom: 1px;">
+                <el-button type="warning" size="mini" style="position:relative;bottom: 1px;" @click="openEditUser(scope.row)">
                     <span>编辑</span>
                 </el-button>
                 <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;" @click="deleteUser(scope.row.id, 'single')">
@@ -66,13 +66,30 @@
                    :total="table.params.total"
                    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <%-- 添加用户弹出框 --%>
-    <el-dialog title="添加用户" :visible.sync="dialog.addUser.visible" @close="resetAddUserForm()">
+    <%-- 添加用户窗口 --%>
+    <el-dialog title="添加用户" :visible.sync="dialog.addUser.visible" @close="resetForm('form_addUser')">
         <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
                  :model="dialog.addUser.formData" :rules="dialog.addUser.rules"
                  ref="form_addUser" v-loading="dialog.addUser.loading" status-icon >
             <el-form-item label="用户名" prop="username" class="is-required">
-                <el-input v-model="dialog.addUser.formData.username" id="input_username"></el-input>
+                <el-input v-model="dialog.addUser.formData.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码" prop="password">
+                <el-input v-model="dialog.addUser.formData.password"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button size="small" @click="dialog.addUser.visible=false">取 消</el-button>
+            <el-button size="small" type="primary" @click="addUser()">提 交</el-button>
+        </div>
+    </el-dialog>
+    <%-- 编辑用户窗口 --%>
+    <el-dialog title="编辑用户" :visible.sync="dialog.editUser.visible" @close="resetForm('form_editUser')">
+        <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
+                 :model="dialog.editUser.formData" :rules="dialog.editUser.rules"
+                 ref="form_editUser" v-loading="dialog.editUser.loading" status-icon >
+            <el-form-item label="用户名" prop="username" class="is-required">
+                <el-input v-model="dialog.addUser.formData.username"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="password">
                 <el-input v-model="dialog.addUser.formData.password"></el-input>

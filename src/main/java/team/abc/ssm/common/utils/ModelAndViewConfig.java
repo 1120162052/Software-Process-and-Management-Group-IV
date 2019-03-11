@@ -2,6 +2,9 @@ package team.abc.ssm.common.utils;
 
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * 暂时没有使用
+ */
 public class ModelAndViewConfig {
 
     public static ModelAndView setDefaultJSCSSLocation(String view){

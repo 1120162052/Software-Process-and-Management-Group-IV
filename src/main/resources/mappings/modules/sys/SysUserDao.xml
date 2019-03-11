@@ -50,30 +50,27 @@
 
     <!-- 添加一名新用户 -->
     <insert id="addUser" parameterType="team.abc.ssm.modules.sys.entity.SysUser">
-        insert into sys_entity_user (
-            username,
-            password,
-            id,
-            common_create_user_id,
-            common_create_date,
-            common_modify_user_id,
-            common_modify_date,
-            common_remarks
-        ) values (
-            #{username},
-            #{password},
-            #{id},
-            #{commonCreateUserId},
-            #{commonCreateDate},
-            #{commonModifyUserId},
-            #{commonModifyDate},
-            #{commonRemarks}
-        )
+        insert into sys_entity_user (username,
+                                     password,
+                                     id,
+                                     common_create_user_id,
+                                     common_create_date,
+                                     common_modify_user_id,
+                                     common_modify_date,
+                                     common_remarks)
+        values (#{username},
+                #{password},
+                #{id},
+                #{commonCreateUserId},
+                #{commonCreateDate},
+                #{commonModifyUserId},
+                #{commonModifyDate},
+                #{commonRemarks})
     </insert>
 
     <!-- 删除指定id的用户 -->
     <update id="deleteUserByIds" parameterType="string">
-        update sys_entity_user set common_status = 1 where id in
+        delete from sys_entity_user where id in
         <foreach collection="array" index="index" item="id"
                  open="(" separator="," close=")">
             #{id}

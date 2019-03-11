@@ -90,7 +90,7 @@
 }
 
 .el-tabs__item, .el-tabs--card > .el-tabs__header .el-tabs__item:hover {
-    color: gray;
+    /*color: gray;*/
     padding: 0 17px 0 20px !important;
 }
 

@@ -16,7 +16,6 @@ create table sys_entity_user(
   password varchar(100),
 
   id varchar(100) primary key,
-  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
@@ -30,7 +29,6 @@ create table sys_entity_role(
   code varchar(100) comment '角色代码，作为角色的标识符',
 
   id varchar(100) primary key,
-  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
@@ -38,7 +36,7 @@ create table sys_entity_role(
   common_remarks varchar(100)         comment '备注'
 );
 
--- 权限（实际上就是功能）
+-- 功能
 create table sys_entity_function(
   name varchar(100),
   code varchar(100)       comment '功能代码，作为功能的标识符',
@@ -48,7 +46,6 @@ create table sys_entity_function(
   index_ int              comment '排序，功能栏上自上而下，从0开始递增(相当于数组中的序号)',
 
   id varchar(100) primary key,
-  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
@@ -62,7 +59,6 @@ create table sys_map_user_role(
   role_id varchar(100),
 
   id varchar(100) primary key,
-  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
@@ -76,13 +72,29 @@ create table sys_map_role_function(
   function_id varchar(100),
 
   id varchar(100) primary key,
-  common_status int                   comment '0或null - 正常，1 - 删除',
   common_create_user_id varchar(100)  comment '创建者id',
   common_create_date datetime         comment '创建日期',
   common_modify_user_id varchar(100)  comment '最后修改者id',
   common_modify_date datetime         comment '最后修改日期',
   common_remarks varchar(100)         comment '备注'
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -- 用户
 insert into sys_entity_user (id, username, password, common_create_date) values ('u1', 'admin', 'admin', now());

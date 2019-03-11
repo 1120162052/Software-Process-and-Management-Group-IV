@@ -1,10 +1,13 @@
 package team.abc.ssm.common.web;
 
+/**
+ * 后端返回前端的标准信息格式
+ */
 public class AjaxMessage {
 
-    private String code;
-    private Object data;
-    private String message;
+    private String code; // 状态码，从枚举MsgType转换而来，全小写
+    private Object data; // 数据
+    private String message; // 提示信息
 
     public AjaxMessage Set(MsgType msgType, Object data, String message){
         this.code = msgType.toString().toLowerCase();

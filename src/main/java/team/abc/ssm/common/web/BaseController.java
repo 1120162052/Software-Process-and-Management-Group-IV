@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import team.abc.ssm.modules.sys.entity.SysUser;
 import team.abc.ssm.modules.sys.service.SysUserService;
 
+/**
+ * 页面控制器的基类
+ */
 public abstract class BaseController {
 
     protected AjaxMessage retMsg = new AjaxMessage();

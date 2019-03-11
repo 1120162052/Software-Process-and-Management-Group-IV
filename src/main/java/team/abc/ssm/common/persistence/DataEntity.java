@@ -2,6 +2,10 @@ package team.abc.ssm.common.persistence;
 
 import java.util.Date;
 
+/**
+ * 所有表格的对应实体类的基类
+ * 提供了基础的通用属性
+ */
 public class DataEntity {
 
     protected String id;

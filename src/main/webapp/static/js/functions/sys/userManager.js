@@ -10,8 +10,7 @@ let validateUsername = function (rule, value, callback) {
     ajaxPost(url, data, function (d) {
         if (d.code == 'error') {
             callback(new Error('用户名已被注册'));
-        }
-        else {
+        } else {
             callback();
         }
     })
@@ -51,6 +50,21 @@ let app = new Vue({
                         {required: true, message: '密码不能为空', trigger: 'change'},
                     ]
                 },
+            },
+            editUser: {
+                visible: false,
+                loading: false,
+                formData: {
+                    id: '', // 动态初始化为当前选择的用户的id
+                    username: '', // 不可编辑
+                    password: ''
+                },
+                rules: {
+                    password: [
+                        {required: true, message: '密码不能为空', trigger: 'blur'},
+                        {required: true, message: '密码不能为空', trigger: 'change'},
+                    ]
+                }
             }
         }
     },
@@ -113,9 +127,9 @@ let app = new Vue({
                 }
             });
         },
-        // 重置添加用户表单
-        resetAddUserForm: function () {
-            this.$refs['form_addUser'].resetFields();
+        // 重置表单
+        resetForm: function(ref){
+            this.$refs[ref].resetFields();
         },
         // 测试按钮
         test: function () {
@@ -138,8 +152,7 @@ let app = new Vue({
                 if (type === 'single') {
                     let id = val;
                     idList.push(id);
-                }
-                else {
+                } else {
                     let selectionList = val;
                     for (let i = 0; i < selectionList.length; i++) {
                         idList.push(selectionList[i].id);
@@ -159,7 +172,12 @@ let app = new Vue({
             }).catch(() => {
                 window.parent.app.showMessage('已取消删除', 'warning');
             });
-        }
+        },
+        // 打开编辑用户窗口
+        openEditUser: function (userInfo) {
+            this.dialog.editUser.visible = true;
+
+        },
     },
     mounted: function () {
         this.getUserList();
