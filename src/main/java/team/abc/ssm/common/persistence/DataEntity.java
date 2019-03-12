@@ -9,7 +9,7 @@ import java.util.Date;
  * 所有表格的对应实体类的基类
  * 提供了基础的通用属性
  */
-public class DataEntity {
+public class DataEntity<T> {
 
     protected String id;
     protected String commonRemarks;         // 备注
@@ -19,6 +19,8 @@ public class DataEntity {
     protected Date commonCreateDate;        // 创建日期
     protected Date commonModifyDate;        // 最后修改日期
 
+    protected Page<T> page; // 分页对象
+
     public DataEntity() {
 
     }
@@ -26,7 +28,7 @@ public class DataEntity {
     /**
      * 插入之前手动调用
      */
-    public void preInsert(){
+    public void preInsert() {
         id = IdGen.uuid();
         commonDelFlag = "0";
         commonCreateUserId = UserUtils.getCurrentUser().getId();
@@ -38,7 +40,7 @@ public class DataEntity {
     /**
      * 更新之前手动调用
      */
-    public void preUpdate(){
+    public void preUpdate() {
         commonModifyUserId = commonCreateUserId;
         commonModifyDate = commonCreateDate;
     }
@@ -97,5 +99,13 @@ public class DataEntity {
 
     public void setCommonDelFlag(String commonDelFlag) {
         this.commonDelFlag = commonDelFlag;
+    }
+
+    public Page<T> getPage() {
+        return page;
+    }
+
+    public void setPage(Page<T> page) {
+        this.page = page;
     }
 }

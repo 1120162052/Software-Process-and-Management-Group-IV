@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="team.abc.ssm.modules">
-    <sql id="commonColumns">
-        id as id,
-        common_create_user_id as commonCreateUserId,
-        common_create_date as commonCreateDate,
-        common_modify_user_id as commonModifyUserId,
-        common_modify_date as commonModifyDate,
-        common_remarks as commonRemarks
-    </sql>
+<mapper namespace="team.abc.ssm.modules.sys.dao.SysUserDao">
 
-    <sql id="commonColumnsWithA">
-        a.id as id,
-        a.common_create_user_id as commonCreateUserId,
-        a.common_create_date as commonCreateDate,
-        a.common_modify_user_id as commonModifyUserId,
-        a.common_modify_date as commonModifyDate,
-        a.common_remarks as commonRemarks
-    </sql>
 </mapper>

@@ -7,11 +7,12 @@ import java.util.List;
  */
 public class Page<T> {
     private int pageIndex;      // 当前页码
-    private int pageStart;      // 开始于第几条记录（sql查询中用到）
     private int pageSize;       // 单页容量
+    private int pageStart;      // 开始于第几条记录（sql查询中用到）（没有设置值的函数）
     private String searchKey;   // 搜索关键词（模糊查询）
     private int total;          // 查询结果的总条数
     private List<T> resultList; // 结果列表
+    private String orderBy;     // 排序列名
 
     public int getPageIndex() {
         return pageIndex;
@@ -55,5 +56,13 @@ public class Page<T> {
 
     public void setResultList(List<T> resultList) {
         this.resultList = resultList;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
     }
 }

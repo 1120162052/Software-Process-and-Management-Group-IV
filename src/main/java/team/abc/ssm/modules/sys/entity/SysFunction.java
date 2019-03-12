@@ -2,7 +2,7 @@ package team.abc.ssm.modules.sys.entity;
 
 import team.abc.ssm.common.persistence.DataEntity;
 
-public class SysFunction extends DataEntity {
+public class SysFunction extends DataEntity<SysFunction> {
 
     private String name;
     private String code;

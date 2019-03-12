@@ -6,7 +6,7 @@ import team.abc.ssm.common.persistence.Page;
 import team.abc.ssm.modules.sys.dao.SysUserDao;
 import team.abc.ssm.modules.sys.entity.SysRole;
 import team.abc.ssm.modules.sys.entity.SysUser;
-import team.abc.ssm.modules.sys.entity.map.SysUserRoleMap;
+import team.abc.ssm.modules.sys.entity.map.SysUserRole;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,14 +22,14 @@ public class SysUserService {
      * @return 对应用户对象
      */
     public SysUser getUserByUsername(String username) {
-        return userDao.getUserByUsername(username);
+        return userDao.selectByUsername(username);
     }
 
     /**
      * @return 获取所有用户
      */
     public List<SysUser> getAllUsers() {
-        return userDao.getAllUsers();
+        return userDao.selectAll();
     }
 
     /**
@@ -40,10 +40,10 @@ public class SysUserService {
      */
     public Page getUsersByPage(Page<SysUser> page) {
         // 先获取分页的users
-        List<SysUser> userList = userDao.getUsersByPage(page);
+        List<SysUser> userList = userDao.selectByPage(page);
         // 再查询具体内容
-        page.setResultList(userDao.getUsersByIds(userList));
-        page.setTotal(userDao.getSearchTotal(page.getSearchKey()));
+        page.setResultList(userDao.selectByIds(userList));
+        page.setTotal(userDao.selectSearchCount(page.getSearchKey()));
         return page;
     }
 
@@ -54,58 +54,33 @@ public class SysUserService {
      * @return 是否
      */
     public boolean isUsernameExist(String username) {
-        SysUser user = userDao.getUserByUsername(username);
+        SysUser user = userDao.selectByUsername(username);
         return user != null;
     }
 
     /**
      * 创建用户
      *
-     * @param username     用户名
-     * @param password     密码
-     * @param createUserId 创建者id
+     * @param username 用户名
+     * @param password 密码
      * @return 成功与否
      */
-    public boolean addUser(String username, String password, String createUserId) {
-        SysUser user = new SysUser(username, password, createUserId);
-        int count = userDao.addUser(user);
+    public boolean addUser(String username, String password) {
+        SysUser user = new SysUser();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.preInsert();
+        int count = userDao.insert(user);
         return count == 1;
     }
 
     /**
-     * @param user   用户对象
-     * @param userId 创建者id（当前登陆用户）
+     * @param user 用户对象
      * @return 成功与否
      */
-    public boolean updateUser(SysUser user, String userId) {
-        // 更新user的内部信息
-        int count = userDao.updateUser(user);
-        boolean success1 = count == 1;
-        // 更新user和role的关联信息
-        boolean success2 = updateUserRoleMap(user, userId);
-        return success1 && success2;
-    }
-
-    /**
-     * 采用先删所有后加的更新方式
-     *
-     * @param user         需要和角色关联的用户（包含了需要关联的角色列表）
-     * @param createUserId 创建者id（当前登陆用户）
-     * @return 成功与否
-     */
-    private boolean updateUserRoleMap(SysUser user, String createUserId) {
-        // 删除所有目标用户和角色的关联
-        userDao.deleteAllUserRoleMap(user);
-        // 角色列表为空直接返回成功
-        if (user.getRoleList().size() == 0) return true;
-        // 添加关联
-        List<SysUserRoleMap> urList = new ArrayList<>();
-        for (SysRole role : user.getRoleList()) {
-            SysUserRoleMap ur = new SysUserRoleMap(user.getId(), role.getId(), createUserId);
-            urList.add(ur);
-        }
-        int count = userDao.addUserRoleMap(urList);
-        return count == urList.size();
+    public boolean update(SysUser user) {
+        int count = userDao.update(user);
+        return count == 1;
     }
 
     /**
@@ -115,7 +90,7 @@ public class SysUserService {
      * @return 指定id的所有用户都被删除时返回true
      */
     public boolean deleteUserByIds(String[] ids) {
-        int count = userDao.deleteUserByIds(ids);
+        int count = userDao.deleteByIds(ids);
         return count == ids.length;
     }
 }

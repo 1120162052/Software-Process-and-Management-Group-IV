@@ -12,6 +12,7 @@ import team.abc.ssm.modules.sys.entity.SysRole;
 import team.abc.ssm.modules.sys.entity.SysUser;
 import team.abc.ssm.modules.sys.service.SysRoleService;
 import team.abc.ssm.modules.sys.service.SysUserService;
+import team.abc.ssm.modules.sys.service.map.SysUserRoleService;
 
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class UserManagerController extends BaseController {
 
     @Autowired
     private SysRoleService roleService;
+
+    @Autowired
+    private SysUserRoleService userRoleService;
 
     /**
      * 分页+模糊搜索获取用户列表
@@ -60,7 +64,7 @@ public class UserManagerController extends BaseController {
         if (userService.isUsernameExist(username)) {
             return retMsg.Set(MsgType.ERROR);
         }
-        boolean success = userService.addUser(username, password, getCurrentUser().getId());
+        boolean success = userService.addUser(username, password);
         if (success)
             return retMsg.Set(MsgType.SUCCESS);
         else
@@ -79,8 +83,9 @@ public class UserManagerController extends BaseController {
         if (user.getPassword() == null || user.getPassword().equals("")) {
             return retMsg.Set(MsgType.ERROR);
         }
-        boolean success = userService.updateUser(user, getCurrentUser().getId());
-        if (success)
+        boolean success1 = userService.update(user);
+        boolean success2 = userRoleService.update(user, user.getRoleList());
+        if (success1 && success2)
             return retMsg.Set(MsgType.SUCCESS);
         else
             return retMsg.Set(MsgType.ERROR);
@@ -128,8 +133,7 @@ public class UserManagerController extends BaseController {
 
     @RequestMapping(value = "test", method = RequestMethod.POST)
     @ResponseBody
-    public Object test(){
-        List<SysUser> users = SpringContextHolder.getBean(SysUserDao.class).getAllUsers();
+    public Object test() {
         return retMsg.Set(MsgType.SUCCESS);
     }
 }

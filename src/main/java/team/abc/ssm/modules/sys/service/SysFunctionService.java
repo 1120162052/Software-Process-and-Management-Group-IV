@@ -53,9 +53,9 @@ public class SysFunctionService {
             }
         }
         // 重新排序
-        categoryList.sort((Category c1, Category c2) -> (c1.index - c2.index));
+        categoryList.sort(Comparator.comparingInt((Category c) -> c.index));
         for (Category category : categoryList) {
-            category.functionList.sort((Function f1, Function f2) -> (f1.index - f2.index));
+            category.functionList.sort(Comparator.comparingInt((Function f) -> f.index));
         }
         return categoryList;
     }
