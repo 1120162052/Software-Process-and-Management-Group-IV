@@ -11,6 +11,9 @@ public interface SysUserDao {
     // 通过用户名获取用户信息
     SysUser selectByUsername(String username);
 
+    // 模糊搜索结果总数
+    int selectSearchCount(@Param("searchKey") String searchKey);
+
     // 获取所有用户列表
     List<SysUser> selectAll();
 
@@ -19,9 +22,6 @@ public interface SysUserDao {
 
     // 根据ids获取用户列表（有角色信息）
     List<SysUser> selectByIds(@Param("userList") List<SysUser> userList);
-
-    // 模糊搜索结果总数
-    int selectSearchCount(@Param("searchKey") String searchKey);
 
     // 添加一名新用户
     int insert(SysUser user);

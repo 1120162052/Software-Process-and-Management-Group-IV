@@ -27,7 +27,7 @@ public class FrameController extends BaseController {
         // 获取当前用户信息
         SysUser user = getCurrentUser();
         // 获取用户拥有的权限信息
-        List<SysFunctionService.Category> categoryList = functionService.getFunctionTree(user.getUsername());
+        List<SysFunctionService.Category> categoryList = functionService.getFunctionTree(user.getUsername(), false);
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         data.put("categoryList", categoryList);

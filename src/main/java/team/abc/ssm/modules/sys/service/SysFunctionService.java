@@ -34,10 +34,19 @@ public class SysFunctionService {
             return functionDao.getFunctionsByUsername(username);
     }
 
-    // 通过用户名获取该用户的功能，并构建成一棵二级的菜单树
-    public List<Category> getFunctionTree(String username) {
+    /**
+     * 通过用户名获取该用户的功能，并构建成一棵二级的菜单树
+     * @param username 用户名
+     * @param all 是否获取全部功能（功能管理时如此）
+     * @return 二级的菜单树
+     */
+    public List<Category> getFunctionTree(String username, boolean all) {
         List<Category> categoryList = new ArrayList<>();
-        List<SysFunction> functionList = getFunctionsByUsername(username);
+        List<SysFunction> functionList;
+        if (all)
+            functionList = functionDao.getAllFunctions();
+        else
+            functionList = getFunctionsByUsername(username);
         // list中添加category
         for (SysFunction function : functionList) {
             if (function.getType() == 0) {
@@ -64,6 +73,7 @@ public class SysFunctionService {
         private String id;
         private String name;
         private int index;
+        private String code;
 
         private List<Function> functionList;
 
@@ -71,6 +81,7 @@ public class SysFunctionService {
             id = function.getId();
             name = function.getName();
             index = function.getIndex_();
+            code = function.getCode();
             functionList = new ArrayList<>();
         }
 
@@ -105,6 +116,14 @@ public class SysFunctionService {
         public void setFunctionList(List<Function> functionList) {
             this.functionList = functionList;
         }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
     }
 
     public class Function {
@@ -113,6 +132,7 @@ public class SysFunctionService {
         private String url;
         private String parentId;
         private int index;
+        private String code;
 
         public Function(SysFunction function) {
             id = function.getId();
@@ -120,6 +140,7 @@ public class SysFunctionService {
             url = function.getUrl();
             parentId = function.getParentId();
             index = function.getIndex_();
+            code = function.getCode();
         }
 
         public String getId() {
@@ -160,6 +181,14 @@ public class SysFunctionService {
 
         public void setIndex(int index) {
             this.index = index;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
         }
     }
 }

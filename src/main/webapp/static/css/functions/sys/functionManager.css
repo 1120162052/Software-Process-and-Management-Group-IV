@@ -1,0 +1,17 @@
+.card1 .el-card__header{
+    background: #007cc440;
+}
+
+.card2 .el-card__header{
+    background: #faf3e8;
+}
+
+.el-card__body{
+    height: 100%;
+}
+
+.button-group {
+    position: relative;
+    bottom: 9px;
+    float: right;
+}
