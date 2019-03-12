@@ -4,8 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.abc.ssm.common.persistence.Page;
+import team.abc.ssm.common.utils.SpringContextHolder;
 import team.abc.ssm.common.web.BaseController;
 import team.abc.ssm.common.web.MsgType;
+import team.abc.ssm.modules.sys.dao.SysUserDao;
 import team.abc.ssm.modules.sys.entity.SysRole;
 import team.abc.ssm.modules.sys.entity.SysUser;
 import team.abc.ssm.modules.sys.service.SysRoleService;
@@ -122,5 +124,12 @@ public class UserManagerController extends BaseController {
     public Object getRoleList() {
         List<SysRole> roleList = roleService.getAllRoles();
         return retMsg.Set(MsgType.SUCCESS, roleList);
+    }
+
+    @RequestMapping(value = "test", method = RequestMethod.POST)
+    @ResponseBody
+    public Object test(){
+        List<SysUser> users = SpringContextHolder.getBean(SysUserDao.class).getAllUsers();
+        return retMsg.Set(MsgType.SUCCESS);
     }
 }

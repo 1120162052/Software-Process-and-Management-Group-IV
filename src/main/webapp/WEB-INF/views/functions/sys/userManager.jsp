@@ -15,12 +15,12 @@
             <el-button size="small" type="success" @click="dialog.addUser.visible = true">
                 <span>添加用户</span>
             </el-button>
-            <el-button size="small" type="danger" @click="deleteUser(table.selectionList)">
+            <el-button size="small" type="danger" @click="deleteUser(table.selectionList)" style="margin-left: 10px;">
                 <span>批量删除</span>
             </el-button>
-            <%--<el-button size="small" type="primary" @click="test()">--%>
-                <%--<span>测试</span>--%>
-            <%--</el-button>--%>
+            <el-button size="small" type="primary" @click="test()">
+                <span>测试</span>
+            </el-button>
         </span>
         <span style="float: right;margin-right: 10px;">
             <el-input size="small" placeholder="请输入用户名搜索相关用户" suffix-icon="el-icon-search"
@@ -79,8 +79,8 @@
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button size="small" @click="dialog.addUser.visible=false">取 消</el-button>
-            <el-button size="small" type="primary" @click="addUser()">提 交</el-button>
+            <el-button size="medium" @click="dialog.addUser.visible=false">取 消</el-button>
+            <el-button size="medium" type="primary" @click="addUser()" style="margin-left: 10px;">提 交</el-button>
         </div>
     </el-dialog>
     <%-- 编辑用户窗口 --%>

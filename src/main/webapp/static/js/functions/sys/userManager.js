@@ -227,11 +227,6 @@ let app = new Vue({
             }
             this.dialog.editUser.roleOptions = roleOptions;
         },
-        // 测试按钮
-        test: function () {
-            this.dialog.addUser.visible = true;
-            this.$refs['form_addUser'].resetFields();
-        },
         // 删除用户的角色
         deleteRoleFromUser: function (role) {
             // 将删除的角色添加到选项中
@@ -246,7 +241,15 @@ let app = new Vue({
             this.dialog.editUser.roleOptions = this.dialog.editUser.roleOptions.filter(item => item.id !== role.id);
             // 添加用户的角色
             this.dialog.editUser.formData.roleList.push(role);
-        }
+        },
+        // 测试按钮
+        test: function () {
+            let url = '/functions/sys/userManager/test';
+            let data = null;
+            ajaxPost(url, data, function (d) {
+
+            });
+        },
     },
     mounted: function () {
         // 获取角色列表

@@ -47,6 +47,12 @@ public class ViewController extends BaseController {
     public String sys_role() {
         return "functions/sys/roleManager";
     }
+
+    @RequestMapping(value = "functions/sys/functionManager", method = RequestMethod.GET)
+    @RequiresPermissions("sys:function")
+    public String sys_function() {
+        return "functions/sys/functionManager";
+    }
     /** 系统功能 **/
 
     /**
