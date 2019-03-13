@@ -2,6 +2,9 @@ package team.abc.ssm.modules.sys.entity;
 
 import team.abc.ssm.common.persistence.DataEntity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SysFunction extends DataEntity<SysFunction> {
 
     private String name;
@@ -9,7 +12,11 @@ public class SysFunction extends DataEntity<SysFunction> {
     private int type;
     private String parentId;
     private String url;
-    private int index_;
+    private int index;
+    private boolean enable;
+    private String icon;
+
+    private List<SysFunction> functionList = new ArrayList<>(); // 分类具有的子功能列表
 
     public String getName() {
         return name;
@@ -51,11 +58,35 @@ public class SysFunction extends DataEntity<SysFunction> {
         this.parentId = parentId;
     }
 
-    public int getIndex_() {
-        return index_;
+    public List<SysFunction> getFunctionList() {
+        return functionList;
     }
 
-    public void setIndex_(int index_) {
-        this.index_ = index_;
+    public void setFunctionList(List<SysFunction> functionList) {
+        this.functionList = functionList;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }

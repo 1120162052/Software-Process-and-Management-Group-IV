@@ -2,71 +2,188 @@ let app = new Vue({
     el: '#app',
     data: {
         tree: [], // 功能树
+        treeProp: {
+            label: 'name',
+            children: 'functionList'
+        },
+        treeLoading: false,
         form: {
             visible: false,
             type: 'function',
             type_cn: '功能',
-            data: {
-                name: '',
-                code: '',
-                url: '',
-                enable: false,
-                icon: ''
-            }
+            data: {},
+            loading: false
         }
     },
     methods: {
-        // 点击节点触发
-        handleNodeClick(node) {
-            this.form.visible = true;
-            if (node.type === 'function') {
-                this.form.type = 'function';
-                this.form.type_cn = '功能';
-                this.form.data = copy(node);
-            } else if (node.type === 'category') {
-                this.form.type = 'category';
-                this.form.type_cn = '分类';
-                this.form.data = copy(node);
-            }
+        // 上传表单（保存对分类或功能的修改）
+        submitForm: function () {
+            let url = '/functions/sys/functionManager/update';
+            let data = copy(this.form.data);
+            let app = this;
+            app.form.loading = true;
+            ajaxPostJSON(url, data, function (d) {
+                window.parent.app.showMessage('更新成功!', 'success');
+                app.form.visible = false;
+                app.treeLoading = false;
+                app.form.loading = false;
+                if (app.form.type === 'category') {
+                    app.tree[data.index] = data;
+                    app.tree.push({});
+                    app.tree.pop();
+                } else if (app.form.type === 'function') {
+                    for (let i = 0; i < app.tree.length; i++) {
+                        if (app.tree[i].id === data.parentId) {
+                            app.tree[i].functionList[data.index] = data;
+                            app.tree[i].functionList.push({});
+                            app.tree[i].functionList.pop();
+                            break;
+                        }
+                    }
+                }
+            });
         },
-        handleDragStart(node, ev) {
+        // 打开编辑表单
+        openEditForm: function (node) {
+            let app = this;
+            app.form.visible = true;
+            app.form.loading = true;
+            app.treeLoading = true;
+            setTimeout(function () {
+                app.form.loading = false;
+                if (node.type === 1) {
+                    app.form.type = 'function';
+                    app.form.type_cn = '功能';
+                } else if (node.type === 0) {
+                    app.form.type = 'category';
+                    app.form.type_cn = '分类';
+                }
+                app.form.data = copy(node);
+            }, 0);
+        },
+        // 添加分类（添加至末尾）
+        addCategory: function () {
+            let url = '/functions/sys/functionManager/addNewCategory';
+            let data = {
+                index: this.tree.length
+            };
+            let app = this;
+            app.treeLoading = true;
+            ajaxPostJSON(url, data, function (d) {
+                window.parent.app.showMessage('添加成功', 'success');
+                let category = copy(d.data);
+                category.functionList = [];
+                app.tree.push(category);
+                app.treeLoading = false;
+            })
+        },
+        // 添加功能到某个分类下
+        addFunction: function (category) {
+            let url = '/functions/sys/functionManager/addNewFunction';
+            let data = copy(category);
+            let app = this;
+            app.treeLoading = true;
+            console.log(category);
+            ajaxPostJSON(url, data, function (d) {
+                let newFunction = copy(d.data);
+                window.parent.app.showMessage('添加成功', 'success');
+                app.tree[data.index].functionList.push(newFunction);
+                app.treeLoading = false;
+            })
+        },
+        // 删除分类或功能
+        deleteFunctionOrCategory: function (_node, node) {
+            window.parent.app.$confirm('确认删除: ' + node.name, '警告', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                let url = '/functions/sys/functionManager/deleteCategoryOrFunction';
+                let data = [];
+                if (node.type === 0) {
+                    for (let i = node.index; i < this.tree.length; i++) {
+                        let category = copy(this.tree[i]);
+                        category.index -= 1;
+                        data.push(category);
+                    }
+                    let app = this;
+                    app.treeLoading = true;
+                    ajaxPostJSON(url, data, function (d) {
+                        app.treeLoading = false;
+                        if (d.code === 'success') {
+                            window.parent.app.showMessage('删除成功', 'success');
+                            app.tree.splice(node.index, 1);
+                            for (let i = node.index; i < app.tree.length; i++) {
+                                app.tree[i].index -= 1;
+                            }
+                        } else {
+                            window.parent.app.showMessage('删除失败', 'error');
+                        }
+                    })
+                } else if (node.type === 1) {
+                    let parent = _node.parent.data;
+                    for (let i = node.index; i < parent.functionList.length; i++) {
+                        let func = copy(parent.functionList[i]);
+                        func.index -= 1;
+                        data.push(func);
+                    }
+                    let app = this;
+                    app.treeLoading = true;
+                    ajaxPostJSON(url, data, function (d) {
+                        app.treeLoading = false;
+                        if (d.code === 'success') {
+                            console.log('删除成功');
+                            parent.functionList.splice(node.index, 1);
+                            for (let i = node.index; i < parent.functionList.length; i++) {
+                                parent.functionList[i].index -= 1;
+                            }
+                        } else {
+                            console.log('删除失败');
+                        }
+                    })
+                }
+            }).catch(() => {
+                window.parent.app.showMessage('已取消删除', 'warning');
+            });
+        },
+        handleDragStart: function (node, ev) {
             // console.log('drag start', node);
         },
-        handleDragEnter(draggingNode, dropNode, ev) {
+        handleDragEnter: function (draggingNode, dropNode, ev) {
             // console.log('tree drag enter: ', dropNode.label);
         },
-        handleDragLeave(draggingNode, dropNode, ev) {
+        handleDragLeave: function (draggingNode, dropNode, ev) {
             // console.log('tree drag leave: ', dropNode.label);
         },
-        handleDragOver(draggingNode, dropNode, ev) {
+        handleDragOver: function (draggingNode, dropNode, ev) {
             // console.log('tree drag over: ', dropNode.label);
         },
-        handleDragEnd(draggingNode, dropNode, dropType, ev) {
+        handleDragEnd: function (draggingNode, dropNode, dropType, ev) {
             // console.log('tree drag end: ', dropNode && dropNode.label, dropType);
         },
-        handleDrop(draggingNode, dropNode, dropType, ev) {
+        handleDrop: function (draggingNode, dropNode, dropType, ev) {
             // console.log('tree drop: ', dropNode.label, dropType);
         },
-        allowDrop(draggingNode, dropNode, type) {
+        allowDrop: function (draggingNode, dropNode, type) {
             // 拖动节点为分类节点时
-            if (draggingNode.data.type === 'category') {
+            if (draggingNode.data.type === 0) {
                 // 只能将节点拖拽到其他分类节点的'prev' or 'next'
                 if (type === 'inner') return false;
-                return dropNode.data.type === 'category';
+                return dropNode.data.type === 0;
             }
             // 拖动节点为功能节点时
-            else if (draggingNode.data.type === 'function') {
+            else if (draggingNode.data.type === 1) {
                 // 只能将节点拖拽到其他功能节点的'prev' or 'next'或者分类节点的'inner'
-                if (dropNode.data.type === 'function')
+                if (dropNode.data.type === 1)
                     return type !== 'inner';
-                else if (dropNode.data.type === 'category')
+                else if (dropNode.data.type === 0)
                     return type === 'inner';
             }
             return false;
         },
-        allowDrag(draggingNode) {
+        allowDrag: function (draggingNode) {
             // 分类节点和功能节点都可拖拽
-            return draggingNode.data.type === 'function' || draggingNode.data.type === 'category';
+            return draggingNode.data.type === 1 || draggingNode.data.type === 0;
         }
     },
     mounted: function () {
@@ -74,18 +191,10 @@ let app = new Vue({
         let url = '/functions/sys/functionManager/getFunctionTree';
         let data = null;
         let app = this;
+        app.treeLoading = true;
         ajaxPost(url, data, function (d) {
-            let categoryList = copy(d.data);
-            for (let i = 0; i < categoryList.length; i++) {
-                categoryList[i].label = categoryList[i].name;
-                categoryList[i].type = 'category';
-                categoryList[i].children = categoryList[i].functionList;
-                for (let j = 0; j < categoryList[i].children.length; j++) {
-                    categoryList[i].children[j].label = categoryList[i].children[j].name;
-                    categoryList[i].children[j].type = 'function';
-                }
-            }
-            app.tree = categoryList;
+            app.tree = copy(d.data);
+            app.treeLoading = false;
         })
     }
 });

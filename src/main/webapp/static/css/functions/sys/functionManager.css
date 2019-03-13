@@ -1,17 +1,47 @@
-.card1 .el-card__header{
-    background: #007cc440;
+.card1 .el-card__header {
+    background: #007dc62b;
 }
 
-.card2 .el-card__header{
+.card2 .el-card__header {
     background: #faf3e8;
 }
 
-.el-card__body{
+/* card身体 */
+.el-card__body {
     height: 100%;
 }
 
+/* 第一个card标题栏右边的button group */
 .button-group {
     position: relative;
     bottom: 9px;
     float: right;
+}
+
+.tree-row{
+    height: 20px;
+    width: 100%;
+    line-height: 20px;
+}
+
+.tree-row:hover .mini-button-group {
+    display: inline;
+}
+
+/* 节点右边的按钮 */
+.mini-button-group {
+    float: right;
+    margin-left: 10px;
+    margin-right: 5px;
+    display: none;
+}
+
+.mini-button-group .el-button--mini {
+    margin: 0px;
+    margin-right: 4px;
+    padding: 2px;
+}
+
+.mini-button-group .el-button--mini:hover {
+    background: rgba(187, 213, 235, 0.67);
 }

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/static/css/login.css"/>
 </head>
 <body>
-<div id="app" v-  v-loading="fullScreenLoading">
+<div id="app" v-cloak  v-loading="fullScreenLoading">
     <el-form ref="form" :model="formData" label-width="100px" class="form" label-align="center">
         <h3 style="text-align: center; margin-bottom: 20px">人力资源市场管理系统</h3>
         <%-- 阻止浏览器密码保存 --%>

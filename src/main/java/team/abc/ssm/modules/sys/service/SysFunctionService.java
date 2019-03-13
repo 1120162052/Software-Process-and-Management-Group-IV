@@ -16,7 +16,12 @@ public class SysFunctionService {
     @Autowired
     private SysRoleService roleService;
 
-    // 通过用户名获取该用户拥有的所有功能
+    /**
+     * 通过用户名获取该用户拥有的所有功能
+     *
+     * @param username 用户名
+     * @return 拥有的功能集合(Set)(用于shiro的权限验证)
+     */
     public Set<String> getFunctionSetByUsername(String username) {
         List<SysFunction> functionList = getFunctionsByUsername(username);
         Set<String> result = new HashSet<>();
@@ -26,169 +31,125 @@ public class SysFunctionService {
         return result;
     }
 
-    // 通过用户名获取该用户拥有的所有功能
-    public List<SysFunction> getFunctionsByUsername(String username) {
+    /**
+     * 通过用户名获取该用户拥有的所有功能
+     *
+     * @param username 用户名
+     * @return 拥有的功能列表
+     */
+    private List<SysFunction> getFunctionsByUsername(String username) {
         if (roleService.isAdmin(username)) // 具有特殊角色admin时直接获取所有权限
-            return functionDao.getAllFunctions();
+            return functionDao.selectAllEnabled();
         else
-            return functionDao.getFunctionsByUsername(username);
+            return functionDao.selectByUsername(username);
     }
 
     /**
      * 通过用户名获取该用户的功能，并构建成一棵二级的菜单树
+     *
      * @param username 用户名
-     * @param all 是否获取全部功能（功能管理时如此）
+     * @param all      是否获取全部功能（无视权限）
      * @return 二级的菜单树
      */
-    public List<Category> getFunctionTree(String username, boolean all) {
-        List<Category> categoryList = new ArrayList<>();
-        List<SysFunction> functionList;
+    public List<SysFunction> getFunctionTree(String username, boolean all) {
+        List<SysFunction> categoryList = new ArrayList<>();
+        List<SysFunction> allList;
         if (all)
-            functionList = functionDao.getAllFunctions();
+            allList = functionDao.selectAll();
         else
-            functionList = getFunctionsByUsername(username);
+            allList = getFunctionsByUsername(username);
         // list中添加category
-        for (SysFunction function : functionList) {
-            if (function.getType() == 0) {
-                categoryList.add(new Category(function));
+        for (SysFunction category : allList) {
+            if (category.getType() == 0) {
+                categoryList.add(category);
             }
         }
         // category中添加function
-        for (Category category : categoryList) {
-            for (SysFunction function : functionList) {
+        for (SysFunction category : categoryList) {
+            for (SysFunction function : allList) {
                 if (category.getId().equals(function.getParentId())) {
-                    category.functionList.add(new Function(function));
+                    category.getFunctionList().add(function);
                 }
             }
         }
         // 重新排序
-        categoryList.sort(Comparator.comparingInt((Category c) -> c.index));
-        for (Category category : categoryList) {
-            category.functionList.sort(Comparator.comparingInt((Function f) -> f.index));
+        categoryList.sort(Comparator.comparingInt(SysFunction::getIndex));
+        for (SysFunction category : categoryList) {
+            category.getFunctionList().sort(Comparator.comparingInt(SysFunction::getIndex));
         }
         return categoryList;
     }
 
-    public class Category {
-        private String id;
-        private String name;
-        private int index;
-        private String code;
-
-        private List<Function> functionList;
-
-        public Category(SysFunction function) {
-            id = function.getId();
-            name = function.getName();
-            index = function.getIndex_();
-            code = function.getCode();
-            functionList = new ArrayList<>();
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public List<Function> getFunctionList() {
-            return functionList;
-        }
-
-        public void setFunctionList(List<Function> functionList) {
-            this.functionList = functionList;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
+    /**
+     * 添加新的分类到末尾
+     *
+     * @param category 分类对象
+     * @return 新添加的分类对象（已完善信息）
+     */
+    public SysFunction addNewCategory(SysFunction category) {
+        category.setType(0);
+        category.setEnable(false);
+        category.setName("新分类");
+        category.preInsert();
+        int count = functionDao.insert(category);
+        if (count == 1)
+            return category;
+        else
+            return null;
     }
 
-    public class Function {
-        private String id;
-        private String name;
-        private String url;
-        private String parentId;
-        private int index;
-        private String code;
+    /**
+     * 再目标分类中添加子功能到末尾
+     *
+     * @param category 目标分类
+     * @return 成功与否
+     */
+    public SysFunction addNewFunction(SysFunction category) {
+        SysFunction newFunction = new SysFunction();
+        newFunction.setType(1);
+        newFunction.setEnable(false);
+        newFunction.setName("新功能");
+        newFunction.setParentId(category.getId());
+        newFunction.setIndex(category.getFunctionList().size());
+        newFunction.preInsert();
+        int count = functionDao.insert(newFunction);
+        if (count == 1)
+            return newFunction;
+        else
+            return null;
+    }
 
-        public Function(SysFunction function) {
-            id = function.getId();
-            name = function.getName();
-            url = function.getUrl();
-            parentId = function.getParentId();
-            index = function.getIndex_();
-            code = function.getCode();
-        }
+    /**
+     * 删除指定id的function
+     *
+     * @param function 功能或分类
+     * @return 成功与否
+     */
+    public boolean deleteById(SysFunction function) {
+        int count = functionDao.deleteById(function);
+        return count == 1;
+    }
 
-        public String getId() {
-            return id;
-        }
+    /**
+     * 根据id批量更新对应function的index
+     *
+     * @param functionList 提供id和index
+     * @return 成功与否
+     */
+    public boolean updateIndex(List<SysFunction> functionList) {
+        if (functionList.size() <= 0) return true;
+        int count = functionDao.updateIndex(functionList);
+        return count == functionList.size();
+    }
 
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getUrl() {
-            return url;
-        }
-
-        public void setUrl(String url) {
-            this.url = url;
-        }
-
-        public String getParentId() {
-            return parentId;
-        }
-
-        public void setParentId(String parentId) {
-            this.parentId = parentId;
-        }
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(String code) {
-            this.code = code;
-        }
+    /**
+     * 根据id更新对应的function
+     * @param function 存储id和需要更新的数据
+     * @return
+     */
+    public boolean update(SysFunction function) {
+        function.preUpdate();
+        int count = functionDao.update(function);
+        return count == 1;
     }
 }

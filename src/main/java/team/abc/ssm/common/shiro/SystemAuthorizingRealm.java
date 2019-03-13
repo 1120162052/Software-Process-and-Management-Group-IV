@@ -29,6 +29,8 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         // 首先根据username获取userID，然后获取角色和功能信息
         Set<String> roles = roleService.getRolesByUsername(username);
         Set<String> permissions = functionService.getFunctionSetByUsername(username);
+        roles.removeIf(str -> str == null || str.length() == 0);
+        permissions.removeIf(str -> str == null || str.length() == 0);
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         info.setRoles(roles);
         info.setStringPermissions(permissions);

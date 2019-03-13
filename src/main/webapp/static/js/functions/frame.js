@@ -2,7 +2,7 @@ var app = new Vue({
     el: '#app',
     data: {
         user: '',
-        categoryList: '',
+        categoryList: [],
         tabList: [
             {
                 url: 'functions/home',
@@ -12,7 +12,8 @@ var app = new Vue({
             }
         ],
         activeTabName: 'tab0',
-        tabNameCount: 1
+        tabNameCount: 1,
+        fullScreenLoading: false
     },
     methods: {
         // 初始化页面:
@@ -22,7 +23,9 @@ var app = new Vue({
             let url = "functions/frame/init";
             let data = null;
             let app = this;
+            app.fullScreenLoading = true;
             ajaxPost(url, data, function (d) {
+                app.fullScreenLoading = false;
                 app.user = d.data.user; // 包含用户信息
                 app.categoryList = d.data.categoryList; // 菜单列表
             });

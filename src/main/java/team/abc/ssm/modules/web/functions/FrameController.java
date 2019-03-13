@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import team.abc.ssm.common.web.BaseController;
 import team.abc.ssm.common.web.MsgType;
+import team.abc.ssm.modules.sys.entity.SysFunction;
 import team.abc.ssm.modules.sys.entity.SysUser;
 import team.abc.ssm.modules.sys.service.SysFunctionService;
 
@@ -27,7 +28,7 @@ public class FrameController extends BaseController {
         // 获取当前用户信息
         SysUser user = getCurrentUser();
         // 获取用户拥有的权限信息
-        List<SysFunctionService.Category> categoryList = functionService.getFunctionTree(user.getUsername(), false);
+        List<SysFunction> categoryList = functionService.getFunctionTree(user.getUsername(), false);
         Map<String, Object> data = new HashMap<>();
         data.put("user", user);
         data.put("categoryList", categoryList);
