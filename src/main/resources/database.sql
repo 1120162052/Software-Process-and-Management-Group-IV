@@ -11,124 +11,166 @@ use softwareManagement;
 
 
 -- 用户
-create table sys_entity_user(
-  username varchar(100),
-  password varchar(100),
+create table sys_entity_user
+(
+  username              varchar(100),
+  password              varchar(100),
+  type                  varchar(100) comment '1 - 省用户，2 - 市用户，3 - 监测点用户，4 - 其他用户',
+  province              varchar(100) comment '来自于哪个省，存储字典id',
+  city                  varchar(100) comment '来自于哪个市，存储字典id',
 
-  id varchar(100) primary key,
-  common_create_user_id varchar(100)  comment '创建者id',
-  common_create_date datetime         comment '创建日期',
-  common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期',
-  common_remarks varchar(100)         comment '备注'
+  id                    varchar(100) primary key,
+  common_remarks        varchar(100) comment '备注',
+  common_del_flag       varchar(100) comment '删除标记（0：正常；1：删除；2：审核）',
+  common_create_user_id varchar(100) comment '创建者id',
+  common_modify_user_id varchar(100) comment '最后修改者id',
+  common_create_date    datetime comment '创建日期',
+  common_modify_date    datetime comment '最后修改日期'
 );
 
 -- 角色
-create table sys_entity_role(
-  name varchar(100),
-  code varchar(100) comment '角色代码，作为角色的标识符',
+create table sys_entity_role
+(
+  name                  varchar(100),
+  code                  varchar(100) comment '角色代码，作为角色的标识符',
 
-  id varchar(100) primary key,
-  common_create_user_id varchar(100)  comment '创建者id',
-  common_create_date datetime         comment '创建日期',
-  common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期',
-  common_remarks varchar(100)         comment '备注'
+  id                    varchar(100) primary key,
+  common_remarks        varchar(100) comment '备注',
+  common_del_flag       varchar(100) comment '删除标记（0：正常；1：删除；2：审核）',
+  common_create_user_id varchar(100) comment '创建者id',
+  common_modify_user_id varchar(100) comment '最后修改者id',
+  common_create_date    datetime comment '创建日期',
+  common_modify_date    datetime comment '最后修改日期'
 );
 
 -- 功能
-create table sys_entity_function(
-  name varchar(100),
-  code varchar(100)       comment '功能代码，作为功能的标识符',
-  type int                comment '0 - 功能分类，点击展开子功能;1 - 功能，点击进入功能页',
-  parent_id varchar(100)  comment '功能所属的分类',
-  url varchar(100)        comment '如果是功能，则此项代表功能页地址，否则为空',
-  index_ int              comment '排序，功能栏上自上而下，从0开始递增(相当于数组中的序号)',
+create table sys_entity_function
+(
+  name                  varchar(100),
+  code                  varchar(100) comment '功能代码，作为功能的标识符',
+  type                  int comment '0 - 功能分类，点击展开子功能;1 - 功能，点击进入功能页',
+  parent_id             varchar(100) comment '功能所属的分类',
+  url                   varchar(100) comment '如果是功能，则此项代表功能页地址，否则为空',
+  index_                int comment '排序，功能栏上自上而下，从0开始递增(相当于数组中的序号)',
+  enable                bool comment '功能是否启用',
+  icon                  varchar(100) comment '图标',
 
-  id varchar(100) primary key,
-  common_create_user_id varchar(100)  comment '创建者id',
-  common_create_date datetime         comment '创建日期',
-  common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期',
-  common_remarks varchar(100)         comment '备注'
+  id                    varchar(100) primary key,
+  common_remarks        varchar(100) comment '备注',
+  common_del_flag       varchar(100) comment '删除标记（0：正常；1：删除；2：审核）',
+  common_create_user_id varchar(100) comment '创建者id',
+  common_modify_user_id varchar(100) comment '最后修改者id',
+  common_create_date    datetime comment '创建日期',
+  common_modify_date    datetime comment '最后修改日期'
+);
+
+-- 字典
+create table sys_entity_dict
+(
+  value                 varchar(100) comment '英文',
+  value_cn              varchar(100) comment '中文',
+  type                  varchar(100) comment '类型（英文）',
+  type_cn               varchar(100) comment '类型（中文）',
+  parent_id             varchar(100) comment '父级id，本表',
+
+
+  id                    varchar(100) primary key,
+  common_remarks        varchar(100) comment '备注',
+  common_del_flag       varchar(100) comment '删除标记（0：正常；1：删除；2：审核）',
+  common_create_user_id varchar(100) comment '创建者id',
+  common_modify_user_id varchar(100) comment '最后修改者id',
+  common_create_date    datetime comment '创建日期',
+  common_modify_date    datetime comment '最后修改日期'
 );
 
 -- 关联：用户-角色
-create table sys_map_user_role(
-  user_id varchar(100),
-  role_id varchar(100),
+create table sys_map_user_role
+(
+  user_id               varchar(100),
+  role_id               varchar(100),
 
-  id varchar(100) primary key,
-  common_create_user_id varchar(100)  comment '创建者id',
-  common_create_date datetime         comment '创建日期',
-  common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期',
-  common_remarks varchar(100)         comment '备注'
+  id                    varchar(100) primary key,
+  common_remarks        varchar(100) comment '备注',
+  common_del_flag       varchar(100) comment '删除标记（0：正常；1：删除；2：审核）',
+  common_create_user_id varchar(100) comment '创建者id',
+  common_modify_user_id varchar(100) comment '最后修改者id',
+  common_create_date    datetime comment '创建日期',
+  common_modify_date    datetime comment '最后修改日期'
 );
 
--- 关联：角色-权限
-create table sys_map_role_function(
-  role_id varchar(100),
-  function_id varchar(100),
+-- 关联：角色-功能
+create table sys_map_role_function
+(
+  role_id               varchar(100),
+  function_id           varchar(100),
 
-  id varchar(100) primary key,
-  common_create_user_id varchar(100)  comment '创建者id',
-  common_create_date datetime         comment '创建日期',
-  common_modify_user_id varchar(100)  comment '最后修改者id',
-  common_modify_date datetime         comment '最后修改日期',
-  common_remarks varchar(100)         comment '备注'
+  id                    varchar(100) primary key,
+  common_remarks        varchar(100) comment '备注',
+  common_del_flag       varchar(100) comment '删除标记（0：正常；1：删除；2：审核）',
+  common_create_user_id varchar(100) comment '创建者id',
+  common_modify_user_id varchar(100) comment '最后修改者id',
+  common_create_date    datetime comment '创建日期',
+  common_modify_date    datetime comment '最后修改日期'
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 -- 用户
-insert into sys_entity_user (id, username, password, common_create_date) values ('u1', 'admin', 'admin', now());
-insert into sys_entity_user (id, username, password, common_create_date) values ('u2', 'zhangsan', '123456', now());
-insert into sys_entity_user (id, username, password, common_create_date) values ('u3', '省用户1', '123456', now());
-insert into sys_entity_user (id, username, password, common_create_date) values ('u4', '市用户1', '123456', now());
-insert into sys_entity_user (id, username, password, common_create_date) values ('u5', '监测点用户1', '123456', now());
+insert into sys_entity_user (id, username, password, common_create_date)
+values ('u1', 'admin', 'admin', now());
+insert into sys_entity_user (id, username, password, common_create_date)
+values ('u2', 'zhangsan', '123456', now());
+insert into sys_entity_user (id, username, password, common_create_date)
+values ('u3', '省用户1', '123456', now());
+insert into sys_entity_user (id, username, password, common_create_date)
+values ('u4', '市用户1', '123456', now());
+insert into sys_entity_user (id, username, password, common_create_date)
+values ('u5', '监测点用户1', '123456', now());
 
 -- 角色
-insert into sys_entity_role (id, name, code) values ('r1', '管理员', 'admin');
-insert into sys_entity_role (id, name, code) values ('r2', '普通用户', 'normalUser');
-insert into sys_entity_role (id, name, code) values ('r3', '省', 'province');
-insert into sys_entity_role (id, name, code) values ('r4', '市', 'city');
-insert into sys_entity_role (id, name, code) values ('r5', '监测点', 'point');
+insert into sys_entity_role (id, name, code)
+values ('r1', '管理员', 'admin');
+insert into sys_entity_role (id, name, code)
+values ('r2', '普通用户', 'normalUser');
+insert into sys_entity_role (id, name, code)
+values ('r3', '省', 'province');
+insert into sys_entity_role (id, name, code)
+values ('r4', '市', 'city');
+insert into sys_entity_role (id, name, code)
+values ('r5', '监测点', 'point');
 
--- 权限
+-- 功能
 --    1.分类
-insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p1', '系统功能', 'sys:default', 0, null, null, 0);
-insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p4', '自定义功能', 'custom:default', 0, null, null, 1);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_, enable)
+values ('p1', '系统功能', 'sys:default', 0, null, null, 0, true);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_, enable)
+values ('p4', '自定义功能', 'custom:default', 0, null, null, 1, true);
 --    2.系统功能
-insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p2', '用户管理', 'sys:user', 1, 'p1', 'functions/sys/userManager', 0);
-insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p3', '角色管理', 'sys:role', 1, 'p1', 'functions/sys/roleManager', 1);
-insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p6', '功能管理', 'sys:function', 1, 'p1', 'function/sys/functionManager', 2);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_, enable)
+values ('p2', '用户管理', 'sys:user', 1, 'p1', 'functions/sys/userManager', 0, true);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_, enable)
+values ('p3', '角色管理', 'sys:role', 1, 'p1', 'functions/sys/roleManager', 1, true);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_, enable)
+values ('p6', '功能管理', 'sys:function', 1, 'p1', 'functions/sys/functionManager', 2, true);
 --    3.自定义功能
-insert into sys_entity_function (id, name, code, type, parent_id, url, index_) values ('p5', '测试功能', 'custom:testFunction', 1, 'p4', 'functions/custom/testFunction', 0);
+insert into sys_entity_function (id, name, code, type, parent_id, url, index_, enable)
+values ('p5', '测试功能', 'custom:testFunction', 1, 'p4', 'functions/custom/testFunction', 0, true);
 
 -- 关联：用户-角色
-insert into sys_map_user_role (id, user_id, role_id) values ('ur1', 'u1', 'r1'); -- admin - 管理员
-insert into sys_map_user_role (id, user_id, role_id) values ('ur2', 'u2', 'r2'); -- zhangsan - 普通用户
-insert into sys_map_user_role (id, user_id, role_id) values ('ur3', 'u3', 'r3'); -- 省用户1 -- 省
-insert into sys_map_user_role (id, user_id, role_id) values ('ur3_', 'u3', 'r1'); -- 省用户1 -- 管理员
-insert into sys_map_user_role (id, user_id, role_id) values ('ur4', 'u4', 'r4'); -- 市用户1 -- 市
-insert into sys_map_user_role (id, user_id, role_id) values ('ur5', 'u5', 'r5'); -- 监测点用户1 -- 监测点
+insert into sys_map_user_role (id, user_id, role_id)
+values ('ur1', 'u1', 'r1'); -- admin - 管理员
+insert into sys_map_user_role (id, user_id, role_id)
+values ('ur2', 'u2', 'r2'); -- zhangsan - 普通用户
+insert into sys_map_user_role (id, user_id, role_id)
+values ('ur3', 'u3', 'r3'); -- 省用户1 -- 省
+insert into sys_map_user_role (id, user_id, role_id)
+values ('ur3_', 'u3', 'r1'); -- 省用户1 -- 管理员
+insert into sys_map_user_role (id, user_id, role_id)
+values ('ur4', 'u4', 'r4'); -- 市用户1 -- 市
+insert into sys_map_user_role (id, user_id, role_id)
+values ('ur5', 'u5', 'r5');
+-- 监测点用户1 -- 监测点
 
--- 关联：角色-权限 （管理员角色不需要和权限关联）
-insert into sys_map_role_function (id, role_id, function_id) values ('rp1', 'r2', 'p4'); -- 普通用户 - 自定义功能
-insert into sys_map_role_function (id, role_id, function_id) values ('rp2', 'r2', 'p5'); -- 普通用户 - 测试功能
+-- 关联：角色-功能 （管理员角色不需要和权限关联）
+insert into sys_map_role_function (id, role_id, function_id)
+values ('rp1', 'r2', 'p4'); -- 普通用户 - 自定义功能
+insert into sys_map_role_function (id, role_id, function_id)
+values ('rp2', 'r2', 'p5'); -- 普通用户 - 测试功能

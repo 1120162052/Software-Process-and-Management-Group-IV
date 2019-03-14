@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.abc.ssm.modules.sys.dao.SysFunctionDao;
 import team.abc.ssm.modules.sys.entity.SysFunction;
+import team.abc.ssm.modules.sys.entity.SysRole;
+import team.abc.ssm.modules.sys.entity.SysUser;
 
 import java.util.*;
 
@@ -47,17 +49,17 @@ public class SysFunctionService {
     /**
      * 通过用户名获取该用户的功能，并构建成一棵二级的菜单树
      *
-     * @param username 用户名
-     * @param all      是否获取全部功能（无视权限）
      * @return 二级的菜单树
      */
-    public List<SysFunction> getFunctionTree(String username, boolean all) {
+    public List<SysFunction> getFunctionTree(SysUser user, SysRole role) {
         List<SysFunction> categoryList = new ArrayList<>();
         List<SysFunction> allList;
-        if (all)
-            allList = functionDao.selectAll();
+        if (user != null)
+            allList = getFunctionsByUsername(user.getUsername());
+        else if (role != null)
+            allList = functionDao.selectByRole(role);
         else
-            allList = getFunctionsByUsername(username);
+            allList = functionDao.selectAll();
         // list中添加category
         for (SysFunction category : allList) {
             if (category.getType() == 0) {
@@ -144,6 +146,7 @@ public class SysFunctionService {
 
     /**
      * 根据id更新对应的function
+     *
      * @param function 存储id和需要更新的数据
      * @return
      */

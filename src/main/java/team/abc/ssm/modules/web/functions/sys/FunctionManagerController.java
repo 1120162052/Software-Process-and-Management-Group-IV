@@ -24,7 +24,7 @@ public class FunctionManagerController extends BaseController {
     @RequestMapping(value = "getFunctionTree", method = RequestMethod.POST)
     @ResponseBody
     public Object getFunctionTree() {
-        List<SysFunction> categoryList = functionService.getFunctionTree("", true);
+        List<SysFunction> categoryList = functionService.getFunctionTree(null, null);
         return retMsg.Set(MsgType.SUCCESS, categoryList);
     }
 

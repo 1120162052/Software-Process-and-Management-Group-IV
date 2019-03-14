@@ -8,7 +8,10 @@ import team.abc.ssm.common.persistence.Page;
 import team.abc.ssm.common.web.BaseController;
 import team.abc.ssm.common.web.MsgType;
 import team.abc.ssm.modules.sys.entity.SysRole;
+import team.abc.ssm.modules.sys.entity.map.SysRoleFunction;
+import team.abc.ssm.modules.sys.service.SysFunctionService;
 import team.abc.ssm.modules.sys.service.SysRoleService;
+import team.abc.ssm.modules.sys.service.map.SysRoleFunctionService;
 
 /**
  * 角色管理
@@ -19,6 +22,12 @@ public class RoleManagerController extends BaseController {
 
     @Autowired
     private SysRoleService roleService;
+
+    @Autowired
+    private SysFunctionService functionService;
+
+    @Autowired
+    private SysRoleFunctionService roleFunctionService;
 
     @RequestMapping(value = "getList", method = RequestMethod.POST)
     @ResponseBody
@@ -41,6 +50,19 @@ public class RoleManagerController extends BaseController {
     @RequestMapping(value = "delete", method = RequestMethod.POST)
     @ResponseBody
     public Object delete(@RequestParam("idList[]") String[] ids) {
+        return retMsg.Set(MsgType.SUCCESS);
+    }
+
+    @RequestMapping(value = "getRoleWithFunctions", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getRoleWithFunctions(@RequestBody SysRole role) {
+        return retMsg.Set(MsgType.SUCCESS, functionService.getFunctionTree(null, role));
+    }
+
+    @RequestMapping(value = "updateRoleFunction", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateRoleFunction(@RequestBody SysRole role) {
+        roleFunctionService.updateByRole(role);
         return retMsg.Set(MsgType.SUCCESS);
     }
 }

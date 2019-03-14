@@ -2,4 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.abc.ssm.modules.sys.dao.map.SysRoleFunctionDao">
 
+    <delete id="deleteByRole" parameterType="sysRole">
+        delete
+        from sys_map_role_function
+        where role_id = #{id}
+    </delete>
+
+    <insert id="insertList" parameterType="sysRoleFunction">
+        insert into sys_map_role_function(role_id, function_id, id, common_remarks, common_del_flag,
+        common_create_user_id,
+        common_modify_user_id, common_create_date, common_modify_date)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.roleId}, #{item.functionId}, #{item.id}, #{item.commonRemarks},
+            #{item.commonDelFlag},#{item.commonCreateUserId},#{item.commonModifyUserId}, #{item.commonCreateDate},
+            #{item.commonModifyDate})
+        </foreach>
+    </insert>
 </mapper>

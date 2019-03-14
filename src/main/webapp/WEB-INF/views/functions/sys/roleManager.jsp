@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/static/css/functions/sys/roleManager.css"/>
 </head>
 <body>
-<div id="app" v-cloak>
+<div id="app" v-cloak v-loading="fullScreenLoading">
     <%-- 顶栏 --%>
     <div style="padding: 15px 20px 0px 15px;">
         <span class="button-group">
@@ -41,12 +41,18 @@
                 {{ formatTimestamp(scope.row.commonCreateDate) }}
             </template>
         </el-table-column>
-        <el-table-column label="操作" width="130" header-align="center" align="center">
+        <el-table-column label="操作" width="190" header-align="center" align="center">
             <template slot-scope="scope">
-                <el-button type="warning" size="mini" style="position:relative;bottom: 1px;" @click="openedit(scope.row)">
+                <el-button type="warning" size="mini" style="position:relative;bottom: 1px;"
+                           @click="openEditDialog(scope.row)">
                     <span>编辑</span>
                 </el-button>
-                <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;" @click="deleteRole(scope.row.id, 'single')">
+                <el-button type="success" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;"
+                           @click="openFunctionDialog(scope.row)">
+                    <span>功能</span>
+                </el-button>
+                <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;"
+                           @click="deleteRole(scope.row.id, 'single')">
                     <span>删除</span>
                 </el-button>
             </template>
@@ -67,7 +73,7 @@
     <el-dialog title="添加角色" :visible.sync="dialog.add.visible" @close="resetForm('form_add')">
         <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
                  :model="dialog.add.formData" :rules="dialog.add.rules"
-                 ref="form_add" v-loading="dialog.add.loading" status-icon >
+                 ref="form_add" v-loading="dialog.add.loading" status-icon>
             <el-form-item label="角色名" prop="name" class="is-required">
                 <el-input v-model="dialog.add.formData.name"></el-input>
             </el-form-item>
@@ -77,7 +83,8 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button size="medium" @click="dialog.add.visible=false">取 消</el-button>
-            <el-button size="medium" type="primary" @click="submitAddForm()" style="margin-left: 10px;">提 交</el-button>
+            <el-button size="medium" type="primary" @click="submitAddForm()" style="margin-left: 10px;">提 交
+            </el-button>
         </div>
     </el-dialog>
     <%-- 编辑用户窗口 --%>
@@ -86,8 +93,8 @@
                  style="padding: 0 100px;height: 350px;overflow-y: scroll;"
                  :model="dialog.edit.formData" :rules="dialog.edit.rules"
                  ref="form_edit" v-loading="dialog.edit.loading" status-icon size="medium">
-            <el-form-item label="角色名" prop="name" class="is-required">
-                <el-input v-model="dialog.edit.formData.name" disabled></el-input>
+            <el-form-item label="角色名" prop="name">
+                <el-input v-model="dialog.edit.formData.name"></el-input>
             </el-form-item>
             <el-form-item label="角色代码" prop="code">
                 <el-input v-model="dialog.edit.formData.code"></el-input>
@@ -95,7 +102,25 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
             <el-button size="medium" @click="dialog.edit.visible=false">取 消</el-button>
-            <el-button size="medium" type="primary" @click="submitEditForm" style="margin-left: 10px;">提 交</el-button>
+            <el-button size="medium" type="primary" @click="submitEditForm" style="margin-left: 10px;">提 交
+            </el-button>
+        </div>
+    </el-dialog>
+    <%-- 编辑功能窗口 --%>
+    <el-dialog title="功能管理" :visible.sync="dialog.functionEdit.visible" width="500px">
+        <div v-loading="dialog.functionEdit.loading">
+            <el-tree ref="tree" :data="dialog.functionEdit.functionTree" :props="dialog.functionEdit.treeProps"
+                     node-key="id" default-expand-all show-checkbox
+                     style="height: 200px;overflow-y: auto;"></el-tree>
+            <el-row style="margin-top: 50px;">
+                <el-col :offset="15">
+                    <el-button size="small" type="success" @click="submitEditFunction()"
+                               style="margin-right: 10px;">
+                        保存修改
+                    </el-button>
+                    <el-button size="small" type="danger" @click="dialog.functionEdit.visible=false">取消</el-button>
+                </el-col>
+            </el-row>
         </div>
     </el-dialog>
 </div>

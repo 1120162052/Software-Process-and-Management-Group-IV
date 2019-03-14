@@ -2,6 +2,7 @@ package team.abc.ssm.modules.sys.dao;
 
 import team.abc.ssm.common.persistence.CrudDao;
 import team.abc.ssm.modules.sys.entity.SysFunction;
+import team.abc.ssm.modules.sys.entity.SysRole;
 
 import java.util.List;
 
@@ -15,4 +16,7 @@ public interface SysFunctionDao extends CrudDao<SysFunction>{
 
     // 由id更新index
     int updateIndex(List<SysFunction> functionList);
+
+    // 获取与角色相关的功能列表
+    List<SysFunction> selectByRole(SysRole role);
 }

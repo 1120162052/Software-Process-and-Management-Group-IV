@@ -26,10 +26,21 @@ let app = new Vue({
                 loading: false,
                 formData: {},
                 rules: {},
+            },
+            functionEdit: {
+                visible: false,
+                loading: false,
+                functionTree: [],
+                treeProps: {
+                    label: 'name',
+                    children: 'functionList'
+                },
+                currentRole: ''
             }
         },
         options: {},
-        rootUrl: '/functions/sys/roleManager/'
+        rootUrl: '/functions/sys/roleManager/',
+        functionTree: []
     },
     methods: {
         // 处理选中的行变化
@@ -83,7 +94,7 @@ let app = new Vue({
                 }
             });
         },
-        // 编辑用户信息提交
+        // 编辑角色信息提交
         submitEditForm: function () {
             // 首先检测表单数据是否合法
             this.$refs['form_edit'].validate((valid) => {
@@ -107,6 +118,22 @@ let app = new Vue({
                     return false;
                 }
             });
+        },
+        // 编辑角色功能提交
+        submitEditFunction: function () {
+            let url = this.rootUrl + 'updateRoleFunction';
+            let data = this.dialog.functionEdit.currentRole;
+            data.functionList = this.$refs.tree.getCheckedNodes();
+            let tmp = this.$refs.tree.getHalfCheckedNodes();
+            tmp.forEach(function (val, index) {
+                data.functionList.push(val);
+            });
+            let app = this;
+            app.dialog.functionEdit.loading = true;
+            ajaxPostJSON(url, data, function (d) {
+                app.dialog.functionEdit.loading = false;
+                window.parent.app.showMessage('修改成功!', 'success');
+            })
         },
         // 重置表单
         resetForm: function (ref) {
@@ -153,10 +180,46 @@ let app = new Vue({
         openEditDialog: function (row) {
             this.dialog.edit.visible = true;
             this.dialog.edit.formData = copy(row);
+        },
+        // 打开编辑角色功能窗口
+        openFunctionDialog: function (row) {
+            this.dialog.functionEdit.visible = true;
+            // 获取用户拥有的角色树
+            let url = this.rootUrl + 'getRoleWithFunctions';
+            this.dialog.functionEdit.currentRole = copy(row);
+            let data = {
+                id: row.id
+            };
+            let app = this;
+            app.dialog.functionEdit.loading = true;
+            ajaxPostJSON(url, data, function (d) {
+                // 赋予选择
+                let tree = copy(app.functionTree);
+                app.dialog.functionEdit.functionTree = tree;
+                let idList = [];
+                for (let i = 0; i < d.data.length; i++) {
+                    if (d.data[i].functionList.length === 0)
+                        idList.push(d.data[i].id);
+                    for (let j = 0; j < d.data[i].functionList.length; j++) {
+                        idList.push(d.data[i].functionList[j].id);
+                    }
+                }
+                app.$refs.tree.setCheckedKeys(idList);
+                app.dialog.functionEdit.loading = false;
+            })
         }
     },
     mounted: function () {
-        this.getList();
+        // 首先获取所有功能
+        let url = '/functions/sys/functionManager/getFunctionTree';
+        let data = null;
+        let app = this;
+        app.fullScreenLoading = true;
+        ajaxPost(url, data, function (d) {
+            app.fullScreenLoading = false;
+            app.functionTree = d.data;
+            app.getList();
+        });
     }
 });
 
