@@ -18,9 +18,9 @@
             <el-button size="small" type="danger" @click="deleteUser(table.selectionList)" style="margin-left: 10px;">
                 <span>批量删除</span>
             </el-button>
-            <el-button size="small" type="primary" @click="test()">
-                <span>测试</span>
-            </el-button>
+            <%--<el-button size="small" type="primary" @click="test()">--%>
+                <%--<span>测试</span>--%>
+            <%--</el-button>--%>
         </span>
         <span style="float: right;margin-right: 10px;">
             <el-input size="small" placeholder="请输入用户名搜索相关用户" suffix-icon="el-icon-search"
@@ -33,8 +33,8 @@
         </span>
     </div>
     <%-- 表格 --%>
-    <el-table :data="table.data" height="calc(100% - 135px)" v-loading="table.loading"
-              style="width: 100%;overflow-y: hidden;margin-top: 30px;" class="scroll-bar"
+    <el-table :data="table.data" height="calc(100% - 116px)" v-loading="table.loading"
+              style="width: 100%;overflow-y: hidden;margin-top: 20px;" class="scroll-bar"
               @selection-change="handleSelectionChange" stripe>
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column label="用户名" prop="username" width="200"></el-table-column>
@@ -57,7 +57,7 @@
         <el-table-column width="50"></el-table-column>
     </el-table>
     <%-- 分页 --%>
-    <el-pagination style="text-align: center;margin: 13px auto;"
+    <el-pagination style="text-align: center;margin: 8px auto;"
                    @size-change="handleSizeChange"
                    @current-change="handleCurrentChange"
                    :current-page="table.params.pageIndex"

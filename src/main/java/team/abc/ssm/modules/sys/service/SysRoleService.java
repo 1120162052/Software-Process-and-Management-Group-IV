@@ -2,6 +2,7 @@ package team.abc.ssm.modules.sys.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.abc.ssm.common.persistence.Page;
 import team.abc.ssm.modules.sys.dao.SysRoleDao;
 import team.abc.ssm.modules.sys.entity.SysRole;
 
@@ -38,5 +39,12 @@ public class SysRoleService {
                 return true;
         }
         return false;
+    }
+
+    public Page<SysRole> getByPage(Page<SysRole> page){
+        List<SysRole> roleList = roleDao.selectByPage(page);
+        page.setResultList(roleDao.selectByIds(roleList));
+        page.setTotal(roleDao.selectSearchCount(page));
+        return page;
     }
 }

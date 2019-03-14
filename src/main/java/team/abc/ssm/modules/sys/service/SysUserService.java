@@ -38,7 +38,7 @@ public class SysUserService {
      * @param page 分页参数
      * @return 用户列表以及total
      */
-    public Page getUsersByPage(Page<SysUser> page) {
+    public Page<SysUser> getUsersByPage(Page<SysUser> page) {
         // 先获取分页的users
         List<SysUser> userList = userDao.selectByPage(page);
         // 再查询具体内容

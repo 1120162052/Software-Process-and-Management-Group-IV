@@ -44,7 +44,7 @@
                  left join sys_entity_role c on b.role_id = c.id
     </select>
 
-    <!-- 分页 + 搜索(模糊匹配用户名)获取用户列表 -->
+    <!-- 分页 + 搜索(模糊匹配用户名)获取用户id列表 -->
     <select id="selectByPage" parameterType="page"
             resultMap="sysUserBean">
         select

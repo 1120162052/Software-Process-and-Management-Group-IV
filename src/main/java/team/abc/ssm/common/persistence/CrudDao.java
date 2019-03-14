@@ -1,5 +1,7 @@
 package team.abc.ssm.common.persistence;
 
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 public interface CrudDao<T> {
