@@ -5,30 +5,30 @@ let app = new Vue({
             username: '',
             password: ''
         },
-        fullScreenLoading: false
+        fullScreenLoading: false,
+        urls: {
+            login: '/login'
+        }
     },
     methods: {
         login: function () {
-            let url = "/login";
-            let data = copy(this.formData);
-            this.fullScreenLoading = true;
             let app = this;
-            ajaxPost(url, data, function (d) {
+            let data = app.formData;
+            app.fullScreenLoading = true;
+            ajaxPostJSON(app.urls.login, data, function (d) {
                 app.fullScreenLoading = false;
-                console.log(d);
-                if (d.code == 'success') {
+                if (d.code === 'success') {
                     location.href = "/";
-                    console.log("登陆成功");
+                    app.$message({
+                        message: '登陆成功',
+                        type: 'success'
+                    });
                 } else {
-                    console.log("登陆失败");
+                    app.$message({
+                        message: '登陆失败',
+                        type: 'error'
+                    });
                 }
-            })
-        },
-        test: function () {
-            let url = '/login/test';
-            let data = null;
-            ajaxPost(url, data, function (d) {
-                console.log(d);
             })
         }
     }

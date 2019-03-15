@@ -25,9 +25,9 @@
         <span style="float: right;margin-right: 10px;">
             <el-input size="small" placeholder="请输入用户名搜索相关用户" suffix-icon="el-icon-search"
                       style="width: 250px;margin-right: 10px;" v-model="table.params.searchKey"
-                      @keyup.enter.native="getUserList()">
+                      @keyup.enter.native="table.params.pageIndex=1;getUserList()">
             </el-input>
-            <el-button size="small" type="primary" style="position:relative;" @click="getUserList()">
+            <el-button size="small" type="primary" style="position:relative;" @click="table.params.pageIndex=1;getUserList()">
                 <span>搜索</span>
             </el-button>
         </span>

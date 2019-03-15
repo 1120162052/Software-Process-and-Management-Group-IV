@@ -1,12 +1,16 @@
 package team.abc.ssm.modules.sys.api;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import team.abc.ssm.common.persistence.Page;
+import team.abc.ssm.common.utils.UserUtils;
 import team.abc.ssm.common.web.BaseApi;
 import team.abc.ssm.common.web.MsgType;
 import team.abc.ssm.modules.sys.entity.User;
@@ -21,6 +25,8 @@ import java.util.List;
  * update           更新
  * getList          分页查询
  * checkUsername    校验用户名重名
+ * getCurrentUser   获取当前登陆用户信息
+ * login            登陆
  */
 @Controller
 @RequestMapping("api/sys/user")
@@ -68,5 +74,11 @@ public class UserApi extends BaseApi {
             return retMsg.Set(MsgType.ERROR);
         }
         return retMsg.Set(MsgType.SUCCESS);
+    }
+
+    @RequestMapping(value = "getCurrentUser", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getCurrentUser() {
+        return retMsg.Set(MsgType.SUCCESS, UserUtils.getCurrentUser());
     }
 }

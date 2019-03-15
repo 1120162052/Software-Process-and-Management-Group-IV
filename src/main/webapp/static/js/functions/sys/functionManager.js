@@ -1,6 +1,13 @@
 let app = new Vue({
     el: '#app',
     data: {
+        urls: {
+            updateFunction: '/api/sys/function/update',
+            appendCategory: '/api/sys/function/appendCategory',
+            appendFunction: '/api/sys/function/appendFunction',
+            deleteFunction: '/api/sys/function/delete',
+            getCategoryList: '/api/sys/function/getCategoryList'
+        },
         tree: [], // 功能树
         treeProp: {
             label: 'name',
@@ -18,11 +25,10 @@ let app = new Vue({
     methods: {
         // 上传表单（保存对分类或功能的修改）
         submitForm: function () {
-            let url = '/functions/sys/functionManager/update';
             let data = copy(this.form.data);
             let app = this;
             app.form.loading = true;
-            ajaxPostJSON(url, data, function (d) {
+            ajaxPostJSON(this.urls.updateFunction, data, function (d) {
                 window.parent.app.showMessage('更新成功!', 'success');
                 app.form.visible = false;
                 app.treeLoading = false;
@@ -49,27 +55,24 @@ let app = new Vue({
             app.form.visible = true;
             app.form.loading = true;
             app.treeLoading = true;
-            setTimeout(function () {
-                app.form.loading = false;
-                if (node.type === 1) {
-                    app.form.type = 'function';
-                    app.form.type_cn = '功能';
-                } else if (node.type === 0) {
-                    app.form.type = 'category';
-                    app.form.type_cn = '分类';
-                }
-                app.form.data = copy(node);
-            }, 0);
+            app.form.loading = false;
+            if (node.type === 1) {
+                app.form.type = 'function';
+                app.form.type_cn = '功能';
+            } else if (node.type === 0) {
+                app.form.type = 'category';
+                app.form.type_cn = '分类';
+            }
+            app.form.data = copy(node);
         },
         // 添加分类（添加至末尾）
         addCategory: function () {
-            let url = '/functions/sys/functionManager/addNewCategory';
             let data = {
                 index: this.tree.length
             };
             let app = this;
             app.treeLoading = true;
-            ajaxPostJSON(url, data, function (d) {
+            ajaxPostJSON(this.urls.appendCategory, data, function (d) {
                 window.parent.app.showMessage('添加成功', 'success');
                 let category = copy(d.data);
                 category.functionList = [];
@@ -79,12 +82,11 @@ let app = new Vue({
         },
         // 添加功能到某个分类下
         addFunction: function (category) {
-            let url = '/functions/sys/functionManager/addNewFunction';
             let data = copy(category);
             let app = this;
             app.treeLoading = true;
             console.log(category);
-            ajaxPostJSON(url, data, function (d) {
+            ajaxPostJSON(this.urls.appendFunction, data, function (d) {
                 let newFunction = copy(d.data);
                 window.parent.app.showMessage('添加成功', 'success');
                 app.tree[data.index].functionList.push(newFunction);
@@ -98,7 +100,6 @@ let app = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                let url = '/functions/sys/functionManager/deleteCategoryOrFunction';
                 let data = [];
                 if (node.type === 0) {
                     for (let i = node.index; i < this.tree.length; i++) {
@@ -129,7 +130,7 @@ let app = new Vue({
                     }
                     let app = this;
                     app.treeLoading = true;
-                    ajaxPostJSON(url, data, function (d) {
+                    ajaxPostJSON(this.urls.deleteFunction, data, function (d) {
                         app.treeLoading = false;
                         if (d.code === 'success') {
                             console.log('删除成功');
@@ -188,11 +189,9 @@ let app = new Vue({
     },
     mounted: function () {
         // 获取功能树
-        let url = '/functions/sys/functionManager/getFunctionTree';
-        let data = null;
         let app = this;
         app.treeLoading = true;
-        ajaxPost(url, data, function (d) {
+        ajaxPost(this.urls.getCategoryList, null, function (d) {
             app.tree = copy(d.data);
             app.treeLoading = false;
         })

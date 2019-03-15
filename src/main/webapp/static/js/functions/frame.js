@@ -14,23 +14,13 @@ app = new Vue({
         ],
         activeTabName: 'tab0',
         tabNameCount: 1,
-        fullScreenLoading: false
+        fullScreenLoading: false,
+        urls: {
+            getCurrentUser: '/api/sys/user/getCurrentUser',
+            getCategoryListByUser: 'api/sys/function/getCategoryListByUser'
+        },
     },
     methods: {
-        // 初始化页面:
-        // 1. 获取登陆用户信息
-        // 2. 根据用户获取对应的菜单信息
-        init: function () {
-            let url = "functions/frame/init";
-            let data = null;
-            let app = this;
-            app.fullScreenLoading = true;
-            ajaxPost(url, data, function (d) {
-                app.fullScreenLoading = false;
-                app.user = d.data.user; // 包含用户信息
-                app.categoryList = d.data.categoryList; // 菜单列表
-            });
-        },
         // 登出
         logout: function () {
             location.href = "/logout";
@@ -102,6 +92,17 @@ app = new Vue({
         }
     },
     mounted: function () {
-        this.init();
+        // 初始化页面:
+        // 1. 获取登陆用户信息
+        // 2. 根据用户获取对应的菜单信息
+        let app = this;
+        app.fullScreenLoading = true;
+        ajaxPost(app.urls.getCurrentUser, null, function(d){
+            app.user = d.data;
+            ajaxPostJSON(app.urls.getCategoryListByUser, app.user, function (d) {
+                app.fullScreenLoading = false;
+                app.categoryList = d.data;
+            })
+        });
     }
 });

@@ -94,10 +94,7 @@ public class FunctionService {
         category.setName("新分类");
         category.preInsert();
         int count = functionDao.insert(category);
-        if (count == 1)
-            return category;
-        else
-            return null;
+        return count == 1 ? category : null;
     }
 
     /**
@@ -115,10 +112,7 @@ public class FunctionService {
         newFunction.setIndex(category.getFunctionList().size());
         newFunction.preInsert();
         int count = functionDao.insert(newFunction);
-        if (count == 1)
-            return newFunction;
-        else
-            return null;
+        return count == 1 ? newFunction : null;
     }
 
     /**
@@ -130,6 +124,17 @@ public class FunctionService {
     public boolean deleteById(Function function) {
         int count = functionDao.deleteById(function);
         return count == 1;
+    }
+
+    /**
+     * 删除一个分类或功能
+     * 实现：删除列表中第一个元素，后续元素更新index，index需在前端更新好
+     */
+    public boolean delete(List<Function> list){
+        boolean success1 = deleteById(list.get(0));
+        list.remove(0);
+        boolean success2 = updateIndex(list);
+        return success1 && success2;
     }
 
     /**

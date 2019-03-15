@@ -1,6 +1,13 @@
 let app = new Vue({
     el: '#app',
     data: {
+        urls: {
+            getRoleListByPage: '/api/sys/role/getListByPage',
+            updateRoleFunction: '/api/sys/map/roleFunction/update',
+            deleteRoleByIdList: '/api/sys/role/deleteByIdList',
+            getCategoryListByRole: '/api/sys/function/getCategoryListByRole',
+            getCategoryList: '/api/sys/function/getCategoryList'
+        },
         fullScreenLoading: false,
         table: {
             data: [],
@@ -39,7 +46,6 @@ let app = new Vue({
             }
         },
         options: {},
-        rootUrl: '/functions/sys/roleManager/',
         functionTree: []
     },
     methods: {
@@ -59,11 +65,10 @@ let app = new Vue({
         },
         // 刷新table的数据
         getList: function () {
-            let url = this.rootUrl + 'getList';
-            let data = this.table.params;
+            let data = {page: this.table.params};
             let app = this;
             app.table.loading = true;
-            ajaxPostJSON(url, data, function (d) {
+            ajaxPostJSON(this.urls.getRoleListByPage, data, function (d) {
                 app.table.loading = false;
                 app.table.data = d.data.resultList;
                 app.table.params.total = d.data.total;
@@ -121,7 +126,6 @@ let app = new Vue({
         },
         // 编辑角色功能提交
         submitEditFunction: function () {
-            let url = this.rootUrl + 'updateRoleFunction';
             let data = this.dialog.functionEdit.currentRole;
             data.functionList = this.$refs.tree.getCheckedNodes();
             let tmp = this.$refs.tree.getHalfCheckedNodes();
@@ -130,7 +134,7 @@ let app = new Vue({
             });
             let app = this;
             app.dialog.functionEdit.loading = true;
-            ajaxPostJSON(url, data, function (d) {
+            ajaxPostJSON(this.urls.updateRoleFunction, data, function (d) {
                 app.dialog.functionEdit.loading = false;
                 window.parent.app.showMessage('修改成功!', 'success');
             })
@@ -161,13 +165,12 @@ let app = new Vue({
                         idList.push(selectionList[i].id);
                     }
                 }
-                let url = this.rootUrl + 'delete';
                 let data = {
                     idList: idList
                 };
                 let app = this;
                 app.fullScreenLoading = true;
-                ajaxPost(url, data, function (d) {
+                ajaxPost(this.urls.deleteRoleByIdList, data, function (d) {
                     app.fullScreenLoading = false;
                     window.parent.app.showMessage('删除成功！', 'success');
                     app.getList();
@@ -185,14 +188,13 @@ let app = new Vue({
         openFunctionDialog: function (row) {
             this.dialog.functionEdit.visible = true;
             // 获取用户拥有的角色树
-            let url = this.rootUrl + 'getRoleWithFunctions';
             this.dialog.functionEdit.currentRole = copy(row);
             let data = {
                 id: row.id
             };
             let app = this;
             app.dialog.functionEdit.loading = true;
-            ajaxPostJSON(url, data, function (d) {
+            ajaxPostJSON(this.urls.getCategoryListByRole, data, function (d) {
                 // 赋予选择
                 let tree = copy(app.functionTree);
                 app.dialog.functionEdit.functionTree = tree;
@@ -211,11 +213,10 @@ let app = new Vue({
     },
     mounted: function () {
         // 首先获取所有功能
-        let url = '/functions/sys/functionManager/getFunctionTree';
         let data = null;
         let app = this;
         app.fullScreenLoading = true;
-        ajaxPost(url, data, function (d) {
+        ajaxPost(this.urls.getCategoryList, data, function (d) {
             app.fullScreenLoading = false;
             app.functionTree = d.data;
             app.getList();

@@ -25,6 +25,13 @@ let validateUsername = function (rule, value, callback) {
 let app = new Vue({
     el: '#app',
     data: {
+        urls: {
+            getUserList: "/api/sys/user/getList",
+            putUser: '/api/sys/user/put',
+            updateUser: '/api/sys/user/update',
+            deleteUserList: '/api/sys/user/deleteList',
+            getAllRoleList: '/api/sys/role/getAllList'
+        },
         fullScreenLoading: false,
         table: {
             data: [],
@@ -98,13 +105,12 @@ let app = new Vue({
         },
         // 刷新table的数据
         getUserList: function () {
-            let url = "/api/sys/user/getList";
             let data = {
                 page: this.table.params
             };
             let app = this;
             this.table.loading = true;
-            ajaxPostJSON(url, data, function (d) {
+            ajaxPostJSON(this.urls.getUserList, data, function (d) {
                 app.table.loading = false;
                 app.table.data = d.data.resultList;
                 app.table.params.total = d.data.total;
@@ -115,11 +121,10 @@ let app = new Vue({
             // 首先检测表单数据是否合法
             this.$refs['form_addUser'].validate((valid) => {
                 if (valid) {
-                    let url = "/api/sys/user/put";
                     let data = this.dialog.addUser.formData;
                     let app = this;
                     app.dialog.addUser.loading = true;
-                    ajaxPostJSON(url, data, function (d) {
+                    ajaxPostJSON(this.urls.putUser, data, function (d) {
                         app.dialog.addUser.loading = false;
                         app.dialog.addUser.visible = false;
                         window.parent.app.showMessage('添加成功！', 'success');
@@ -140,11 +145,10 @@ let app = new Vue({
             // 首先检测表单数据是否合法
             this.$refs['form_editUser'].validate((valid) => {
                 if (valid) {
-                    let url = "/api/sys/user/update";
                     let data = this.dialog.editUser.formData;
                     let app = this;
                     app.dialog.editUser.loading = true;
-                    ajaxPostJSON(url, data, function (d) {
+                    ajaxPostJSON(this.urls.updateUser, data, function (d) {
                         app.dialog.editUser.loading = false;
                         app.dialog.editUser.visible = false;
                         window.parent.app.showMessage('编辑成功！', 'success');
@@ -190,11 +194,10 @@ let app = new Vue({
                         });
                     }
                 }
-                let url = '/api/sys/user/deleteList';
                 let data = idList;
                 let app = this;
                 app.fullScreenLoading = true;
-                ajaxPostJSON(url, data, function (d) {
+                ajaxPostJSON(app.urls.deleteUserList, data, function (d) {
                     app.fullScreenLoading = false;
                     window.parent.app.showMessage('删除成功！', 'success');
                     app.getUserList();
@@ -238,19 +241,14 @@ let app = new Vue({
             this.dialog.editUser.roleOptions = this.dialog.editUser.roleOptions.filter(item => item.id !== role.id);
             // 添加用户的角色
             this.dialog.editUser.formData.roleList.push(role);
-        },
-        // 测试按钮
-        test: function () {
-
-        },
+        }
     },
     mounted: function () {
         // 获取角色列表
-        let url = '/functions/sys/userManager/getRoleList';
         let data = null;
         let app = this;
         app.fullScreenLoading = true;
-        ajaxPost(url, data, function (d) {
+        ajaxPost(this.urls.getAllRoleList, data, function (d) {
             app.fullScreenLoading = false;
             app.options.roleList = d.data;
             app.getUserList();
