@@ -30,12 +30,15 @@
                         @on-select="addTab">
                     <Submenu v-for="(category, index1) in categoryList" :name="index1">
                         <template slot="title">
-                            <Icon type="ios-navigate"></Icon>
-                            {{ category.name }}
+                            <i :class="(category.icon === '' || category.icon == null) ? 'fa fa-ban' : category.icon"
+                               aria-hidden="true" class="icon"></i>
+                            <span>{{ category.name }}</span>
                         </template>
-                        <Menu-Item v-for="(_function, index2) in category.functionList" :name="index1 + '-' + index2">
-                            <Icon type="ios-navigate"></Icon>
-                            {{ _function.name }}
+                        <Menu-Item v-for="(_function, index2) in category.functionList"
+                                   :name="index1 + '-' + index2" style="line-height: 12px;">
+                            <i :class="(_function.icon === '' || _function.icon == null) ? 'fa fa-ban' : _function.icon"
+                               aria-hidden="true" class="icon"></i>
+                            <span>{{ _function.name }}</span>
                         </Menu-Item>
                     </Submenu>
                 </i-Menu>

@@ -20,6 +20,12 @@ let app = new Vue({
             type_cn: '功能',
             data: {},
             loading: false
+        },
+        icons: [],
+        dialog: {
+            selectIcon: {
+                visible: false
+            }
         }
     },
     methods: {
@@ -194,6 +200,10 @@ let app = new Vue({
         ajaxPost(this.urls.getCategoryList, null, function (d) {
             app.tree = copy(d.data);
             app.treeLoading = false;
+            // 获取图标库
+            ajaxGet("/static/plugins/font-awesome-4.7.0/tubiao.txt", null, function(d){
+                app.icons = JSON.parse(d).icons;
+            })
         })
     }
 });

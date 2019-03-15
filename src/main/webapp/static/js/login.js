@@ -5,6 +5,7 @@ let app = new Vue({
             username: '',
             password: ''
         },
+        checked: false,
         fullScreenLoading: false,
         urls: {
             login: '/login'

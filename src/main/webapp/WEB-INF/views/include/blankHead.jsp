@@ -9,6 +9,8 @@
 
 <link rel="stylesheet" href="/static/plugins/iview/styles/iview.css"/>
 
+<link rel="stylesheet" href="/static/plugins/font-awesome-4.7.0/css/font-awesome.min.css">
+
 <style>
     [v-cloak] {
         display: none;

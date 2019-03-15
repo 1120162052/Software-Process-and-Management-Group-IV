@@ -200,6 +200,8 @@ let app = new Vue({
                 ajaxPostJSON(app.urls.deleteUserList, data, function (d) {
                     app.fullScreenLoading = false;
                     window.parent.app.showMessage('删除成功！', 'success');
+                    if (app.table.data.length === 1 && app.table.params.pageIndex > 0)
+                        app.table.params.pageIndex -= 1;
                     app.getUserList();
                 })
             }).catch(() => {
@@ -254,8 +256,4 @@ let app = new Vue({
             app.getUserList();
         });
     }
-});
-
-$(document).ready(function () {
-
 });

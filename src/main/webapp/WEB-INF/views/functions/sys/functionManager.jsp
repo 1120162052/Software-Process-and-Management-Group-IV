@@ -43,7 +43,8 @@
                 <span style="font-size: 15px;color: rgb(230, 162, 60);">设置</span>
                 <span class="button-group" v-show="form.visible">
                     <el-button size="mini" type="warning" @click="submitForm()">保存修改</el-button>
-                    <el-button size="mini" type="danger" @click="form.visible = false;treeLoading = false;">取消</el-button>
+                    <el-button size="mini" type="danger"
+                               @click="form.visible = false;treeLoading = false;">取消</el-button>
                 </span>
             </div>
             <el-form v-show="form.visible" label-position="left" label-width="80px" size="small"
@@ -57,15 +58,32 @@
                 <el-form-item v-show="form.type === 'function'" label="地址" prop="url">
                     <el-input v-model="form.data.url"></el-input>
                 </el-form-item>
+                <el-form-item label="备注" prop="commonRemarks">
+                    <el-input type="textarea" v-model="form.data.commonRemarks"></el-input>
+                </el-form-item>
                 <el-form-item label="图标" prop="icon">
-                    <el-input v-model="form.data.icon"></el-input>
+                    <%--<el-input v-model="form.data.icon"></el-input>--%>
+                    <el-button-group>
+                        <el-button style="font-size: 20px;padding: 5px 10px;width: 52px;height: 32px;">
+                            <i :class="form.data.icon" aria-hidden="true"></i>
+                        </el-button>
+                        <el-button @click="dialog.selectIcon.visible=true">选择图标</el-button>
+                    </el-button-group>
                 </el-form-item>
                 <el-form-item label="状态" prop="enable">
-                    <el-switch v-model="form.data.enable"></el-switch>
+                    <i-switch v-model="form.data.enable" size="large">
+                        <span slot="open">启用</span>
+                        <span slot="close">禁用</span>
+                    </i-switch>
                 </el-form-item>
             </el-form>
         </el-card>
     </div>
+    <%-- 对话框 选择图标 --%>
+    <el-dialog title="选择图标" :visible.sync="dialog.selectIcon.visible" class="dialog-chooseIcon">
+        <i class="icon-choose" v-for="item in icons" :class="item.icon" aria-hidden="true"
+           @click="dialog.selectIcon.visible=false;form.data.icon=item.icon"></i>
+    </el-dialog>
 </div>
 <%@include file="/WEB-INF/views/include/blankScript.jsp" %>
 <script src="/static/js/functions/sys/functionManager.js"></script>
