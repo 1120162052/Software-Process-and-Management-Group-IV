@@ -2,7 +2,7 @@ package team.abc.ssm.modules.sys.entity.map;
 
 import team.abc.ssm.common.persistence.DataEntity;
 
-public class SysRoleFunction extends DataEntity<SysRoleFunction> {
+public class RoleFunction extends DataEntity<RoleFunction> {
 
     private String roleId;
     private String functionId;

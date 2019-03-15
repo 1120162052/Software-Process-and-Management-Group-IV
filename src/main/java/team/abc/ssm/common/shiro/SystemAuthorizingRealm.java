@@ -6,20 +6,20 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
-import team.abc.ssm.modules.sys.service.SysFunctionService;
-import team.abc.ssm.modules.sys.service.SysRoleService;
-import team.abc.ssm.modules.sys.service.SysUserService;
+import team.abc.ssm.modules.sys.service.FunctionService;
+import team.abc.ssm.modules.sys.service.RoleService;
+import team.abc.ssm.modules.sys.service.UserService;
 
 import java.util.Set;
 
 public class SystemAuthorizingRealm extends AuthorizingRealm {
 
     @Autowired
-    private SysUserService userService;
+    private UserService userService;
     @Autowired
-    private SysRoleService roleService;
+    private RoleService roleService;
     @Autowired
-    private SysFunctionService functionService;
+    private FunctionService functionService;
 
     // 用户角色、权限验证（用户已经登陆）
     @Override

@@ -5,7 +5,7 @@ import team.abc.ssm.common.persistence.DataEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SysFunction extends DataEntity<SysFunction> {
+public class Function extends DataEntity<Function> {
 
     private String name;
     private String code;
@@ -16,7 +16,7 @@ public class SysFunction extends DataEntity<SysFunction> {
     private boolean enable;
     private String icon;
 
-    private List<SysFunction> functionList = new ArrayList<>(); // 分类具有的子功能列表
+    private List<Function> functionList = new ArrayList<>(); // 分类具有的子功能列表
 
     public String getName() {
         return name;
@@ -58,11 +58,11 @@ public class SysFunction extends DataEntity<SysFunction> {
         this.parentId = parentId;
     }
 
-    public List<SysFunction> getFunctionList() {
+    public List<Function> getFunctionList() {
         return functionList;
     }
 
-    public void setFunctionList(List<SysFunction> functionList) {
+    public void setFunctionList(List<Function> functionList) {
         this.functionList = functionList;
     }
 

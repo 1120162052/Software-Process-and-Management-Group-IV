@@ -1,10 +1,11 @@
-var app = new Vue({
+app = new Vue({
     el: '#app',
     data: {
         user: '',
         categoryList: [],
         tabList: [
             {
+                id: 'home',
                 url: 'functions/home',
                 title: '首页',
                 name: 'tab0',
@@ -43,14 +44,14 @@ var app = new Vue({
             let exist = false;
             let index = -1;
             for (let i = 0; i < this.tabList.length; i++) {
-                if (this.tabList[i].url == _function.url) {
+                if (this.tabList[i].id === _function.id) {
                     exist = true;
                     index = i;
                     break;
                 }
             }
             // 标签页已被打开，则不再添加新的标签页，而是设置目标标签页为active
-            if (exist == true) {
+            if (exist === true) {
                 this.activeTabName = this.tabList[index].name;
                 this.tabList[index].loading = true; // tab页进入加载状态
                 this.refreshTab(this.activeTabName);
@@ -59,6 +60,7 @@ var app = new Vue({
                 let newTabName = 'tab' + this.tabNameCount;
                 this.tabNameCount += 1;
                 this.tabList.push({
+                    id: _function.id,
                     title: _function.name,
                     url: _function.url,
                     name: newTabName,

@@ -43,13 +43,13 @@
         </el-table-column>
         <el-table-column label="操作" width="190" header-align="center" align="center">
             <template slot-scope="scope">
-                <el-button type="warning" size="mini" style="position:relative;bottom: 1px;"
-                           @click="openEditDialog(scope.row)">
-                    <span>编辑</span>
-                </el-button>
-                <el-button type="success" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;"
+                <el-button type="success" size="mini" style="position:relative;bottom: 1px;"
                            @click="openFunctionDialog(scope.row)">
                     <span>功能</span>
+                </el-button>
+                <el-button type="warning" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;"
+                           @click="openEditDialog(scope.row)">
+                    <span>编辑</span>
                 </el-button>
                 <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;"
                            @click="deleteRole(scope.row.id, 'single')">
@@ -111,8 +111,8 @@
         <div v-loading="dialog.functionEdit.loading">
             <el-tree ref="tree" :data="dialog.functionEdit.functionTree" :props="dialog.functionEdit.treeProps"
                      node-key="id" default-expand-all show-checkbox
-                     style="height: 200px;overflow-y: auto;"></el-tree>
-            <el-row style="margin-top: 50px;">
+                     style="height: 300px;overflow-y: auto;"></el-tree>
+            <el-row style="margin-top: 20px;">
                 <el-col :offset="15">
                     <el-button size="small" type="success" @click="submitEditFunction()"
                                style="margin-right: 10px;">

@@ -4,15 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import team.abc.ssm.common.persistence.Page;
-import team.abc.ssm.common.utils.SpringContextHolder;
 import team.abc.ssm.common.web.BaseController;
 import team.abc.ssm.common.web.MsgType;
-import team.abc.ssm.modules.sys.dao.SysUserDao;
-import team.abc.ssm.modules.sys.entity.SysRole;
-import team.abc.ssm.modules.sys.entity.SysUser;
-import team.abc.ssm.modules.sys.service.SysRoleService;
-import team.abc.ssm.modules.sys.service.SysUserService;
-import team.abc.ssm.modules.sys.service.map.SysUserRoleService;
+import team.abc.ssm.modules.sys.entity.Role;
+import team.abc.ssm.modules.sys.entity.User;
+import team.abc.ssm.modules.sys.service.RoleService;
+import team.abc.ssm.modules.sys.service.UserService;
+import team.abc.ssm.modules.sys.service.map.UserRoleService;
 
 import java.util.List;
 
@@ -21,13 +19,13 @@ import java.util.List;
 public class UserManagerController extends BaseController {
 
     @Autowired
-    private SysUserService userService;
+    private UserService userService;
 
     @Autowired
-    private SysRoleService roleService;
+    private RoleService roleService;
 
     @Autowired
-    private SysUserRoleService userRoleService;
+    private UserRoleService userRoleService;
 
     /**
      * 分页+模糊搜索获取用户列表
@@ -37,38 +35,8 @@ public class UserManagerController extends BaseController {
      */
     @RequestMapping(value = "getUserList", method = RequestMethod.POST)
     @ResponseBody
-    public Object getUserList(@RequestBody Page<SysUser> page) {
+    public Object getUserList(@RequestBody Page<User> page) {
         return retMsg.Set(MsgType.SUCCESS, userService.getUsersByPage(page));
-    }
-
-    /**
-     * 创建一名新用户
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 成功与否
-     */
-    @RequestMapping(value = "addUser", method = RequestMethod.POST)
-    @ResponseBody
-    public Object addUser(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password
-    ) {
-        if (password == null || password.equals("")) {
-            return retMsg.Set(MsgType.ERROR);
-        }
-        if (username == null || username.equals("")) {
-            return retMsg.Set(MsgType.ERROR);
-        }
-        // 如果用户名重复，直接返回error
-        if (userService.isUsernameExist(username)) {
-            return retMsg.Set(MsgType.ERROR);
-        }
-        boolean success = userService.addUser(username, password);
-        if (success)
-            return retMsg.Set(MsgType.SUCCESS);
-        else
-            return retMsg.Set(MsgType.ERROR);
     }
 
     /**
@@ -79,7 +47,7 @@ public class UserManagerController extends BaseController {
      */
     @RequestMapping(value = "editUser", method = RequestMethod.POST)
     @ResponseBody
-    public Object editUser(@RequestBody SysUser user) {
+    public Object editUser(@RequestBody User user) {
         if (user.getPassword() == null || user.getPassword().equals("")) {
             return retMsg.Set(MsgType.ERROR);
         }
@@ -108,26 +76,10 @@ public class UserManagerController extends BaseController {
         return retMsg.Set(MsgType.SUCCESS);
     }
 
-    /**
-     * 删除指定id的所有用户
-     *
-     * @param ids id数组
-     * @return 指定id的所有用户都被删除时返回成功
-     */
-    @RequestMapping(value = "deleteUser", method = RequestMethod.POST)
-    @ResponseBody
-    public Object deleteUser(@RequestParam("idList[]") String[] ids) {
-        boolean success = userService.deleteUserByIds(ids);
-        if (success)
-            return retMsg.Set(MsgType.SUCCESS);
-        else
-            return retMsg.Set(MsgType.ERROR);
-    }
-
     @RequestMapping(value = "getRoleList", method = RequestMethod.POST)
     @ResponseBody
     public Object getRoleList() {
-        List<SysRole> roleList = roleService.getAllRoles();
+        List<Role> roleList = roleService.getAllRoles();
         return retMsg.Set(MsgType.SUCCESS, roleList);
     }
 

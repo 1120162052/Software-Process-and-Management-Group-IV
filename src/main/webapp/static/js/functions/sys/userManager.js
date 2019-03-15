@@ -5,7 +5,7 @@
  * @param callback
  */
 let validateUsername = function (rule, value, callback) {
-    let url = '/functions/sys/userManager/validateUsername';
+    let url = '/api/sys/user/checkUsername';
     let data = {
         username: value
     };
@@ -13,7 +13,7 @@ let validateUsername = function (rule, value, callback) {
         callback(new Error('用户名不能为空'));
         return;
     }
-    ajaxPost(url, data, function (d) {
+    ajaxPostJSON(url, data, function (d) {
         if (d.code === 'error') {
             callback(new Error('用户名已被注册'));
         } else {
@@ -98,11 +98,9 @@ let app = new Vue({
         },
         // 刷新table的数据
         getUserList: function () {
-            let url = "/functions/sys/userManager/getUserList";
+            let url = "/api/sys/user/getList";
             let data = {
-                pageIndex: this.table.params.pageIndex,
-                pageSize: this.table.params.pageSize,
-                searchKey: this.table.params.searchKey
+                page: this.table.params
             };
             let app = this;
             this.table.loading = true;
@@ -117,14 +115,11 @@ let app = new Vue({
             // 首先检测表单数据是否合法
             this.$refs['form_addUser'].validate((valid) => {
                 if (valid) {
-                    let url = "/functions/sys/userManager/addUser";
-                    let data = {
-                        username: this.dialog.addUser.formData.username,
-                        password: this.dialog.addUser.formData.password
-                    };
+                    let url = "/api/sys/user/put";
+                    let data = this.dialog.addUser.formData;
                     let app = this;
                     app.dialog.addUser.loading = true;
-                    ajaxPost(url, data, function (d) {
+                    ajaxPostJSON(url, data, function (d) {
                         app.dialog.addUser.loading = false;
                         app.dialog.addUser.visible = false;
                         window.parent.app.showMessage('添加成功！', 'success');
@@ -145,7 +140,7 @@ let app = new Vue({
             // 首先检测表单数据是否合法
             this.$refs['form_editUser'].validate((valid) => {
                 if (valid) {
-                    let url = "/functions/sys/userManager/editUser";
+                    let url = "/api/sys/user/update";
                     let data = this.dialog.editUser.formData;
                     let app = this;
                     app.dialog.editUser.loading = true;
@@ -184,20 +179,22 @@ let app = new Vue({
                 let idList = [];
                 if (type === 'single') {
                     let id = val;
-                    idList.push(id);
+                    idList.push({
+                        id: id
+                    });
                 } else {
                     let selectionList = val;
                     for (let i = 0; i < selectionList.length; i++) {
-                        idList.push(selectionList[i].id);
+                        idList.push({
+                            id: selectionList[i].id
+                        });
                     }
                 }
-                let url = '/functions/sys/userManager/deleteUser';
-                let data = {
-                    idList: idList
-                };
+                let url = '/api/sys/user/deleteList';
+                let data = idList;
                 let app = this;
                 app.fullScreenLoading = true;
-                ajaxPost(url, data, function (d) {
+                ajaxPostJSON(url, data, function (d) {
                     app.fullScreenLoading = false;
                     window.parent.app.showMessage('删除成功！', 'success');
                     app.getUserList();
@@ -244,11 +241,7 @@ let app = new Vue({
         },
         // 测试按钮
         test: function () {
-            let url = '/functions/sys/userManager/test';
-            let data = null;
-            ajaxPost(url, data, function (d) {
 
-            });
         },
     },
     mounted: function () {

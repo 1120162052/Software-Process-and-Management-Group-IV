@@ -4,12 +4,12 @@ import team.abc.ssm.common.persistence.DataEntity;
 
 import java.util.List;
 
-public class SysRole extends DataEntity<SysRole> {
+public class Role extends DataEntity<Role> {
 
     private String name;
     private String code;
 
-    private List<SysFunction> functionList; // 角色拥有的功能列表
+    private List<Function> functionList; // 角色拥有的功能列表
 
     public String getName() {
         return name;
@@ -27,11 +27,11 @@ public class SysRole extends DataEntity<SysRole> {
         this.code = code;
     }
 
-    public List<SysFunction> getFunctionList() {
+    public List<Function> getFunctionList() {
         return functionList;
     }
 
-    public void setFunctionList(List<SysFunction> functionList) {
+    public void setFunctionList(List<Function> functionList) {
         this.functionList = functionList;
     }
 }

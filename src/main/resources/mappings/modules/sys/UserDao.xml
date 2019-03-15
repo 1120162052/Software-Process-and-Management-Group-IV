@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="team.abc.ssm.modules.sys.dao.SysUserDao">
+<mapper namespace="team.abc.ssm.modules.sys.dao.UserDao">
 
-    <resultMap id="sysUserBean" type="sysUser">
+    <resultMap id="sysUserBean" type="user">
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
@@ -13,7 +13,7 @@
         <result column="common_create_date" property="commonCreateDate"/>
         <result column="common_modify_date" property="commonModifyDate"/>
         <!-- 用户相关的角色列表 -->
-        <collection property="roleList" ofType="sysRole">
+        <collection property="roleList" ofType="Role">
             <id column="roleId" property="id"/>
             <result column="roleName" property="name"/>
             <result column="roleCode" property="code"/>
@@ -86,7 +86,7 @@
     </select>
 
     <!-- 添加一名新用户 -->
-    <insert id="insert" parameterType="sysUser">
+    <insert id="insert" parameterType="User">
         insert into sys_entity_user (username,
                                      password,
                                      id,
@@ -106,18 +106,18 @@
     </insert>
 
     <!-- 更新指定id用户的信息 -->
-    <update id="update" parameterType="sysUser">
+    <update id="update" parameterType="User">
         update sys_entity_user
         set password = #{password}
         where id = #{id}
     </update>
 
     <!-- 删除指定id的用户 -->
-    <delete id="deleteByIds" parameterType="string">
+    <delete id="deleteByIds" parameterType="user">
         delete from sys_entity_user where id in
-        <foreach collection="array" index="index" item="id"
+        <foreach collection="list" index="index" item="item"
                  open="(" separator="," close=")">
-            #{id}
+            #{item.id}
         </foreach>
     </delete>
 

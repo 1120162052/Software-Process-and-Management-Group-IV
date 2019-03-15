@@ -4,12 +4,12 @@ import team.abc.ssm.common.persistence.DataEntity;
 
 import java.util.List;
 
-public class SysUser extends DataEntity<SysUser> {
+public class User extends DataEntity<User> {
 
     private String username;
     private String password;
 
-    private List<SysRole> roleList; // 相关角色列表
+    private List<Role> roleList; // 相关角色列表
 
     public String getUsername() {
         return username;
@@ -27,11 +27,11 @@ public class SysUser extends DataEntity<SysUser> {
         this.password = password;
     }
 
-    public List<SysRole> getRoleList() {
+    public List<Role> getRoleList() {
         return roleList;
     }
 
-    public void setRoleList(List<SysRole> roleList) {
+    public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
     }
 }

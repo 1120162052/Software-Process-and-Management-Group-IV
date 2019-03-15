@@ -2,19 +2,19 @@ package team.abc.ssm.modules.sys.service.map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import team.abc.ssm.modules.sys.dao.map.SysUserRoleDao;
-import team.abc.ssm.modules.sys.entity.SysRole;
-import team.abc.ssm.modules.sys.entity.SysUser;
-import team.abc.ssm.modules.sys.entity.map.SysUserRole;
+import team.abc.ssm.modules.sys.dao.map.UserRoleDao;
+import team.abc.ssm.modules.sys.entity.Role;
+import team.abc.ssm.modules.sys.entity.User;
+import team.abc.ssm.modules.sys.entity.map.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SysUserRoleService {
+public class UserRoleService {
 
     @Autowired
-    private SysUserRoleDao userRoleDao;
+    private UserRoleDao userRoleDao;
 
     /**
      * 覆盖式更新一个用户拥有的角色（缺点：丢失创建记录）
@@ -23,11 +23,12 @@ public class SysUserRoleService {
      * @param roleList 用户拥有的所有角色
      * @return 成功与否
      */
-    public boolean update(SysUser user, List<SysRole> roleList) {
+    public boolean update(User user, List<Role> roleList) {
         userRoleDao.deleteByUserId(user);
-        List<SysUserRole> userRoleList = new ArrayList<>();
-        for (SysRole role : roleList) {
-            SysUserRole userRole = new SysUserRole();
+        if (roleList.size() == 0) return true;
+        List<UserRole> userRoleList = new ArrayList<>();
+        for (Role role : roleList) {
+            UserRole userRole = new UserRole();
             userRole.setRoleId(role.getId());
             userRole.setUserId(user.getId());
             userRole.preInsert();

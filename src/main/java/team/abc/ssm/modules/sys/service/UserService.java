@@ -3,32 +3,29 @@ package team.abc.ssm.modules.sys.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.abc.ssm.common.persistence.Page;
-import team.abc.ssm.modules.sys.dao.SysUserDao;
-import team.abc.ssm.modules.sys.entity.SysRole;
-import team.abc.ssm.modules.sys.entity.SysUser;
-import team.abc.ssm.modules.sys.entity.map.SysUserRole;
+import team.abc.ssm.modules.sys.dao.UserDao;
+import team.abc.ssm.modules.sys.entity.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class SysUserService {
+public class UserService {
 
     @Autowired
-    private SysUserDao userDao;
+    private UserDao userDao;
 
     /**
      * @param username 用户名
      * @return 对应用户对象
      */
-    public SysUser getUserByUsername(String username) {
+    public User getUserByUsername(String username) {
         return userDao.selectByUsername(username);
     }
 
     /**
      * @return 获取所有用户
      */
-    public List<SysUser> getAllUsers() {
+    public List<User> getAllUsers() {
         return userDao.selectAll();
     }
 
@@ -38,9 +35,9 @@ public class SysUserService {
      * @param page 分页参数
      * @return 用户列表以及total
      */
-    public Page<SysUser> getUsersByPage(Page<SysUser> page) {
+    public Page<User> getUsersByPage(Page<User> page) {
         // 先获取分页的users
-        List<SysUser> userList = userDao.selectByPage(page);
+        List<User> userList = userDao.selectByPage(page);
         // 再查询具体内容
         page.setResultList(userDao.selectByIds(userList));
         page.setTotal(userDao.selectSearchCount(page.getSearchKey()));
@@ -54,21 +51,13 @@ public class SysUserService {
      * @return 是否
      */
     public boolean isUsernameExist(String username) {
-        SysUser user = userDao.selectByUsername(username);
+        User user = userDao.selectByUsername(username);
         return user != null;
     }
 
-    /**
-     * 创建用户
-     *
-     * @param username 用户名
-     * @param password 密码
-     * @return 成功与否
-     */
-    public boolean addUser(String username, String password) {
-        SysUser user = new SysUser();
-        user.setUsername(username);
-        user.setPassword(password);
+    public boolean addUser(User user) {
+        if (isUsernameExist(user.getUsername()))
+            return false;
         user.preInsert();
         int count = userDao.insert(user);
         return count == 1;
@@ -78,19 +67,13 @@ public class SysUserService {
      * @param user 用户对象
      * @return 成功与否
      */
-    public boolean update(SysUser user) {
+    public boolean update(User user) {
         int count = userDao.update(user);
         return count == 1;
     }
 
-    /**
-     * 删除指定id的所有用户
-     *
-     * @param ids id数组
-     * @return 指定id的所有用户都被删除时返回true
-     */
-    public boolean deleteUserByIds(String[] ids) {
-        int count = userDao.deleteByIds(ids);
-        return count == ids.length;
+    public boolean deleteUserByIds(List<User> userList) {
+        int count = userDao.deleteByIds(userList);
+        return count == userList.size();
     }
 }

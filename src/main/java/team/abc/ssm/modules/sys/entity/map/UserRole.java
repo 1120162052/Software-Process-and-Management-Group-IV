@@ -3,7 +3,7 @@ package team.abc.ssm.modules.sys.entity.map;
 import team.abc.ssm.common.persistence.DataEntity;
 
 
-public class SysUserRole extends DataEntity<SysUserRole> {
+public class UserRole extends DataEntity<UserRole> {
     private String userId;
     private String roleId;
 
