@@ -130,7 +130,7 @@ public class FunctionService {
      * 删除一个分类或功能
      * 实现：删除列表中第一个元素，后续元素更新index，index需在前端更新好
      */
-    public boolean delete(List<Function> list){
+    public boolean delete(List<Function> list) {
         boolean success1 = deleteById(list.get(0));
         list.remove(0);
         boolean success2 = updateIndex(list);
@@ -144,6 +144,23 @@ public class FunctionService {
      * @return 成功与否
      */
     public boolean updateIndex(List<Function> functionList) {
+        if (functionList.size() <= 0) return true;
+        int count = functionDao.updateIndex(functionList);
+        return count == functionList.size();
+    }
+
+    public boolean updateCategoryList(List<Function> categoryList) {
+        List<Function> functionList = new ArrayList<>();
+        for (Function c : categoryList) {
+            functionList.add(c);
+            for (Function f : c.getFunctionList()) {
+                functionList.add(f);
+            }
+        }
+        return updateList(functionList);
+    }
+
+    public boolean updateList(List<Function> functionList) {
         if (functionList.size() <= 0) return true;
         int count = functionDao.updateIndex(functionList);
         return count == functionList.size();

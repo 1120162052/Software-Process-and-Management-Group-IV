@@ -1,6 +1,7 @@
 package team.abc.ssm.modules.sys.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import java.util.List;
  * delete                   删除（传入的参数可以是分类列表或功能列表，要删除的对象放在第一个，
  * ...                      后续的将被更新index，index在前端更新好）
  * update                   更新
+ * updateCategoryList       参数为一个分类列表，更新所有分类以及包含的所有子功能（index更新）
  */
 @Controller
 @RequestMapping("api/sys/function")
@@ -86,5 +88,12 @@ public class FunctionApi extends BaseApi {
         if (functionService.update(function))
             return retMsg.Set(MsgType.SUCCESS);
         return retMsg.Set(MsgType.ERROR);
+    }
+
+    @RequestMapping(value = "updateCategoryList", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateCategoryList(@RequestBody List<Function> categoryList){
+        functionService.updateCategoryList(categoryList);
+        return retMsg.Set(MsgType.SUCCESS);
     }
 }

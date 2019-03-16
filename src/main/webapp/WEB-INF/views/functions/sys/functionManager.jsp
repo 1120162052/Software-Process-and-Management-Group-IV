@@ -25,6 +25,8 @@
                 <span slot-scope="{ node, data }" class="tree-row">
                     <span :style="data.enable ? {} : {'color': 'rgb(184, 187, 192)'}"><span
                             :style="data.type === 0 ? {'font-size': '14px', 'font-weight': 'bold'} : {'font-size': '13px'}">
+                        <i :class="data.icon === '' || data.icon == null ? 'fa fa-ban' : data.icon" aria-hidden="true"
+                           :style="data.type === 0 ? {'width': '20px'} : {'width': '15px'}"></i>
                         {{ data.name }}
                     </span></span>
                     <span class="mini-button-group">
@@ -62,7 +64,6 @@
                     <el-input type="textarea" v-model="form.data.commonRemarks"></el-input>
                 </el-form-item>
                 <el-form-item label="图标" prop="icon">
-                    <%--<el-input v-model="form.data.icon"></el-input>--%>
                     <el-button-group>
                         <el-button style="font-size: 20px;padding: 5px 10px;width: 52px;height: 32px;">
                             <i :class="form.data.icon" aria-hidden="true"></i>

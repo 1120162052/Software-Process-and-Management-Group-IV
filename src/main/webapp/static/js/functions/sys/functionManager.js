@@ -6,7 +6,8 @@ let app = new Vue({
             appendCategory: '/api/sys/function/appendCategory',
             appendFunction: '/api/sys/function/appendFunction',
             deleteFunction: '/api/sys/function/delete',
-            getCategoryList: '/api/sys/function/getCategoryList'
+            getCategoryList: '/api/sys/function/getCategoryList',
+            updateCategoryList: '/api/sys/function/updateCategoryList',
         },
         tree: [], // 功能树
         treeProp: {
@@ -169,7 +170,20 @@ let app = new Vue({
             // console.log('tree drag end: ', dropNode && dropNode.label, dropType);
         },
         handleDrop: function (draggingNode, dropNode, dropType, ev) {
-            // console.log('tree drop: ', dropNode.label, dropType);
+            let app = this;
+            app.treeLoading = true;
+            // 重设index
+            for (let i = 0; i < this.tree.length; i++) {
+                this.tree[i].index = i;
+                for (let j = 0; j < this.tree[i].functionList.length; j++) {
+                    this.tree[i].functionList[j].index = j;
+                    this.tree[i].functionList[j].parentId = this.tree[i].id;
+                }
+            }
+            ajaxPostJSON(this.urls.updateCategoryList, this.tree, function (d) {
+                app.treeLoading = false;
+                window.parent.app.showMessage('位置更新成功!', 'success');
+            })
         },
         allowDrop: function (draggingNode, dropNode, type) {
             // 拖动节点为分类节点时
@@ -201,7 +215,7 @@ let app = new Vue({
             app.tree = copy(d.data);
             app.treeLoading = false;
             // 获取图标库
-            ajaxGet("/static/plugins/font-awesome-4.7.0/tubiao.txt", null, function(d){
+            ajaxGet("/static/plugins/font-awesome-4.7.0/tubiao.txt", null, function (d) {
                 app.icons = JSON.parse(d).icons;
             })
         })
