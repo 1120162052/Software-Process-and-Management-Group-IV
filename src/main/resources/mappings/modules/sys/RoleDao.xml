@@ -39,7 +39,7 @@
         from sys_entity_role a
         <where>
             <if test="searchKey != '' and searchKey != null">
-                and a.username like concat('%', #{searchKey}, '%')
+                and a.name like concat('%', #{searchKey}, '%')
             </if>
         </where>
         limit #{pageStart}, #{pageSize}
@@ -58,7 +58,7 @@
         select count(*) from sys_entity_role a
         <where>
             <if test="searchKey != '' and searchKey != null">
-                and a.username like concat('%', #{searchKey}, '%')
+                and a.name like concat('%', #{searchKey}, '%')
             </if>
         </where>
     </select>

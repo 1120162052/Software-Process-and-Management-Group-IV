@@ -22,9 +22,9 @@
         <span style="float: right;margin-right: 10px;">
             <el-input size="small" placeholder="请输入角色名搜索相关角色" suffix-icon="el-icon-search"
                       style="width: 250px;margin-right: 10px;" v-model="table.params.searchKey"
-                      @keyup.enter.native="getRoleList()">
+                      @keyup.enter.native="table.params.pageIndex=1;getRoleList()">
             </el-input>
-            <el-button size="small" type="primary" style="position:relative;" @click="getRoleList()">
+            <el-button size="small" type="primary" style="position:relative;" @click="table.params.pageIndex=1;getRoleList()">
                 <span>搜索</span>
             </el-button>
         </span>

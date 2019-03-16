@@ -56,15 +56,15 @@ let app = new Vue({
         // 处理pageSize变化
         handleSizeChange: function (newSize) {
             this.table.params.pageSize = newSize;
-            this.getList();
+            this.getRoleList();
         },
         // 处理pageIndex变化
         handleCurrentChange: function (newIndex) {
             this.table.params.pageIndex = newIndex;
-            this.getList();
+            this.getRoleList();
         },
         // 刷新table的数据
-        getList: function () {
+        getRoleList: function () {
             let data = {page: this.table.params};
             let app = this;
             app.table.loading = true;
@@ -87,7 +87,7 @@ let app = new Vue({
                         app.dialog.add.loading = false;
                         app.dialog.add.visible = false;
                         window.parent.app.showMessage('添加成功！', 'success');
-                        app.getList(); // 添加完成后刷新页面
+                        app.getRoleList(); // 添加完成后刷新页面
                     }, function () {
                         app.dialog.add.loading = false;
                         app.dialog.add.visible = false;
@@ -112,7 +112,7 @@ let app = new Vue({
                         app.dialog.edit.loading = false;
                         app.dialog.edit.visible = false;
                         window.parent.app.showMessage('编辑成功！', 'success');
-                        app.getList(); // 编辑完成后刷新页面
+                        app.getRoleList(); // 编辑完成后刷新页面
                     }, function () {
                         app.dialog.edit.loading = false;
                         app.dialog.edit.visible = false;
@@ -173,7 +173,7 @@ let app = new Vue({
                 ajaxPost(this.urls.deleteRoleByIdList, data, function (d) {
                     app.fullScreenLoading = false;
                     window.parent.app.showMessage('删除成功！', 'success');
-                    app.getList();
+                    app.getRoleList();
                 })
             }).catch(() => {
                 window.parent.app.showMessage('已取消删除', 'warning');
@@ -219,7 +219,7 @@ let app = new Vue({
         ajaxPost(this.urls.getCategoryList, data, function (d) {
             app.fullScreenLoading = false;
             app.functionTree = d.data;
-            app.getList();
+            app.getRoleList();
         });
     }
 });

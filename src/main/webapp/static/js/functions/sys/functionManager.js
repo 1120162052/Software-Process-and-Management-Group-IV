@@ -108,7 +108,7 @@ let app = new Vue({
                 type: 'warning'
             }).then(() => {
                 let data = [];
-                if (node.type === 0) {
+                if (node.type === 0) {  //删除分类
                     for (let i = node.index; i < this.tree.length; i++) {
                         let category = copy(this.tree[i]);
                         category.index -= 1;
@@ -116,7 +116,7 @@ let app = new Vue({
                     }
                     let app = this;
                     app.treeLoading = true;
-                    ajaxPostJSON(url, data, function (d) {
+                    ajaxPostJSON(this.urls.deleteFunction, data, function (d) {
                         app.treeLoading = false;
                         if (d.code === 'success') {
                             window.parent.app.showMessage('删除成功', 'success');
@@ -128,7 +128,7 @@ let app = new Vue({
                             window.parent.app.showMessage('删除失败', 'error');
                         }
                     })
-                } else if (node.type === 1) {
+                } else if (node.type === 1) {   //删除功能
                     let parent = _node.parent.data;
                     for (let i = node.index; i < parent.functionList.length; i++) {
                         let func = copy(parent.functionList[i]);
