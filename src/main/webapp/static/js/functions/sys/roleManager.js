@@ -6,7 +6,8 @@ let app = new Vue({
             updateRoleFunction: '/api/sys/map/roleFunction/update',
             deleteRoleByIdList: '/api/sys/role/deleteByIdList',
             getCategoryListByRole: '/api/sys/function/getCategoryListByRole',
-            getCategoryList: '/api/sys/function/getCategoryList'
+            getCategoryList: '/api/sys/function/getCategoryList',
+            putRole: '/api/sys/role/put',
         },
         fullScreenLoading: false,
         table: {
@@ -79,11 +80,10 @@ let app = new Vue({
             // 首先检测表单数据是否合法
             this.$refs['form_add'].validate((valid) => {
                 if (valid) {
-                    let url = this.rootUrl + 'add';
                     let data = this.dialog.add.formData;
                     let app = this;
                     app.dialog.add.loading = true;
-                    ajaxPostJSON(url, data, function (d) {
+                    ajaxPostJSON(app.urls.putRole, data, function (d) {
                         app.dialog.add.loading = false;
                         app.dialog.add.visible = false;
                         window.parent.app.showMessage('添加成功！', 'success');

@@ -2,39 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.abc.ssm.modules.sys.dao.RoleDao">
 
-    <resultMap id="sysRoleBean" type="role">
+    <resultMap id="roleBean" type="role">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="code" property="code"/>
-        <result column="common_remarks" property="commonRemarks"/>
-        <result column="common_del_flag" property="commonDelFlag"/>
-        <result column="common_create_user_id" property="commonCreateUserId"/>
-        <result column="common_modify_user_id" property="commonModifyUserId"/>
-        <result column="common_create_date" property="commonCreateDate"/>
-        <result column="common_modify_date" property="commonModifyDate"/>
+        <result column="remarks" property="remarks"/>
+        <result column="createUserId" property="createUserId"/>
+        <result column="modifyUserId" property="modifyUserId"/>
+        <result column="createDate" property="createDate"/>
+        <result column="modifyDate" property="modifyDate"/>
+        <result column="delFlag" property="delFlag"/>
     </resultMap>
 
     <select id="getRolesByUsername" resultType="team.abc.ssm.modules.sys.entity.Role" parameterType="string">
-        select
-        a.name as name,
-        a.code as code,
-        <include refid="commonColumnsWithA"/>
+        select a.*
         from sys_entity_user b
-        left join sys_map_user_role c on c.user_id = b.id
-        left join sys_entity_role a on a.id = c.role_id
+                 left join sys_map_user_role c on c.userId = b.id
+                 left join sys_entity_role a on a.id = c.roleId
         where b.username = #{0}
     </select>
 
     <!-- 获取所有角色 -->
     <select id="getAllRoles" resultType="team.abc.ssm.modules.sys.entity.Role">
-        select
-        a.name as name,
-        a.code as code,
-        <include refid="commonColumnsWithA"/>
+        select a.*
         from sys_entity_role a
     </select>
 
-    <select id="selectByPage" resultMap="sysRoleBean" parameterType="page">
+    <select id="selectByPage" resultMap="roleBean" parameterType="page">
         select a.id
         from sys_entity_role a
         <where>
@@ -45,7 +39,7 @@
         limit #{pageStart}, #{pageSize}
     </select>
 
-    <select id="selectByIds" resultMap="sysRoleBean">
+    <select id="selectByIds" resultMap="roleBean">
         select a.*
         from sys_entity_role a
         where a.id in
@@ -62,22 +56,4 @@
             </if>
         </where>
     </select>
-
-    <sql id="commonColumns">
-        id as id,
-        common_create_user_id as commonCreateUserId,
-        common_create_date as commonCreateDate,
-        common_modify_user_id as commonModifyUserId,
-        common_modify_date as commonModifyDate,
-        common_remarks as commonRemarks
-    </sql>
-
-    <sql id="commonColumnsWithA">
-        a.id as id,
-        a.common_create_user_id as commonCreateUserId,
-        a.common_create_date as commonCreateDate,
-        a.common_modify_user_id as commonModifyUserId,
-        a.common_modify_date as commonModifyDate,
-        a.common_remarks as commonRemarks
-    </sql>
 </mapper>

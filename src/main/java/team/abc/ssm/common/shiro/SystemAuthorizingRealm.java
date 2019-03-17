@@ -6,6 +6,7 @@ import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import team.abc.ssm.modules.sys.entity.User;
 import team.abc.ssm.modules.sys.service.FunctionService;
 import team.abc.ssm.modules.sys.service.RoleService;
 import team.abc.ssm.modules.sys.service.UserService;
@@ -45,7 +46,9 @@ public class SystemAuthorizingRealm extends AuthorizingRealm {
         String username = token.getUsername();
         String password = new String(token.getPassword());
         // 根据用户名获取数据库中正确的密码
-        String passwordInDB = userService.getUserByUsername(username).getPassword();
+        User _user = new User();
+        _user.setUsername(username);
+        String passwordInDB = userService.getUserByUsername(_user).getPassword();
         // 账号不存在或密码错误
         if (passwordInDB == null || !passwordInDB.equals(password)) {
             throw new AuthenticationException();

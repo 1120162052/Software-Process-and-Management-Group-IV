@@ -11,15 +11,15 @@ import java.util.Date;
  */
 public class DataEntity<T> {
 
-    protected String id;
-    protected String commonRemarks;         // 备注
-    protected String commonDelFlag;         // 删除标记（0：正常；1：删除；2：审核）
-    protected String commonCreateUserId;    // 创建者id
-    protected String commonModifyUserId;    // 最后修改者id
-    protected Date commonCreateDate;        // 创建日期
-    protected Date commonModifyDate;        // 最后修改日期
+    private String id;
+    private String remarks;         // 备注
+    private String createUserId;    // 创建者id
+    private String modifyUserId;    // 最后修改者id
+    private Date createDate;        // 创建日期
+    private Date modifyDate;        // 最后修改日期
+    private boolean delFlag;        // 是否被删除
 
-    protected Page<T> page; // 分页对象
+    private Page<T> page; // 分页对象
 
     public DataEntity() {
 
@@ -30,19 +30,20 @@ public class DataEntity<T> {
      */
     public void preInsert() {
         id = IdGen.uuid();
-        commonDelFlag = "0";
-        commonCreateUserId = UserUtils.getCurrentUser().getId();
-        commonModifyUserId = commonCreateUserId;
-        commonCreateDate = new Date();
-        commonModifyDate = commonCreateDate;
+        remarks = "";
+        createUserId = UserUtils.getCurrentUser().getId();
+        modifyUserId = createUserId;
+        createDate = new Date();
+        modifyDate = createDate;
+        delFlag = false;
     }
 
     /**
      * 更新之前手动调用
      */
     public void preUpdate() {
-        commonModifyUserId = commonCreateUserId;
-        commonModifyDate = commonCreateDate;
+        modifyUserId = UserUtils.getCurrentUser().getId();
+        modifyDate = new Date();
     }
 
     public String getId() {
@@ -53,59 +54,59 @@ public class DataEntity<T> {
         this.id = id;
     }
 
-    public String getCommonCreateUserId() {
-        return commonCreateUserId;
-    }
-
-    public void setCommonCreateUserId(String commonCreateUserId) {
-        this.commonCreateUserId = commonCreateUserId;
-    }
-
-    public Date getCommonCreateDate() {
-        return commonCreateDate;
-    }
-
-    public void setCommonCreateDate(Date commonCreateDate) {
-        this.commonCreateDate = commonCreateDate;
-    }
-
-    public String getCommonModifyUserId() {
-        return commonModifyUserId;
-    }
-
-    public void setCommonModifyUserId(String commonModifyUserId) {
-        this.commonModifyUserId = commonModifyUserId;
-    }
-
-    public Date getCommonModifyDate() {
-        return commonModifyDate;
-    }
-
-    public void setCommonModifyDate(Date commonModifyDate) {
-        this.commonModifyDate = commonModifyDate;
-    }
-
-    public String getCommonRemarks() {
-        return commonRemarks;
-    }
-
-    public void setCommonRemarks(String commonRemarks) {
-        this.commonRemarks = commonRemarks;
-    }
-
-    public String getCommonDelFlag() {
-        return commonDelFlag;
-    }
-
-    public void setCommonDelFlag(String commonDelFlag) {
-        this.commonDelFlag = commonDelFlag;
-    }
-
     public Page<T> getPage() {
         return page;
     }
 
     public void setPage(Page<T> page) {
         this.page = page;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public boolean isDelFlag() {
+        return delFlag;
+    }
+
+    public void setDelFlag(boolean delFlag) {
+        this.delFlag = delFlag;
+    }
+
+    public String getCreateUserId() {
+        return createUserId;
+    }
+
+    public void setCreateUserId(String createUserId) {
+        this.createUserId = createUserId;
+    }
+
+    public String getModifyUserId() {
+        return modifyUserId;
+    }
+
+    public void setModifyUserId(String modifyUserId) {
+        this.modifyUserId = modifyUserId;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getModifyDate() {
+        return modifyDate;
+    }
+
+    public void setModifyDate(Date modifyDate) {
+        this.modifyDate = modifyDate;
     }
 }

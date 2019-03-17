@@ -16,6 +16,7 @@ let validateUsername = function (rule, value, callback) {
     ajaxPostJSON(url, data, function (d) {
         if (d.code === 'error') {
             callback(new Error('用户名已被注册'));
+            callback(new Error('用户名已被注册'));
         } else {
             callback();
         }

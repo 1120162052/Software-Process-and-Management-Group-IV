@@ -41,7 +41,7 @@
         <el-table-column label="密码" prop="password" width="200"></el-table-column>
         <el-table-column label="创建时间">
             <template slot-scope="scope">
-                {{ formatTimestamp(scope.row.commonCreateDate) }}
+                {{ formatTimestamp(scope.row.createDate) }}
             </template>
         </el-table-column>
         <el-table-column label="操作" width="130" header-align="center" align="center">

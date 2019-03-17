@@ -38,7 +38,7 @@
         <el-table-column label="角色代码" prop="code" width="200"></el-table-column>
         <el-table-column label="创建时间">
             <template slot-scope="scope">
-                {{ formatTimestamp(scope.row.commonCreateDate) }}
+                {{ formatTimestamp(scope.row.createDate) }}
             </template>
         </el-table-column>
         <el-table-column label="操作" width="190" header-align="center" align="center">
@@ -74,7 +74,7 @@
         <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
                  :model="dialog.add.formData" :rules="dialog.add.rules"
                  ref="form_add" v-loading="dialog.add.loading" status-icon>
-            <el-form-item label="角色名" prop="name" class="is-required">
+            <el-form-item label="角色名" prop="name">
                 <el-input v-model="dialog.add.formData.name"></el-input>
             </el-form-item>
             <el-form-item label="角色代码" prop="code">
@@ -87,8 +87,8 @@
             </el-button>
         </div>
     </el-dialog>
-    <%-- 编辑用户窗口 --%>
-    <el-dialog title="编辑用户" :visible.sync="dialog.edit.visible" @close="resetForm('form_edit')">
+    <%-- 编辑角色窗口 --%>
+    <el-dialog title="编辑角色" :visible.sync="dialog.edit.visible" @close="resetForm('form_edit')">
         <el-form label-position="left" label-width="80px"
                  style="padding: 0 100px;height: 350px;overflow-y: scroll;"
                  :model="dialog.edit.formData" :rules="dialog.edit.rules"

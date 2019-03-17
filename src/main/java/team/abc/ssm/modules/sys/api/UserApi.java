@@ -1,9 +1,5 @@
 package team.abc.ssm.modules.sys.api;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -64,13 +60,13 @@ public class UserApi extends BaseApi {
     @RequestMapping(value = "getList", method = RequestMethod.POST)
     @ResponseBody
     public Object getList(@RequestBody User user) {
-        return retMsg.Set(MsgType.SUCCESS, userService.getUsersByPage(user.getPage()));
+        return retMsg.Set(MsgType.SUCCESS, userService.getUsersByPage(user));
     }
 
     @RequestMapping(value = "checkUsername", method = RequestMethod.POST)
     @ResponseBody
     public Object checkUsername(@RequestBody User user) {
-        if (userService.isUsernameExist(user.getUsername())) {
+        if (userService.isUsernameExist(user)) {
             return retMsg.Set(MsgType.ERROR);
         }
         return retMsg.Set(MsgType.SUCCESS);

@@ -27,7 +27,7 @@ public class RoleService {
     }
 
     // 获取所有角色
-    public List<Role> getAllRoles(){
+    public List<Role> getAllRoles() {
         return roleDao.getAllRoles();
     }
 
@@ -41,10 +41,16 @@ public class RoleService {
         return false;
     }
 
-    public Page<Role> getByPage(Page<Role> page){
+    public Page<Role> getByPage(Page<Role> page) {
         List<Role> roleList = roleDao.selectByPage(page);
         page.setResultList(roleDao.selectByIds(roleList));
         page.setTotal(roleDao.selectSearchCount(page));
         return page;
+    }
+
+    public boolean insert(Role role) {
+        role.preInsert();
+        int count = roleDao.insert(role);
+        return count == 1;
     }
 }

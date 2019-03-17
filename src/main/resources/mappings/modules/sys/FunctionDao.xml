@@ -6,64 +6,38 @@
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="code" property="code"/>
-        <result column="type" property="type"/>
-        <result column="parent_id" property="parentId"/>
+        <result column="parentId" property="parentId"/>
         <result column="url" property="url"/>
-        <result column="index_" property="index"/>
-        <result column="enable" property="enable"/>
         <result column="icon" property="icon"/>
-        <result column="common_remarks" property="commonRemarks"/>
-        <result column="common_del_flag" property="commonDelFlag"/>
-        <result column="common_create_user_id" property="commonCreateUserId"/>
-        <result column="common_modify_user_id" property="commonModifyUserId"/>
-        <result column="common_create_date" property="commonCreateDate"/>
-        <result column="common_modify_date" property="commonModifyDate"/>
+        <result column="enable" property="enable"/>
+        <result column="type" property="type"/>
+        <result column="index" property="index"/>
+        <result column="remarks" property="remarks"/>
+        <result column="createUserId" property="createUserId"/>
+        <result column="modifyUserId" property="modifyUserId"/>
+        <result column="createDate" property="createDate"/>
+        <result column="modifyDate" property="modifyDate"/>
+        <result column="delFlag" property="delFlag"/>
     </resultMap>
 
     <select id="selectByUsername" parameterType="string" resultType="Function">
-        select
-        a.name as 'name',
-        a.code as 'code',
-        a.type as type,
-        a.parent_id as parentId,
-        a.url as url,
-        a.index_ as 'index',
-        a.enable as 'enable',
-        a.icon as icon,
-        <include refid="commonColumnsWithA"/>
+        select a.*
         from sys_entity_user b
-        left join sys_map_user_role c on c.user_id = b.id
-        left join sys_map_role_function d on d.role_id = c.role_id
-        left join sys_entity_function a on a.id = d.function_id
-        where b.username = #{0} and a.enable = true
+                 left join sys_map_user_role c on c.userId = b.id
+                 left join sys_map_role_function d on d.roleId = c.roleId
+                 left join sys_entity_function a on a.id = d.functionId
+        where b.username = #{0}
+          and a.enable = true
         group by a.id -- 避免重复获取同一功能
     </select>
 
     <select id="selectAll" resultType="Function">
-        select
-        a.name as 'name',
-        a.code as 'code',
-        a.type as type,
-        a.parent_id as parentId,
-        a.url as url,
-        a.index_ as 'index',
-        a.enable as 'enable',
-        a.icon as icon,
-        <include refid="commonColumnsWithA"/>
+        select a.*
         from sys_entity_function a
     </select>
 
     <select id="selectAllEnabled" resultType="Function">
-        select
-        a.name as 'name',
-        a.code as 'code',
-        a.type as type,
-        a.parent_id as parentId,
-        a.url as url,
-        a.index_ as 'index',
-        a.enable as 'enable',
-        a.icon as icon,
-        <include refid="commonColumnsWithA"/>
+        select a.*
         from sys_entity_function a
         where a.enable = true
     </select>
@@ -71,8 +45,8 @@
     <select id="selectByRole" resultMap="sysFunctionBean" parameterType="Role">
         select a.*
         from sys_entity_function a
-                 left join sys_map_role_function b on b.function_id = a.id
-                 left join sys_entity_role c on c.id = b.role_id
+                 left join sys_map_role_function b on b.functionId = a.id
+                 left join sys_entity_role c on c.id = b.roleId
         where c.id = #{id}
         group by a.id
     </select>
@@ -80,34 +54,35 @@
     <insert id="insert" parameterType="Function">
         insert into sys_entity_function (name,
                                          code,
-                                         type,
-                                         parent_id,
+                                         parentId,
                                          url,
-                                         index_,
-                                         enable,
                                          icon,
+                                         enable,
+                                         type,
+                                         `index`,
                                          id,
-                                         common_remarks,
-                                         common_del_flag,
-                                         common_create_user_id,
-                                         common_modify_user_id,
-                                         common_create_date,
-                                         common_modify_date)
+                                         remarks,
+                                         createUserId,
+                                         modifyUserId,
+                                         createDate,
+                                         modifyDate,
+                                         delFlag
+        )
         values (#{name},
                 #{code},
-                #{type},
                 #{parentId},
                 #{url},
-                #{index},
-                #{enable},
                 #{icon},
+                #{enable},
+                #{type},
+                #{index},
                 #{id},
-                #{commonRemarks},
-                #{commonDelFlag},
-                #{commonCreateUserId},
-                #{commonModifyUserId},
-                #{commonCreateDate},
-                #{commonModifyDate})
+                #{remarks},
+                #{createUserId},
+                #{modifyUserId},
+                #{createDate},
+                #{modifyDate},
+                #{delFlag})
     </insert>
 
     <delete id="deleteById" parameterType="Function">
@@ -116,8 +91,8 @@
         where id = #{id}
     </delete>
 
-    <update id="updateIndex" parameterType="Function">
-        update sys_entity_function set index_ =
+    <update id="updateIndex" parameterType="function">
+        update sys_entity_function set `index` =
         case id
         <foreach collection="list" item="item">
             when #{item.id} then #{item.index}
@@ -131,38 +106,21 @@
 
     <update id="update" parameterType="Function">
         update sys_entity_function
-        set name                  = #{name},
-            code                  = #{code},
-            type                  = #{type},
-            parent_id             = #{parentId},
-            url                   = #{url},
-            index_                = #{index},
-            enable                = #{enable},
-            icon                  = #{icon},
-            common_remarks        = #{commonRemarks},
-            common_del_flag       = #{commonDelFlag},
-            common_create_user_id = #{commonCreateUserId},
-            common_modify_user_id = #{commonModifyUserId},
-            common_create_date    = #{commonCreateDate},
-            common_modify_date    = #{commonModifyDate}
+        set name         = #{name},
+            code         = #{code},
+            parentId     = #{parentId},
+            url          = #{url},
+            icon         = #{icon},
+            enable       = #{enable},
+            type         = #{type},
+            `index`      = #{index},
+            id           = #{id},
+            remarks      = #{remarks},
+            createUserId = #{createUserId},
+            modifyUserId = #{modifyUserId},
+            createDate   = #{createDate},
+            modifyDate   = #{modifyDate},
+            delFlag      = #{delFlag}
         where id = #{id}
     </update>
-
-    <sql id="commonColumns">
-        id as id,
-        common_create_user_id as commonCreateUserId,
-        common_create_date as commonCreateDate,
-        common_modify_user_id as commonModifyUserId,
-        common_modify_date as commonModifyDate,
-        common_remarks as commonRemarks
-    </sql>
-
-    <sql id="commonColumnsWithA">
-        a.id as id,
-        a.common_create_user_id as commonCreateUserId,
-        a.common_create_date as commonCreateDate,
-        a.common_modify_user_id as commonModifyUserId,
-        a.common_modify_date as commonModifyDate,
-        a.common_remarks as commonRemarks
-    </sql>
 </mapper>

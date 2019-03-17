@@ -9,6 +9,8 @@ public class User extends DataEntity<User> {
     private String username;
     private String password;
 
+    private UserInfo userInfo; // 存储详细信息
+
     private List<Role> roleList; // 相关角色列表
 
     public String getUsername() {
@@ -33,5 +35,13 @@ public class User extends DataEntity<User> {
 
     public void setRoleList(List<Role> roleList) {
         this.roleList = roleList;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
     }
 }

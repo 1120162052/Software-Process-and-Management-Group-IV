@@ -14,49 +14,30 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    /**
-     * @param username 用户名
-     * @return 对应用户对象
-     */
-    public User getUserByUsername(String username) {
-        return userDao.selectByUsername(username);
+    public User getUserByUsername(User user) {
+        return userDao.selectByUsername(user);
     }
 
-    /**
-     * @return 获取所有用户
-     */
     public List<User> getAllUsers() {
         return userDao.selectAll();
     }
 
-    /**
-     * 分页 + 搜索(模糊匹配用户名)获取用户列表和总数
-     *
-     * @param page 分页参数
-     * @return 用户列表以及total
-     */
-    public Page<User> getUsersByPage(Page<User> page) {
+    public Page<User> getUsersByPage(User user) {
         // 先获取分页的users
-        List<User> userList = userDao.selectByPage(page);
+        List<User> userList = userDao.selectByPage(user);
         // 再查询具体内容
-        page.setResultList(userDao.selectByIds(userList));
-        page.setTotal(userDao.selectSearchCount(page.getSearchKey()));
-        return page;
+        userDao.selectByIds(userList);
+        user.getPage().setResultList(userDao.selectByIds(userList));
+        user.getPage().setTotal(userDao.selectSearchCount(user));
+        return user.getPage();
     }
 
-    /**
-     * 检测用户名是否重复
-     *
-     * @param username 用户名
-     * @return 是否
-     */
-    public boolean isUsernameExist(String username) {
-        User user = userDao.selectByUsername(username);
-        return user != null;
+    public boolean isUsernameExist(User user) {
+        return userDao.selectByUsername(user) != null;
     }
 
     public boolean addUser(User user) {
-        if (isUsernameExist(user.getUsername()))
+        if (isUsernameExist(user))
             return false;
         user.preInsert();
         int count = userDao.insert(user);

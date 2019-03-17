@@ -18,6 +18,7 @@ import java.util.List;
  * getAllList       获取所有角色列表
  * getListByPage    分页查询角色
  * deleteByIdList   通过id批量删除
+ * put              添加角色
  */
 @Controller
 @RequestMapping("api/sys/role")
@@ -41,6 +42,13 @@ public class RoleApi extends BaseApi {
     @RequestMapping(value = "deleteByIdList", method = RequestMethod.POST)
     @ResponseBody
     public Object deleteByIdList(@RequestBody List<Role> roleList) {
+        return retMsg.Set(MsgType.SUCCESS);
+    }
+
+    @RequestMapping(value = "put", method = RequestMethod.POST)
+    @ResponseBody
+    public Object put(@RequestBody Role role){
+        roleService.insert(role);
         return retMsg.Set(MsgType.SUCCESS);
     }
 }

@@ -9,12 +9,12 @@ public class Function extends DataEntity<Function> {
 
     private String name;
     private String code;
-    private int type;
     private String parentId;
     private String url;
-    private int index;
-    private boolean enable;
     private String icon;
+    private boolean enable;
+    private int type;
+    private int index;
 
     private List<Function> functionList = new ArrayList<>(); // 分类具有的子功能列表
 
