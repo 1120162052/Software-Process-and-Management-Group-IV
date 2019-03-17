@@ -60,8 +60,8 @@
                 <el-form-item v-show="form.type === 'function'" label="地址" prop="url">
                     <el-input v-model="form.data.url"></el-input>
                 </el-form-item>
-                <el-form-item label="备注" prop="commonRemarks">
-                    <el-input type="textarea" v-model="form.data.commonRemarks"></el-input>
+                <el-form-item label="备注" prop="remarks">
+                    <el-input type="textarea" v-model="form.data.remarks"></el-input>
                 </el-form-item>
                 <el-form-item label="图标" prop="icon">
                     <el-button-group>
