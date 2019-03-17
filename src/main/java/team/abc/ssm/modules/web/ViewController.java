@@ -62,12 +62,11 @@ public class ViewController extends BaseController {
     /** 系统功能 **/
 
     /**
-     * 自定义功能
+     * 备案模块
      **/
-    @RequestMapping(value = "functions/custom/testFunction", method = RequestMethod.GET)
-    @RequiresPermissions("custom:testFunction")
+    @RequestMapping(value = "functions/record/fillRecord", method = RequestMethod.GET)
     public String custom_testFunction() {
-        return "functions/custom/testFunction";
+        return "functions/record/fillRecord";
     }
-    /** 自定义功能 **/
+    /** 备案模块 **/
 }
