@@ -59,6 +59,12 @@ public class ViewController extends BaseController {
     public String sys_dict(){
         return "functions/sys/dictManager";
     }
+
+    @RequestMapping(value = "functions/sys/dictTypeManager", method = RequestMethod.GET)
+    @RequiresPermissions("sys:dict")
+    public String sys_dictType(){
+        return "functions/sys/dictTypeManager";
+    }
     /** 系统功能 **/
 
     /**

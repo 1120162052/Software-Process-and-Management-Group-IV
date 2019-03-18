@@ -7,6 +7,10 @@ public class DictType extends DataEntity<DictType> {
     private String nameEn;
     private String parentId;
 
+    // 关联查询
+    private String parentNameCn;
+    private String parentNameEn;
+
     public String getParentId() {
         return parentId;
     }
@@ -29,5 +33,21 @@ public class DictType extends DataEntity<DictType> {
 
     public void setNameCn(String nameCn) {
         this.nameCn = nameCn;
+    }
+
+    public String getParentNameEn() {
+        return parentNameEn;
+    }
+
+    public void setParentNameEn(String parentNameEn) {
+        this.parentNameEn = parentNameEn;
+    }
+
+    public String getParentNameCn() {
+        return parentNameCn;
+    }
+
+    public void setParentNameCn(String parentNameCn) {
+        this.parentNameCn = parentNameCn;
     }
 }
