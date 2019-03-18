@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/static/css/functions/sys/roleManager.css"/>
 </head>
 <body>
-<div id="app" v-cloak v-loading="fullScreenLoading">
+<div id="app" v-cloak style="background: white;height: 100%;overflow: hidden;" v-loading="fullScreenLoading">
     <%-- 顶栏 --%>
     <div style="padding: 15px 20px 0px 15px;">
         <span class="button-group">
@@ -70,22 +70,23 @@
                    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
     <%-- 添加角色窗口 --%>
-    <el-dialog title="添加角色" :visible.sync="dialog.add.visible" @close="resetForm('form_add')">
-        <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
-                 :model="dialog.add.formData" :rules="dialog.add.rules"
-                 ref="form_add" v-loading="dialog.add.loading" status-icon>
-            <el-form-item label="角色名" prop="name">
-                <el-input v-model="dialog.add.formData.name"></el-input>
-            </el-form-item>
-            <el-form-item label="角色代码" prop="code">
-                <el-input v-model="dialog.add.formData.code"></el-input>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button size="medium" @click="dialog.add.visible=false">取 消</el-button>
-            <el-button size="medium" type="primary" @click="submitAddForm()" style="margin-left: 10px;">提 交
-            </el-button>
-        </div>
+    <el-dialog title="添加角色" :visible.sync="dialog.add.visible" @close="resetForm('form_add')" class="dialog-insertRole">
+        <%--<el-form label-position="left" label-width="80px" style="padding: 0 100px;"--%>
+                 <%--:model="dialog.add.formData" :rules="dialog.add.rules"--%>
+                 <%--ref="form_add" v-loading="dialog.add.loading" status-icon>--%>
+            <%--<el-form-item label="角色名" prop="name">--%>
+                <%--<el-input v-model="dialog.add.formData.name"></el-input>--%>
+            <%--</el-form-item>--%>
+            <%--<el-form-item label="角色代码" prop="code">--%>
+                <%--<el-input v-model="dialog.add.formData.code"></el-input>--%>
+            <%--</el-form-item>--%>
+        <%--</el-form>--%>
+        <%--<div slot="footer" class="dialog-footer">--%>
+            <%--<el-button size="medium" @click="dialog.add.visible=false">取 消</el-button>--%>
+            <%--<el-button size="medium" type="primary" @click="submitAddForm()" style="margin-left: 10px;">提 交--%>
+            <%--</el-button>--%>
+        <%--</div>--%>
+        <iframe src="/functions/sys/userManager" style="width: 100%;height: 450px;overflow-y: auto;border: 0;"></iframe>
     </el-dialog>
     <%-- 编辑角色窗口 --%>
     <el-dialog title="编辑角色" :visible.sync="dialog.edit.visible" @close="resetForm('form_edit')">

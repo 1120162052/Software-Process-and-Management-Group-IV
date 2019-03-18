@@ -6,6 +6,7 @@ public class DictType extends DataEntity<DictType> {
     private String nameCn;
     private String nameEn;
     private String parentId;
+    private int sort;
 
     // 关联查询
     private String parentNameCn;
@@ -49,5 +50,13 @@ public class DictType extends DataEntity<DictType> {
 
     public void setParentNameCn(String parentNameCn) {
         this.parentNameCn = parentNameCn;
+    }
+
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
     }
 }

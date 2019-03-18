@@ -55,5 +55,13 @@
 }
 
 .el-form{
-    padding: 0px 90px !important;
+    padding: 0 90px !important;
+}
+
+.dialog-insertRole .el-dialog{
+    width: 900px;
+}
+
+.dialog-insertRole .el-dialog__body{
+    padding: 0;
 }
