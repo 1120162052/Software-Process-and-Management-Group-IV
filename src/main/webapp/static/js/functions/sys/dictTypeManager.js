@@ -121,9 +121,13 @@ let app = new Vue({
                 app.table.entity.params.total = d.data.total;
             });
         },
-        selectEntityAllList: function () {
+        selectEntityAllList: function (noFilter=false) {
             let app = this;
             ajaxPost(this.urls.selectEntityAllList, null, function (d) {
+                if(noFilter) {
+                    app.options.entity = d.data;
+                    return;
+                }
                 app.options.entity = d.data.filter((item) =>
                     item.id !== app.dialog.updateEntity.formData.id &&
                     item.parentId !== app.dialog.updateEntity.formData.id);

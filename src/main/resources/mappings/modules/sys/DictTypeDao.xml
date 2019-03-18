@@ -15,6 +15,7 @@
         insert into sys_entity_dict_type (nameCn,
                                           nameEn,
                                           parentId,
+                                          sort,
                                           id,
                                           remarks,
                                           createUserId,
@@ -26,6 +27,7 @@
         values (#{nameCn},
                 #{nameEn},
                 #{parentId},
+                #{sort},
                 #{id},
                 #{remarks},
                 #{createUserId},
@@ -47,6 +49,7 @@
         set nameCn       = #{nameCn},
             nameEn       = #{nameEn},
             parentId     = #{parentId},
+            sort         = #{sort},
             id           = #{id},
             remarks      = #{remarks},
             createUserId = #{createUserId},
@@ -89,6 +92,8 @@
     </select>
 
     <select id="selectAllList" resultType="dictType">
-        select * from sys_entity_dict_type order by sort
+        select *
+        from sys_entity_dict_type
+        order by sort
     </select>
 </mapper>

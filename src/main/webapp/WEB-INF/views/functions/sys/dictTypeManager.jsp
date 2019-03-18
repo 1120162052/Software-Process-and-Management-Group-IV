@@ -38,6 +38,7 @@
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column label="字典类型名" prop="nameCn"></el-table-column>
         <el-table-column label="父类名" prop="parentNameCn"></el-table-column>
+        <el-table-column label="排序" width="100" prop="sort" align="center" header-align="center"></el-table-column>
         <el-table-column label="操作" width="190" header-align="center" align="center">
             <template slot-scope="scope">
                 <el-button type="warning" size="mini" style="position:relative;bottom: 1px;"
@@ -64,8 +65,8 @@
     </el-pagination>
     <%-- entity添加窗口 --%>
     <el-dialog title="添加" :visible.sync="dialog.insertEntity.visible" @closed="resetForm('form_insertEntity')"
-               @open="selectEntityAllList()">
-        <el-form label-position="left" label-width="140px" style="padding: 0 100px;"
+               @open="selectEntityAllList(noFilter=true)">
+        <el-form label-position="left" label-width="140px" style="padding: 0 100px;" size="small"
                  :model="dialog.insertEntity.formData" :rules="dialog.insertEntity.rules"
                  ref="form_insertEntity" v-loading="dialog.insertEntity.loading" status-icon>
             <el-form-item label="字典类型名（中文）" prop="nameCn">
@@ -80,16 +81,19 @@
                                :label="item.nameCn" :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="排序" prop="sort">
+                <el-input v-model="dialog.insertEntity.formData.sort"></el-input>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button size="medium" @click="dialog.insertEntity.visible=false">取 消</el-button>
-            <el-button size="medium" type="primary" @click="insertEntity()" style="margin-left: 10px;">提 交</el-button>
+            <el-button size="small" @click="dialog.insertEntity.visible=false">取 消</el-button>
+            <el-button size="small" type="primary" @click="insertEntity()" style="margin-left: 10px;">提 交</el-button>
         </div>
     </el-dialog>
     <%-- entity编辑窗口 --%>
     <el-dialog title="编辑" :visible.sync="dialog.updateEntity.visible" @closed="resetForm('form_updateEntity')"
                @open="selectEntityAllList()">
-        <el-form label-position="left" label-width="140px"
+        <el-form label-position="left" label-width="140px" size="small"
                  style="padding: 0 100px;overflow-y: scroll;"
                  :model="dialog.updateEntity.formData" :rules="dialog.updateEntity.rules"
                  ref="form_updateEntity" v-loading="dialog.updateEntity.loading" status-icon size="medium">
@@ -105,10 +109,13 @@
                                :value="item.id"></el-option>
                 </el-select>
             </el-form-item>
+            <el-form-item label="排序" prop="sort">
+                <el-input v-model="dialog.updateEntity.formData.sort"></el-input>
+            </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-            <el-button size="medium" @click="dialog.updateEntity.visible=false">取 消</el-button>
-            <el-button size="medium" type="primary" @click="updateEntity()" style="margin-left: 10px;">提 交
+            <el-button size="small" @click="dialog.updateEntity.visible=false">取 消</el-button>
+            <el-button size="small" type="primary" @click="updateEntity()" style="margin-left: 10px;">提 交
             </el-button>
         </div>
     </el-dialog>
