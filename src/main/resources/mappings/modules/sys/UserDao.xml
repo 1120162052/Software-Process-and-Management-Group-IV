@@ -23,7 +23,7 @@
     <!-- 通过用户名获取用户信息 -->
     <select id="selectByUsername" parameterType="user" resultMap="userBean">
         select
-        <include refid="userColumns"/>,
+        a.*,
         c.id as roleId,
         c.name as roleName,
         c.code as roleCode
@@ -37,7 +37,7 @@
     <!-- 获取所有用户列表 -->
     <select id="selectAll" resultMap="userBean">
         select
-        <include refid="userColumns"/>,
+        a.*,
         c.id as roleId,
         c.name as roleName,
         c.code as roleCode
@@ -62,7 +62,7 @@
     <!-- 根据ids获取用户列表（有角色信息） -->
     <select id="selectByIds" parameterType="user" resultMap="userBean">
         select
-        <include refid="userColumns"/>,
+        a.*,
         c.id as roleId,
         c.name as roleName,
         c.code as roleCode
@@ -125,17 +125,4 @@
             #{item.id}
         </foreach>
     </delete>
-
-    <sql id="userColumns">
-        a.username as username,
-        a.password as password,
-        a.id as id,
-        a.remarks as remarks,
-        a.createUserId as createUserId,
-        a.modifyUserId as modifyUserId,
-        a.createDate as createDate,
-        a.modifyDate as modifyDate,
-        a.delFlag as delFlag
-    </sql>
-
 </mapper>

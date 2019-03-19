@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.abc.ssm.modules.sys.dao.DictTypeDao">
+
+    <resultMap id="dictTypeBean" type="dictType">
+        <id property="id" column="id"/>
+        <result property="nameCn" column="nameCn"/>
+        <result property="nameEn" column="nameEn"/>
+        <result property="parentId" column="parentId"/>
+        <result property="parentNameCn" column="parentNameCn"/>
+        <result property="parentNameEn" column="parentNameEn"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="dictType">
+        insert into sys_entity_dict_type (nameCn,
+                                          nameEn,
+                                          parentId,
+                                          sort,
+                                          id,
+                                          remarks,
+                                          createUserId,
+                                          modifyUserId,
+                                          createDate,
+                                          modifyDate,
+                                          delFlag
+        )
+        values (#{nameCn},
+                #{nameEn},
+                #{parentId},
+                #{sort},
+                #{id},
+                #{remarks},
+                #{createUserId},
+                #{modifyUserId},
+                #{createDate},
+                #{modifyDate},
+                #{delFlag})
+    </insert>
+
+    <delete id="deleteListByIds" parameterType="dictType">
+        delete from sys_entity_dict_type where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="dictType">
+        update sys_entity_dict_type
+        set nameCn       = #{nameCn},
+            nameEn       = #{nameEn},
+            parentId     = #{parentId},
+            sort         = #{sort},
+            id           = #{id},
+            remarks      = #{remarks},
+            createUserId = #{createUserId},
+            modifyUserId = #{modifyUserId},
+            createDate   = #{createDate},
+            modifyDate   = #{modifyDate},
+            delFlag      = #{delFlag}
+        where id = #{id}
+    </update>
+
+    <select id="selectListByPage" parameterType="dictType" resultMap="dictTypeBean">
+        select
+        a.*,
+        b.nameCn as parentNameCn,
+        b.nameEn as parentNameEn
+        from sys_entity_dict_type a
+        left join sys_entity_dict_type b on a.parentId = b.id
+        <where>
+            <if test="page.searchKey != '' and page.searchKey != null">
+                and (
+                a.nameCn like concat('%', #{page.searchKey}, '%') or
+                a.nameEn like concat('%', #{page.searchKey}, '%')
+                )
+            </if>
+        </where>
+        order by a.sort
+        limit #{page.pageStart}, #{page.pageSize}
+    </select>
+
+    <select id="selectSearchCount" parameterType="dictType" resultType="int">
+        select count(*) from sys_entity_dict_type a
+        <where>
+            <if test="page.searchKey != '' and page.searchKey != null">
+                and (
+                a.nameCn like concat('%', #{page.searchKey}, '%') or
+                a.nameEn like concat('%', #{page.searchKey}, '%')
+                )
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAllList" resultType="dictType">
+        select *
+        from sys_entity_dict_type
+        order by sort
+    </select>
+</mapper>

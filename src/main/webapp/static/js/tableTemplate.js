@@ -3,13 +3,10 @@ let app = new Vue({
     data: {
         urls: {
             // api for entity
-            insertEntity: '/api/sys/dict/insert',
-            deleteEntityListByIds: '/api/sys/dict/deleteListByIds',
-            updateEntity: '/api/sys/dict/update',
-            selectEntityListByPage: '/api/sys/dict/selectListByPage',
-            selectParentDictList: '/api/sys/dict/selectParentList',
-            // api for dictType
-            selectDictTypeAllList: '/api/sys/dictType/selectAllList'
+            insertEntity: 'api/.../entity/insert',
+            deleteEntityListByIds: 'api/.../entity/deleteListByIds',
+            updateEntity: 'api/.../entity/update',
+            selectEntityListByPage: 'api/.../entity/getListByPage',
         },
         fullScreenLoading: false,
         table: {
@@ -23,9 +20,6 @@ let app = new Vue({
                     pageSizes: [5, 10, 20, 40],
                     searchKey: '',  // 搜索词
                     total: 0,       // 总数
-                },
-                condition: {
-                    type: '', // 字典类别
                 }
             }
         },
@@ -42,16 +36,8 @@ let app = new Vue({
                 formData: {},
                 rules: {},
             },
-            dictTypeManager: {
-                visible: false,
-                loading: false,
-            }
         },
-        options: {
-            dict: [],
-            loading_dict: false,
-            dictType: []
-        },
+        options: {},
     },
     methods: {
         insertEntity: function () {
@@ -123,8 +109,7 @@ let app = new Vue({
             });
         },
         selectEntityListByPage: function () {
-            let data = copy(this.table.entity.condition);
-            data.page = this.table.entity.params;
+            let data = {page: this.table.entity.params};
             let app = this;
             app.table.entity.loading = true;
             ajaxPostJSON(this.urls.selectEntityListByPage, data, function (d) {
@@ -133,27 +118,8 @@ let app = new Vue({
                 app.table.entity.params.total = d.data.total;
             });
         },
-        selectParentDictList: function (dialog) {
-            let app = this;
-            app.options.loading_dict = true;
-            setTimeout(function () {
-                ajaxPostJSON(app.urls.selectParentDictList, dialog.formData, function (d) {
-                    app.options.loading_dict = false;
-                    app.options.dict = d.data;
-                })
-            }, 0);
-        },
-        selectDictTypeAllList: function () {
-            let app = this;
-            app.fullScreenLoading = true;
-            ajaxPost(this.urls.selectDictTypeAllList, null, function (d) {
-                app.fullScreenLoading = false;
-                app.options.dictType = d.data;
-                app.refreshTable_entity();
-            });
-        },
         // 刷新entity table数据
-        refreshTable_entity: function () {
+        refreshTable_entity: function(){
             this.selectEntityListByPage();
         },
         // 打开编辑entity窗口
@@ -181,13 +147,6 @@ let app = new Vue({
         },
     },
     mounted: function () {
-        // 获取字典类型列表
-        let app = this;
-        app.fullScreenLoading = true;
-        ajaxPost(this.urls.selectDictTypeAllList, null, function (d) {
-            app.fullScreenLoading = false;
-            app.options.dictType = d.data;
-            app.refreshTable_entity();
-        });
+        this.refreshTable_entity();
     }
 });

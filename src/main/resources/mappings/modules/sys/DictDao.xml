@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.abc.ssm.modules.sys.dao.DictDao">
+
+    <insert id="insert" parameterType="dict">
+        insert into sys_entity_dict (type,
+                                     nameCn,
+                                     nameEn,
+                                     parentId,
+                                     sort,
+                                     id,
+                                     remarks,
+                                     createUserId,
+                                     modifyUserId,
+                                     createDate,
+                                     modifyDate,
+                                     delFlag
+        )
+        values (#{type},
+                #{nameCn},
+                #{nameEn},
+                #{parentId},
+                #{sort},
+                #{id},
+                #{remarks},
+                #{createUserId},
+                #{modifyUserId},
+                #{createDate},
+                #{modifyDate},
+                #{delFlag})
+    </insert>
+
+    <delete id="deleteListByIds" parameterType="dict">
+        delete from sys_entity_dict where id in
+        <foreach collection="list" item="item" open="(" close=")" separator=",">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <update id="update" parameterType="dict">
+        update sys_entity_dict
+        set type         = #{type},
+            nameCn       = #{nameCn},
+            nameEn       = #{nameEn},
+            parentId     = #{parentId},
+            sort         = #{sort},
+            id           = #{id},
+            remarks      = #{remarks},
+            createUserId = #{createUserId},
+            modifyUserId = #{modifyUserId},
+            createDate   = #{createDate},
+            modifyDate   = #{modifyDate},
+            delFlag      = #{delFlag}
+        where id = #{id}
+    </update>
+
+    <select id="selectListByPage" parameterType="dict" resultType="dict">
+        select
+        a.*,
+        b.nameCn as parentNameCn,
+        c.nameCn as typeNameCn
+        from sys_entity_dict a
+        left join sys_entity_dict b on b.id = a.parentId
+        left join sys_entity_dict_type c on c.id = a.type
+        <where>
+            <if test="page.searchKey != '' and page.searchKey != null">
+                and (
+                a.nameCn like concat('%', #{page.searchKey}, '%') or
+                a.nameEn like concat('%', #{page.searchKey}, '%')
+                )
+            </if>
+            <if test="type != '' and type != null">
+                and a.type = #{type}
+            </if>
+        </where>
+        order by a.sort
+        limit #{page.pageStart}, #{page.pageSize}
+    </select>
+
+    <select id="selectSearchCount" parameterType="dict" resultType="int">
+        select count(*) from sys_entity_dict a
+        <where>
+            <if test="page.searchKey != '' and page.searchKey != null">
+                and (
+                a.nameCn like concat('%', #{page.searchKey}, '%') or
+                a.nameEn like concat('%', #{page.searchKey}, '%')
+                )
+            </if>
+            <if test="type != '' and type != null">
+                and a.type = #{type}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectParentList" parameterType="dict" resultType="dict">
+        select b.*
+        from sys_entity_dict b
+        where b.type in
+              (select a.parentId from sys_entity_dict_type a where a.id = #{type})
+    </select>
+</mapper>
