@@ -9,6 +9,19 @@ public class User extends DataEntity<User> {
     private String username;
     private String password;
 
+    private int userType; // 用户类型: 0 - 管理员;1 - 省;2 - 市;3 - 监测点
+    private int status; // 0 - 未审核，1 - 审核中，2 - 退回，3 - 通过
+    private String userId;
+    private String provinceId;
+    private String cityId;
+    private String industryId;
+    private String marketName;
+    private String marketCode;
+    private String contactName;
+    private String contactMobile;
+    private String contactPhone;
+    private String fax;
+
     private UserInfo userInfo; // 存储详细信息
 
     private List<Role> roleList; // 相关角色列表

@@ -11,6 +11,19 @@ create table sys_entity_user
   username       varchar(100) comment '用户名',
   password       varchar(100) comment '密码',
 
+  user_type      int comment '用户类型: 0 - 管理员;1 - 省;2 - 市;3 - 监测点',
+  status         int comment '0 - 未审核，1 - 审核中，2 - 退回，3 - 通过',
+  user_id        varchar(100) comment '用户id',
+  province_id    varchar(100) comment '所属省，指向字典表id',
+  city_id        varchar(100) comment '所属市，指向字典表id',
+  industry_id    varchar(100) comment '行业，指向字典表id',
+  market_name    varchar(100) comment '人力资源市场用户名',
+  market_code    varchar(100) comment '人力资源市场用户编码',
+  contact_name   varchar(100) comment '联系人姓名',
+  contact_mobile varchar(100) comment '联系人手机',
+  contact_phone  varchar(100) comment '联系电话',
+  fax            varchar(100) comment '传真',
+
   id             varchar(100) primary key,
   remarks        varchar(200) comment '备注',
   create_user_id varchar(100) comment '创建者id',
@@ -145,31 +158,6 @@ create table sys_entity_notice_receive
   receiver_id    varchar(100) comment '接收用户id',
   notice_id      varchar(100) comment '指向发布通知表id',
   status         int comment '0-未读，1-已读',
-
-  id             varchar(100) primary key,
-  remarks        varchar(200) comment '备注',
-  create_user_id varchar(100) comment '创建者id',
-  modify_user_id varchar(100) comment '最后修改者id',
-  create_date    datetime comment '创建日期',
-  modify_date    datetime comment '最后修改日期',
-  del_flag       bool default false comment '是否被删除'
-);
-
--- 1.9 用户详细信息表
-create table sys_entity_user_info
-(
-  user_type      int comment '用户类型: 0 - 管理员;1 - 省;2 - 市;3 - 监测点',
-  status         int comment '0 - 未审核，1 - 审核中，2 - 退回，3 - 通过',
-  user_id        varchar(100) comment '用户id',
-  province_id    varchar(100) comment '所属省，指向字典表id',
-  city_id        varchar(100) comment '所属市，指向字典表id',
-  industry_id    varchar(100) comment '行业，指向字典表id',
-  market_name    varchar(100) comment '人力资源市场用户名',
-  market_code    varchar(100) comment '人力资源市场用户编码',
-  contact_name   varchar(100) comment '联系人姓名',
-  contact_mobile varchar(100) comment '联系人手机',
-  contact_phone  varchar(100) comment '联系电话',
-  fax            varchar(100) comment '传真',
 
   id             varchar(100) primary key,
   remarks        varchar(200) comment '备注',
