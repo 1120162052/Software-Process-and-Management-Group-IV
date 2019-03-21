@@ -11,7 +11,6 @@ public class User extends DataEntity<User> {
 
     private int userType; // 用户类型: 0 - 管理员;1 - 省;2 - 市;3 - 监测点
     private int status; // 0 - 未审核，1 - 审核中，2 - 退回，3 - 通过
-    private String userId;
     private String provinceId;
     private String cityId;
     private String industryId;
@@ -62,14 +61,6 @@ public class User extends DataEntity<User> {
 
     public void setStatus(int status) {
         this.status = status;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getProvinceId() {
