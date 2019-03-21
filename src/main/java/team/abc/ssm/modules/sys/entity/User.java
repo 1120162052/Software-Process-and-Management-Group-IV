@@ -11,7 +11,6 @@ public class User extends DataEntity<User> {
 
     private int userType; // 用户类型: 0 - 管理员;1 - 省;2 - 市;3 - 监测点
     private int status; // 0 - 未审核，1 - 审核中，2 - 退回，3 - 通过
-    private String userId;
     private String provinceId;
     private String cityId;
     private String industryId;
@@ -21,8 +20,6 @@ public class User extends DataEntity<User> {
     private String contactMobile;
     private String contactPhone;
     private String fax;
-
-    private UserInfo userInfo; // 存储详细信息
 
     private List<Role> roleList; // 相关角色列表
 
@@ -50,11 +47,91 @@ public class User extends DataEntity<User> {
         this.roleList = roleList;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
+    public int getUserType() {
+        return userType;
     }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(String provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public String getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(String cityId) {
+        this.cityId = cityId;
+    }
+
+    public String getIndustryId() {
+        return industryId;
+    }
+
+    public void setIndustryId(String industryId) {
+        this.industryId = industryId;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getMarketCode() {
+        return marketCode;
+    }
+
+    public void setMarketCode(String marketCode) {
+        this.marketCode = marketCode;
+    }
+
+    public String getContactName() {
+        return contactName;
+    }
+
+    public void setContactName(String contactName) {
+        this.contactName = contactName;
+    }
+
+    public String getContactMobile() {
+        return contactMobile;
+    }
+
+    public void setContactMobile(String contactMobile) {
+        this.contactMobile = contactMobile;
+    }
+
+    public String getContactPhone() {
+        return contactPhone;
+    }
+
+    public void setContactPhone(String contactPhone) {
+        this.contactPhone = contactPhone;
+    }
+
+    public String getFax() {
+        return fax;
+    }
+
+    public void setFax(String fax) {
+        this.fax = fax;
     }
 }
