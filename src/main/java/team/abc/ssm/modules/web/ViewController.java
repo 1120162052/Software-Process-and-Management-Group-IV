@@ -71,8 +71,18 @@ public class ViewController extends BaseController {
      * 备案模块
      **/
     @RequestMapping(value = "functions/record/fillRecord", method = RequestMethod.GET)
-    public String custom_testFunction() {
+    public String record_fillRecord() {
         return "functions/record/fillRecord";
+    }
+
+    @RequestMapping(value = "functions/record/recordManagerCity", method = RequestMethod.GET)
+    public String record_recordManagerCity() {
+        return "functions/record/recordManagerCity";
+    }
+
+    @RequestMapping(value = "functions/record/recordManagerProvince", method = RequestMethod.GET)
+    public String record_recordManagerProvince() {
+        return "functions/record/recordManagerProvince";
     }
     /** 备案模块 **/
 }
