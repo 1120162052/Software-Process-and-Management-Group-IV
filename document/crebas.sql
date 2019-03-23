@@ -1,6 +1,6 @@
 /*==============================================================*/
 /* DBMS name:      MySQL 5.0                                    */
-/* Created on:     2019/3/15 20:51:25                           */
+/* Created on:     2019/3/21 19:16:11                           */
 /*==============================================================*/
 
 
@@ -126,6 +126,7 @@ create table report_entity_culture_Info
    common_modify_user_id varchar(100) comment '最后修改者id',
    common_create_date   datetime comment '创建日期',
    common_modify_date   datetime comment '最后修改日期',
+   user_id              varchar(100) comment '用户id',
    primary key (id)
 );
 
