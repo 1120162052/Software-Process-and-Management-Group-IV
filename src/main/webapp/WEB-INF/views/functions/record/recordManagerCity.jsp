@@ -53,7 +53,7 @@
         <el-table-column label="上报时间" prop="submitTime" width="200px"></el-table-column>
         <el-table-column label="备案状态" prop="filingStatus" width="200px"></el-table-column>
         <el-table-column label="报审状态" prop="reportStatus"></el-table-column>
-        <el-table-column label="操作" width="160" header-align="center" align="center">
+        <el-table-column label="操作" width="200" header-align="center" align="center">
             <template slot-scope="scope">
                 <el-button type="primary" size="mini" style="position:relative;bottom: 1px;" @click="handleViewRecord(scope.row.id, 'single')">
                     <span>查看</span>

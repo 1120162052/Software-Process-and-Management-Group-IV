@@ -52,7 +52,7 @@
         <el-table-column label="所属市" prop="cityBelongTo" width="200"></el-table-column>
         <el-table-column label="上报时间" prop="submitTime" width="200px"></el-table-column>
         <el-table-column label="备案状态" prop="filingStatus"></el-table-column>
-        <el-table-column label="操作" width="160" header-align="center" align="center">
+        <el-table-column label="操作" width="200" header-align="center" align="center">
             <template slot-scope="scope">
                 <el-button type="primary" size="mini" style="position:relative;bottom: 1px;" @click="handleViewRecord(scope.row.id, 'single')">
                     <span>查看</span>
