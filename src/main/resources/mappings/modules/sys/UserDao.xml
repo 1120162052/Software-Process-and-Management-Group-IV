@@ -129,18 +129,18 @@
                 #{modifyUserId},
                 #{createDate},
                 #{modifyDate},
-                #{delFlag}),
-                #(userType),
-                #(status),
-                #(provinceId),
-                #(cityId),
-                #(industryId),
-                #(marketName),
-                #(marketCode),
-                #(contactName),
-                #(contactMobile),
-                #(contactPhone),
-                #(fax)
+                #{delFlag},
+                #{userType},
+                #{status},
+                #{provinceId},
+                #{cityId},
+                #{industryId},
+                #{marketName},
+                #{marketCode},
+                #{contactName},
+                #{contactMobile},
+                #{contactPhone},
+                #{fax})
     </insert>
 
     <!-- 更新指定id用户的信息 -->
