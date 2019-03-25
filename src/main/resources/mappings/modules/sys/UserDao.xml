@@ -2,18 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="team.abc.ssm.modules.sys.dao.UserDao">
 
-    <resultMap id="userBean" type="user">
+    <resultMap id="userBean" type="team.abc.ssm.modules.sys.entity.User">
         <id column="id" property="id"/>
         <result column="username" property="username"/>
         <result column="password" property="password"/>
+        <result column="user_type" property="userType"/>
+        <result column="status" property="status"/>
+        <result column="province_id" property="provinceId"/>
+        <result column="city_id" property="cityId"/>
+        <result column="industry_id" property="industryId"/>
+        <result column="market_name" property="marketName"/>
+        <result column="market_code" property="marketCode"/>
+        <result column="contact_name" property="contactName"/>
+        <result column="contact_mobile" property="contactMobile"/>
+        <result column="contact_phone" property="contactPhone"/>
+        <result column="fax" property="fax"/>
         <result column="remarks" property="remarks"/>
-        <result column="createUserId" property="createUserId"/>
-        <result column="modifyUserId" property="modifyUserId"/>
-        <result column="createDate" property="createDate"/>
-        <result column="modifyDate" property="modifyDate"/>
-        <result column="delFlag" property="delFlag"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="modify_user_id" property="modifyUserId"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="del_flag" property="delFlag"/>
         <!-- 用户相关的角色列表 -->
-        <collection property="roleList" ofType="role">
+        <collection property="roleList" ofType="team.abc.ssm.modules.sys.entity.Role">
             <id column="roleId" property="id"/>
             <result column="roleName" property="name"/>
             <result column="roleCode" property="code"/>
@@ -21,15 +32,15 @@
     </resultMap>
 
     <!-- 通过用户名获取用户信息 -->
-    <select id="selectByUsername" parameterType="user" resultMap="userBean">
+    <select id="selectByUsername" parameterType="team.abc.ssm.modules.sys.entity.User" resultMap="userBean">
         select
-        <include refid="userColumns"/>,
+        a.*,
         c.id as roleId,
         c.name as roleName,
         c.code as roleCode
         from sys_entity_user a
-        left join sys_map_user_role b on a.id = b.userId
-        left join sys_entity_role c on b.roleId = c.id
+        left join sys_map_user_role b on a.id = b.user_id
+        left join sys_entity_role c on b.role_id = c.id
         where a.username = #{username}
         limit 1
     </select>
@@ -37,17 +48,17 @@
     <!-- 获取所有用户列表 -->
     <select id="selectAll" resultMap="userBean">
         select
-        <include refid="userColumns"/>,
+        a.*,
         c.id as roleId,
         c.name as roleName,
         c.code as roleCode
         from sys_entity_user a
-        left join sys_map_user_role b on a.id = b.userId
-        left join sys_entity_role c on b.roleId = c.id
+        left join sys_map_user_role b on a.id = b.user_id
+        left join sys_entity_role c on b.role_id = c.id
     </select>
 
     <!-- 分页 + 搜索(模糊匹配用户名)获取用户id列表 -->
-    <select id="selectByPage" parameterType="user" resultMap="userBean">
+    <select id="selectByPage" parameterType="team.abc.ssm.modules.sys.entity.User" resultMap="userBean">
         select
         a.id
         from sys_entity_user a
@@ -60,15 +71,15 @@
     </select>
 
     <!-- 根据ids获取用户列表（有角色信息） -->
-    <select id="selectByIds" parameterType="user" resultMap="userBean">
+    <select id="selectByIds" parameterType="team.abc.ssm.modules.sys.entity.User" resultMap="userBean">
         select
-        <include refid="userColumns"/>,
+        a.*,
         c.id as roleId,
         c.name as roleName,
         c.code as roleCode
         from sys_entity_user a
-        left join sys_map_user_role b on a.id = b.userId
-        left join sys_entity_role c on b.roleId = c.id
+        left join sys_map_user_role b on a.id = b.user_id
+        left join sys_entity_role c on b.role_id = c.id
         where a.id in
         <foreach collection="list" open="(" separator="," close=")" item="user">
             #{user.id}
@@ -76,7 +87,7 @@
     </select>
 
     <!-- 模糊搜索结果总数 -->
-    <select id="selectSearchCount" parameterType="user" resultType="int">
+    <select id="selectSearchCount" parameterType="team.abc.ssm.modules.sys.entity.User" resultType="int">
         select
         count(*)
         from sys_entity_user a
@@ -88,16 +99,27 @@
     </select>
 
     <!-- 添加一名新用户 -->
-    <insert id="insert" parameterType="User">
+    <insert id="insert" parameterType="team.abc.ssm.modules.sys.entity.User">
         insert into sys_entity_user (username,
-                                     password,
+                                     `password`,
                                      id,
                                      remarks,
-                                     createUserId,
-                                     modifyUserId,
-                                     createDate,
-                                     modifyDate,
-                                     delFlag
+                                     create_user_id,
+                                     modify_user_id,
+                                     create_date,
+                                     modify_date,
+                                     del_flag,
+                                     user_type,
+                                     status,
+                                     province_id,
+                                     city_id,
+                                     industry_id,
+                                     market_name,
+                                     market_code,
+                                     contact_name,
+                                     contact_mobile,
+                                     contact_phone,
+                                     fax
         )
         values (#{username},
                 #{password},
@@ -107,35 +129,35 @@
                 #{modifyUserId},
                 #{createDate},
                 #{modifyDate},
-                #{delFlag})
+                #{delFlag}),
+                #(userType),
+                #(status),
+                #(provinceId),
+                #(cityId),
+                #(industryId),
+                #(marketName),
+                #(marketCode),
+                #(contactName),
+                #(contactMobile),
+                #(contactPhone),
+                #(fax)
     </insert>
 
     <!-- 更新指定id用户的信息 -->
-    <update id="update" parameterType="User">
+    <update id="update" parameterType="team.abc.ssm.modules.sys.entity.User">
         update sys_entity_user
-        set password = #{password}
+        set `password` = #{password}, remarks = #{remarks}, modify_user_id = #{modifyUserId}, del_flag = #{delFlag}, user_type = #{userType},
+            status = #{status}, industry_id = #{industryId}, market_name = #{marketName}, market_code = #{marketCode}, contact_name = #{contactName},
+            contact_mobile = #{contactMobile}, contact_phone = #{contactPhone}, fax = #{fax}
         where id = #{id}
     </update>
 
     <!-- 删除指定id的用户 -->
-    <delete id="deleteByIds" parameterType="user">
+    <delete id="deleteByIds" parameterType="team.abc.ssm.modules.sys.entity.User">
         delete from sys_entity_user where id in
         <foreach collection="list" index="index" item="item"
                  open="(" separator="," close=")">
             #{item.id}
         </foreach>
     </delete>
-
-    <sql id="userColumns">
-        a.username as username,
-        a.password as password,
-        a.id as id,
-        a.remarks as remarks,
-        a.createUserId as createUserId,
-        a.modifyUserId as modifyUserId,
-        a.createDate as createDate,
-        a.modifyDate as modifyDate,
-        a.delFlag as delFlag
-    </sql>
-
 </mapper>

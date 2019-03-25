@@ -66,7 +66,7 @@
                    :total="table.params.total"
                    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <%-- 添加用户窗口 --%>
+    <%-- 添加窗口 --%>
     <el-dialog title="添加用户" :visible.sync="dialog.addUser.visible" @close="resetForm('form_addUser')">
         <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
                  :model="dialog.addUser.formData" :rules="dialog.addUser.rules"
@@ -83,7 +83,7 @@
             <el-button size="medium" type="primary" @click="addUser()" style="margin-left: 10px;">提 交</el-button>
         </div>
     </el-dialog>
-    <%-- 编辑用户窗口 --%>
+    <%-- 编辑窗口 --%>
     <el-dialog title="编辑用户" :visible.sync="dialog.editUser.visible">
         <el-form label-position="left" label-width="80px"
                  style="padding: 0 100px;height: 350px;overflow-y: scroll;"

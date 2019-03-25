@@ -16,13 +16,12 @@ import team.abc.ssm.modules.sys.service.map.UserRoleService;
 import java.util.List;
 
 /**
- * put              添加
- * deleteList       批量删除
- * update           更新
- * getList          分页查询
- * checkUsername    校验用户名重名
- * getCurrentUser   获取当前登陆用户信息
- * login            登陆
+ * put                      添加
+ * deleteList               批量删除
+ * update                   更新
+ * getList                  分页查询
+ * checkUsername            校验用户名重名
+ * getCurrentUser           获取当前登陆用户信息
  */
 @Controller
 @RequestMapping("api/sys/user")
@@ -76,5 +75,11 @@ public class UserApi extends BaseApi {
     @ResponseBody
     public Object getCurrentUser() {
         return retMsg.Set(MsgType.SUCCESS, UserUtils.getCurrentUser());
+    }
+
+    @RequestMapping(value = "getCompleteUserInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getCompleteUserInfo(@RequestBody User user) {
+        return retMsg.Set(MsgType.SUCCESS, userService.getUserByUsername(user));
     }
 }

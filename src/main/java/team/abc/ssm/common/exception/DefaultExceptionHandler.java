@@ -11,7 +11,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 public class DefaultExceptionHandler {
     @ExceptionHandler({UnauthorizedException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public String processUnauthorizedException(NativeWebRequest request, UnauthorizedException e){
+    public String processUnauthorizedException(NativeWebRequest request, UnauthorizedException e) {
         return "/403";
     }
 }

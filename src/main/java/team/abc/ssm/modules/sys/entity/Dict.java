@@ -10,6 +10,11 @@ public class Dict extends DataEntity<Dict> {
     private String parentId;
     private int sort;
 
+    private String parentNameCn;
+    private String parentNameEn;
+    private String typeNameCn;
+    private String typeNameEn;
+
     public String getType() {
         return type;
     }
@@ -48,5 +53,37 @@ public class Dict extends DataEntity<Dict> {
 
     public void setSort(int sort) {
         this.sort = sort;
+    }
+
+    public String getParentNameCn() {
+        return parentNameCn;
+    }
+
+    public void setParentNameCn(String parentNameCn) {
+        this.parentNameCn = parentNameCn;
+    }
+
+    public String getParentNameEn() {
+        return parentNameEn;
+    }
+
+    public void setParentNameEn(String parentNameEn) {
+        this.parentNameEn = parentNameEn;
+    }
+
+    public String getTypeNameCn() {
+        return typeNameCn;
+    }
+
+    public void setTypeNameCn(String typeNameCn) {
+        this.typeNameCn = typeNameCn;
+    }
+
+    public String getTypeNameEn() {
+        return typeNameEn;
+    }
+
+    public void setTypeNameEn(String typeNameEn) {
+        this.typeNameEn = typeNameEn;
     }
 }
