@@ -118,4 +118,11 @@
         where b.type in
               (select a.parent_id from sys_entity_dict_type a where a.id = #{type})
     </select>
+
+    <select id="selectSonList" parameterType="team.abc.ssm.modules.sys.entity.Dict" resultMap="dictBean">
+        select
+        b.*
+        from sys_entity_dict b
+        where b.parent_id = #{id}
+    </select>
 </mapper>

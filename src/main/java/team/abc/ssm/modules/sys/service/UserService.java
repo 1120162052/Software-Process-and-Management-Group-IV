@@ -26,7 +26,10 @@ public class UserService {
         // 先获取分页的users
         List<User> userList = userDao.selectByPage(user);
         // 再查询具体内容
-        userDao.selectByIds(userList);
+        if(userList.size() == 0) {
+            user.getPage().setTotal(0);
+            return user.getPage();
+        }
         user.getPage().setResultList(userDao.selectByIds(userList));
         user.getPage().setTotal(userDao.selectSearchCount(user));
         return user.getPage();
@@ -50,7 +53,25 @@ public class UserService {
      */
     public boolean update(User user) {
         int count = userDao.update(user);
-        return count == 1;
+        if(count == 1) {
+            user.preUpdate();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 不能更新用户角色
+     * @param userList 用户列表
+     * @return 成功与否
+     */
+    public boolean updateList(List<User> userList) {
+        int count1 = userList.size();
+        int count2 = 0;
+        for(User user : userList) {
+            count2 += userDao.update(user);
+        }
+        return count1 == count2;
     }
 
     public boolean deleteUserByIds(List<User> userList) {

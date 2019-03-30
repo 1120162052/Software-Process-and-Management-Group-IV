@@ -17,4 +17,6 @@ public interface DictDao {
     int selectSearchCount(Dict dict);
 
     List<Dict> selectParentList(Dict dict);
+
+    List<Dict> selectSonList(Dict dict);
 }

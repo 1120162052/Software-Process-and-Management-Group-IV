@@ -84,5 +84,10 @@ public class ViewController extends BaseController {
     public String record_recordManagerProvince() {
         return "functions/record/recordManagerProvince";
     }
+
+    @RequestMapping(value = "functions/record/userManagerOfProvince", method = RequestMethod.GET)
+    public String user_manager_of_province() {
+        return "functions/record/userManagerOfProvince";
+    }
     /** 备案模块 **/
 }

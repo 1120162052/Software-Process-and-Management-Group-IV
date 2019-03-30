@@ -37,4 +37,40 @@ public class UserRoleService {
         userRoleDao.insert(userRoleList);
         return true;
     }
+
+    /**
+     * 一次只能插入用户的一个角色（用户类型）
+     * @param user 目标用户
+     * @return 成功与否
+     */
+    public boolean add(User user) {
+        UserRole userRole = new UserRole();
+        List<UserRole> userRoleList = new ArrayList<>();
+        switch(user.getUserType()) {
+            case 0:
+                userRole.setRoleId("r1");
+                break;
+            case 1:
+                userRole.setRoleId("r2");
+                break;
+            case 2:
+                userRole.setRoleId("r3");
+                break;
+            case 3:
+                userRole.setRoleId("r4");
+                break;
+        }
+        userRole.setUserId(user.getId());
+        userRole.preInsert();
+        userRoleList.add(userRole);
+        return userRoleDao.insert(userRoleList) == 1;
+    }
+
+    public boolean delete(List<User> userList) {
+        boolean isSuccess = true;    //是否全部成功删除
+        for(User user : userList) {
+            isSuccess &= (userRoleDao.deleteByUserId(user) == 1);
+        }
+        return isSuccess;
+    }
 }

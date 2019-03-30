@@ -36,13 +36,17 @@ public class UserApi extends BaseApi {
     @RequestMapping(value = "put", method = RequestMethod.POST)
     @ResponseBody
     public Object put(@RequestBody User user) {
-        return userService.addUser(user) ? retMsg.Set(MsgType.SUCCESS) : retMsg.Set(MsgType.ERROR);
+        boolean success1 = userService.addUser(user);
+        boolean success2 = userRoleService.add(user);
+        return  success1 && success2 ? retMsg.Set(MsgType.SUCCESS) : retMsg.Set(MsgType.ERROR);
     }
 
     @RequestMapping(value = "deleteList", method = RequestMethod.POST)
     @ResponseBody
     public Object deleteList(@RequestBody List<User> userList) {
-        return userService.deleteUserByIds(userList) ? retMsg.Set(MsgType.SUCCESS) : retMsg.Set(MsgType.ERROR);
+        boolean success1 = userRoleService.delete(userList);
+        boolean success2 = userService.deleteUserByIds(userList);
+        return success1 && success2 ? retMsg.Set(MsgType.SUCCESS) : retMsg.Set(MsgType.ERROR);
     }
 
     @RequestMapping(value = "update", method = RequestMethod.POST)
@@ -51,6 +55,16 @@ public class UserApi extends BaseApi {
         boolean success1 = userService.update(user);
         boolean success2 = userRoleService.update(user, user.getRoleList());
         if (success1 && success2)
+            return retMsg.Set(MsgType.SUCCESS);
+        else
+            return retMsg.Set(MsgType.ERROR);
+    }
+
+    @RequestMapping(value = "updateList", method = RequestMethod.POST)
+    @ResponseBody
+    public Object updateList(@RequestBody List<User> userList) {
+        boolean success = userService.updateList(userList);
+        if (success)
             return retMsg.Set(MsgType.SUCCESS);
         else
             return retMsg.Set(MsgType.ERROR);

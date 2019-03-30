@@ -7,7 +7,9 @@
         <result column="username" property="username"/>
         <result column="password" property="password"/>
         <result column="user_type" property="userType"/>
-        <result column="status" property="status"/>
+        <result column="record_status" property="recordStatus"/>
+        <result column="report_status" property="reportStatus"/>
+        <result column="action_type" property="actionType"/>
         <result column="province_id" property="provinceId"/>
         <result column="city_id" property="cityId"/>
         <result column="industry_id" property="industryId"/>
@@ -23,6 +25,17 @@
         <result column="create_date" property="createDate"/>
         <result column="modify_date" property="modifyDate"/>
         <result column="del_flag" property="delFlag"/>
+
+        <association property="city" javaType="Dict">
+            <id column="city_id" property="id"/>
+            <result column="cityNameCn" property="nameCn"/>
+        </association>
+
+        <association property="province" javaType="Dict">
+            <id column="province_id" property="id"/>
+            <result column="provinceNameCn" property="nameCn"/>
+        </association>
+
         <!-- 用户相关的角色列表 -->
         <collection property="roleList" ofType="team.abc.ssm.modules.sys.entity.Role">
             <id column="roleId" property="id"/>
@@ -66,6 +79,36 @@
             <if test="page.searchKey != '' and page.searchKey != null">
                 and a.username like concat('%', #{page.searchKey}, '%')
             </if>
+            <if test="userType == 1">
+                and a.user_type != 1 and a.province_id = #{provinceId}
+                <if test="actionType == 1">
+                    and a.record_status != 0 and a.record_status != 1
+                </if>
+                <if test="actionType == 11">
+                    and a.record_status = 2
+                </if>
+                <if test="actionType == 12">
+                    and a.record_status = 3
+                </if>
+                <if test="actionType == 13">
+                    and a.record_status = 4
+                </if>
+            </if>
+            <if test="userType == 2">
+                and a.user_type != 2 and a.city_id = #{cityId}
+                <if test="actionType == 1">
+                    and a.record_status != 0
+                </if>
+                <if test="actionType == 11">
+                    and a.record_status = 1
+                </if>
+                <if test="actionType == 12">
+                    and (a.record_status = 2 or a.record_status = 3)
+                </if>
+                <if test="actionType == 13">
+                    and a.record_status = 4
+                </if>
+            </if>
         </where>
         limit #{page.pageStart}, #{page.pageSize}
     </select>
@@ -76,10 +119,14 @@
         a.*,
         c.id as roleId,
         c.name as roleName,
-        c.code as roleCode
+        c.code as roleCode,
+        d.name_cn as cityNameCn,
+        e.name_cn as provinceNameCn
         from sys_entity_user a
         left join sys_map_user_role b on a.id = b.user_id
         left join sys_entity_role c on b.role_id = c.id
+        left join sys_entity_dict d on d.id = a.city_id
+        left join sys_entity_dict e on e.id = a.province_id
         where a.id in
         <foreach collection="list" open="(" separator="," close=")" item="user">
             #{user.id}
@@ -94,6 +141,36 @@
         <where>
             <if test="page.searchKey != '' and page.searchKey != null">
                 and a.username like concat('%', #{page.searchKey}, '%')
+            </if>
+            <if test="userType == 1">
+                and a.user_type != 1 and a.province_id = #{provinceId}
+                <if test="actionType == 1">
+                    and a.record_status != 0 and a.record_status != 1
+                </if>
+                <if test="actionType == 11">
+                    and a.record_status = 2
+                </if>
+                <if test="actionType == 12">
+                    and a.record_status = 3
+                </if>
+                <if test="actionType == 13">
+                    and a.record_status = 4
+                </if>
+            </if>
+            <if test="userType == 2">
+                and a.user_type != 2 and a.city_id = #{cityId}
+                <if test="actionType == 1">
+                    and a.record_status != 0
+                </if>
+                <if test="actionType == 11">
+                    and a.record_status = 1
+                </if>
+                <if test="actionType == 12">
+                    and (a.record_status = 2 or a.record_status = 3)
+                </if>
+                <if test="actionType == 13">
+                    and a.record_status = 4
+                </if>
             </if>
         </where>
     </select>
@@ -110,7 +187,9 @@
                                      modify_date,
                                      del_flag,
                                      user_type,
-                                     status,
+                                     record_status,
+                                     report_status,
+                                     action_type,
                                      province_id,
                                      city_id,
                                      industry_id,
@@ -131,7 +210,9 @@
                 #{modifyDate},
                 #{delFlag},
                 #{userType},
-                #{status},
+                #{recordStatus},
+                #{reportStatus},
+                #{actionType},
                 #{provinceId},
                 #{cityId},
                 #{industryId},
@@ -146,9 +227,22 @@
     <!-- 更新指定id用户的信息 -->
     <update id="update" parameterType="team.abc.ssm.modules.sys.entity.User">
         update sys_entity_user
-        set `password` = #{password}, remarks = #{remarks}, modify_user_id = #{modifyUserId}, del_flag = #{delFlag}, user_type = #{userType},
-            status = #{status}, industry_id = #{industryId}, market_name = #{marketName}, market_code = #{marketCode}, contact_name = #{contactName},
-            contact_mobile = #{contactMobile}, contact_phone = #{contactPhone}, fax = #{fax}
+            <trim prefix="set" suffixOverrides=",">
+            <if test="password != null">`password` = #{password},</if>
+            <if test="remarks != null">remarks = #{remarks},</if>
+            <if test="modifyUserId != null">modify_user_id = #{modifyUserId},</if>
+            <if test="delFlag != false">del_flag = #{delFlag},</if>
+            <if test="userType != 0">user_type = #{userType},</if>
+            <if test="recordStatus != 0">record_status = #{recordStatus},</if>
+            <if test="reportStatus != 0">report_status = #{reportStatus},</if>
+            <if test="industryId != null">industry_id = #{industryId},</if>
+            <if test="marketName != null">market_name = #{marketName},</if>
+            <if test="marketCode != null">market_code = #{marketCode},</if>
+            <if test="contactName != null">contact_name = #{contactName},</if>
+            <if test="contactMobile != null">contact_mobile = #{contactMobile},</if>
+            <if test="contactPhone != null">contact_phone = #{contactPhone},</if>
+            <if test="fax != null">fax = #{fax}</if>
+        </trim>
         where id = #{id}
     </update>
 

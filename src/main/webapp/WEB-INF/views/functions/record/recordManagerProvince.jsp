@@ -36,9 +36,11 @@
         </span>
         <span style="float: right;margin-right: 10px;">
             <el-input size="small" placeholder="请输入用户名搜索相关备案" suffix-icon="el-icon-search"
-                      style="width: 250px;margin-right: 10px;">
+                      style="width: 250px;margin-right: 10px;"
+                      v-model="table.params.searchKey"
+                      @keyup.enter.native="table.params.pageIndex=1;getUserList()">
             </el-input>
-            <el-button size="small" type="primary">
+            <el-button size="small" type="primary" @click="table.params.pageIndex=1;getUserList()">
                 <span>搜索</span>
             </el-button>
         </span>
@@ -49,18 +51,17 @@
               @selection-change="handleSelectionChange" stripe>
         <el-table-column type="selection" width="40"></el-table-column>
         <el-table-column label="用户名" prop="username" width="200"></el-table-column>
-        <el-table-column label="所属市" prop="cityBelongTo" width="200"></el-table-column>
-        <el-table-column label="上报时间" prop="submitTime" width="200px"></el-table-column>
-        <el-table-column label="备案状态" prop="filingStatus"></el-table-column>
+        <el-table-column label="所属市" prop="city.nameCn" width="200"></el-table-column>
+        <el-table-column label="备案状态" prop="recordStatus"></el-table-column>
         <el-table-column label="操作" width="200" header-align="center" align="center">
             <template slot-scope="scope">
-                <el-button type="primary" size="mini" style="position:relative;bottom: 1px;" @click="handleViewRecord(scope.row.id, 'single')">
+                <el-button type="primary" size="mini" style="position:relative;bottom: 1px;" @click="handleViewRecord(scope.row, 'single')">
                     <span>查看</span>
                 </el-button>
-                <el-button type="success" size="mini" :disabled="!scope.row.operatable" style="position:relative;bottom: 1px;margin-left: 6px;" @click="handleApproveRecord(scope.row.id, 'single')">
+                <el-button type="success" size="mini" :disabled="!scope.row.operate" style="position:relative;bottom: 1px;margin-left: 6px;" @click="handleApproveRecord(scope.row, 'single')">
                     <span>通过</span>
                 </el-button>
-                <el-button type="danger" size="mini" :disabled="!scope.row.operatable" style="position:relative;bottom: 1px;margin-left: 6px;" @click="handleRejectRecord(scope.row.id, 'single')">
+                <el-button type="danger" size="mini" :disabled="!scope.row.operate" style="position:relative;bottom: 1px;margin-left: 6px;" @click="handleRejectRecord(scope.row, 'single')">
                     <span>退回</span>
                 </el-button>
             </template>
@@ -94,6 +95,6 @@
     </el-dialog>
 </div>
 <%@include file="/WEB-INF/views/include/blankScript.jsp" %>
-<script src="/static/js/functions/record/recordManagerCity.js"></script>
+<script src="/static/js/functions/record/recordManagerProvince.js"></script>
 </body>
 </html>
