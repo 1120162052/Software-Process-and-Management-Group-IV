@@ -1,0 +1,52 @@
+.demo-table-expand {
+    font-size: 0;
+    margin-left: 100px;
+    width: 80%;
+}
+
+.demo-table-expand label {
+    width: 150px;
+    color: #99a9bf;
+}
+
+.demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+}
+
+.el-table th.is-leaf, tr .gutter{
+    background: aliceblue;
+}
+
+/* table左边的checkbox */
+.el-checkbox {
+    margin: 0 0 0 2px;
+}
+
+/* 设置table顶部行高 */
+.el-table th > .cell {
+    height: 40px;
+    line-height: 40px;
+}
+
+/* 设置table行高 */
+.el-table__row .cell {
+    height: 45px;
+    line-height: 45px;
+}
+
+.el-table--enable-row-transition .el-table__body td, .el-table td, .el-table th {
+    padding: 0;
+}
+
+/* 调整expand-icon的位置 */
+.el-table__expand-icon {
+    margin-top: 12.5px;
+}
+
+/* mini 型按钮的尺寸 */
+.el-button--mini{
+    font-size: 11px;
+    padding: 6px 8px;
+}
