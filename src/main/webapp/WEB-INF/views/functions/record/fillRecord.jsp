@@ -33,8 +33,8 @@
             <el-input v-model="dataForm.fax" :disabled="hasSubmit"></el-input>
         </el-form-item>
         <el-form-item>
-            <el-button type="primary" :disabled="hasSubmit" @click="submitForm('humanResourceMarketForm')">保存并提交</el-button>
-            <el-button type="primary" plain @click="" :disabled="hasSubmit" style="margin-left: 10px">仅保存</el-button>
+            <el-button type="primary" :disabled="hasSubmit" @click="submitForm('humanResourceMarketForm', 'saveAndSubmit')">保存并提交</el-button>
+            <el-button type="primary" plain @click="submitForm('humanResourceMarketForm', 'onlySave')" :disabled="hasSubmit" style="margin-left: 10px">仅保存</el-button>
             <el-button @click="resetForm('humanResourceMarketForm')" :disabled="hasSubmit" style="float: right">重置</el-button>
         </el-form-item>
     </el-form>

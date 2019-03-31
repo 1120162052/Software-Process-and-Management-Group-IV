@@ -38,4 +38,8 @@ public class DictService {
     public List<Dict> selectParentList(Dict dict) {
         return dictDao.selectParentList(dict);
     }
+
+    public List<Dict> selectSonList(Dict dict) {
+        return dictDao.selectSonList(dict);
+    }
 }

@@ -81,4 +81,10 @@ public class DictApi extends BaseApi {
     public Object selectParentList(@RequestBody Dict dict) {
         return retMsg.Set(MsgType.SUCCESS, dictService.selectParentList(dict));
     }
+
+    @RequestMapping(value = "selectSonList", method = RequestMethod.POST)
+    @ResponseBody
+    public Object selectSonList(@RequestBody Dict dict) {
+        return retMsg.Set(MsgType.SUCCESS, dictService.selectSonList(dict));
+    }
 }

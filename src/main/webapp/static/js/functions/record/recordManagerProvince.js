@@ -2,6 +2,12 @@ let app = new Vue({
     el: '#app',
     data: {
         fullScreenLoading: false,
+        user: '',
+        urls: {
+            getCompleteUserInfo: '/api/sys/user/getCompleteUserInfo',
+            getUserList: '/api/sys/user/getList',
+            updateUserList: '/api/sys/user/updateList',
+        },
         options: [{
             value: 'default',
             label: '全部'
@@ -24,70 +30,7 @@ let app = new Vue({
                 cityBelongTo: '北京市',
                 submitTime: '2019/03/17',
                 filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 1,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 2,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 3,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 4,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 5,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 6,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 7,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 8,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
-            }, {
-                id: 9,
-                username: 'testName',
-                cityBelongTo: '北京市',
-                submitTime: '2019/03/17',
-                filingStatus: '未审核',
-                operatable: true
+                operate: true
             }],
             loading: false,
             selectionList: [],
@@ -103,52 +46,51 @@ let app = new Vue({
             viewDetail: {
                 visible: false,
                 loading: false,
-                recordData: [{
-                    infoName: '人力资源市场名',
-                    infoValue: 'A市某人力资源市场'
-                }, {
-                    infoName: '所属地区',
-                    infoValue: 'A市',
-                }, {
-                    infoName: '联系人',
-                    infoValue: '张三'
-                }, {
-                    infoName: '联系人手机',
-                    infoValue: '18810507577'
-                }, {
-                    infoName: '联系电话',
-                    infoValue: '0731-4802110'
-                }, {
-                    infoName: '传真',
-                    infoValue: '一个传真'
-                }]
+                recordData: []
             }
         }
     },
     methods: {
+        getUserList: function() {
+            this.user.page = this.table.params;
+            let app = this;
+            ajaxPostJSON(this.urls.getUserList, this.user, function(d){
+                app.fullScreenLoading = false;
+                app.table.data = d.data.resultList;
+                for(let i = 0; i < app.table.data.length; i++) {
+                    if(app.table.data[i].recordStatus === 2) {
+                        app.table.data[i].recordStatus = '未审核';
+                        app.table.data[i].operate = true;
+                    } else if(app.table.data[i].recordStatus === 3) {
+                        app.table.data[i].recordStatus = '已通过';
+                        app.table.data[i].operate = false;
+                    } else if(app.table.data[i].recordStatus === 4) {
+                        app.table.data[i].recordStatus = '已退回';
+                        app.table.data[i].operate = false;
+                    }
+                }
+                app.table.params.total = d.data.total;
+            });
+        },
         //处理筛选条件变化
         handleChange(value) {
-            // console.log(value[0]);
+            this.table.params.pageIndex = 1;
+            this.fullScreenLoading = true;
             if (value[0] === 'default') {
-
+                this.user.actionType = 1;
             } else if (value[0] === 'waitToBeChecked') {
-                this.table.data = this.table.data.filter(function (val) {
-                    return val.filingStatus === '未审核';
-                });
+                this.user.actionType = 11;
             } else if (value[0] === 'haveBeenApproved') {
-                this.table.data = this.table.data.filter(function (val) {
-                    return val.filingStatus === '已通过';
-                });
+                this.user.actionType = 12;
             } else if (value[0] === 'haveBeenRejected') {
-                this.table.data = this.table.data.filter(function (val) {
-                    return val.filingStatus === '已退回';
-                });
+                this.user.actionType = 13;
             }
+            this.getUserList();
         },
         // 处理pageSize变化
         handleSizeChange: function (newSize) {
             this.table.params.pageSize = newSize;
-            //this.getUserList();
+            this.getUserList();
         },
         // 处理选中的行变化
         handleSelectionChange: function (val) {
@@ -157,16 +99,41 @@ let app = new Vue({
         // 处理pageIndex变化
         handleCurrentChange: function (newIndex) {
             this.table.params.pageIndex = newIndex;
-            //this.getUserList();
+            this.getUserList();
         },
         // 处理查看备案
         handleViewRecord: function(val) {
             this.dialog.viewDetail.visible = true;
+            this.dialog.viewDetail.recordData = [];
+            this.dialog.viewDetail.recordData.push({
+                infoName: '人力资源市场名',
+                infoValue: val.marketName
+            });
+            this.dialog.viewDetail.recordData.push({
+                infoName: '所属市',
+                infoValue: val.city.nameCn
+            });
+            this.dialog.viewDetail.recordData.push({
+                infoName: '联系人',
+                infoValue: val.contactName
+            });
+            this.dialog.viewDetail.recordData.push({
+                infoName: '联系人手机',
+                infoValue: val.contactMobile
+            });
+            this.dialog.viewDetail.recordData.push({
+                infoName: '联系电话',
+                infoValue: val.contactPhone
+            });
+            this.dialog.viewDetail.recordData.push({
+                infoName: '传真',
+                infoValue: val.fax
+            });
             this.beingViewedRecord = val;
         },
         // 处理通过或批量通过备案
         handleApproveRecord: function (val = this.beingViewedRecord, type = 'multi') {
-            if (type === 'multi' && val.length == 0) {
+            if (type === 'multi' && val.length === 0) {
                 window.parent.app.showMessage('提示：未选中任何用户', 'warning');
                 return;
             }
@@ -175,46 +142,46 @@ let app = new Vue({
                 cancelButtonText: '取消',
                 type: 'info'
             }).then(() => {
-                let idList = [];
+                let userList = [];
                 if(type === 'single') {
-                    let id = val;
-                    idList.push({
-                        id: id
+                    val.recordStatus = 3;
+                    userList.push({
+                        id: val.id,
+                        recordStatus: val.recordStatus
                     });
                     this.dialog.viewDetail.visible = false;
                 } else {
                     let selectionList = val;
                     for (let i = 0; i < selectionList.length; i++) {
-                        idList.push({
-                            id: selectionList[i].id
-                        });
-                    }
-                }
-                // 以下应该为前后端交互代码，暂时只有前端
-                let bool = false;
-                for (let i = 0; i < idList.length; i++) {
-                    for (let j = 0; j < this.table.data.length; j++) {
-                        if (idList[i].id === this.table.data[j].id) {
-                            if (this.table.data[j].filingStatus !== '未审核') {
-                                bool = true;
-                                break;
-                            }
-                            this.table.data[j].filingStatus = '已通过';
-                            this.table.data[j].operatable = false;
-                            break;
+                        if(selectionList[i].recordStatus === '未审核') {
+                            userList.push({
+                                id: selectionList[i].id,
+                                recordStatus: 3
+                            });
                         }
                     }
                 }
-                if (bool) {
-                    window.parent.app.showMessage('提示：所选项包含已处理过的备案', 'info');
+                if(userList.length === 0) {
+                    window.parent.app.showMessage('未选中可操作备案', 'info');
+                    return;
                 }
+                this.fullScreenLoading = true;
+                let app = this;
+                ajaxPostJSON(this.urls.updateUserList, userList, function(d) {
+                    window.parent.app.showMessage('批量通过成功', 'success');
+                    app.table.params.pageIndex = 1;
+                    app.getUserList();
+                }, function() {
+                    app.fullScreenLoading = false;
+                    window.parent.app.showMessage('批量通过失败', 'error');
+                });
             }).catch(() => {
                 window.parent.app.showMessage('已取消通过', 'warning');
             });
         },
         // 处理退回和批量退回备案
         handleRejectRecord: function (val = this.beingViewedRecord, type = 'multi') {
-            if (type === 'multi' && val.length == 0) {
+            if (type === 'multi' && val.length === 0) {
                 window.parent.app.showMessage('提示：未选中任何用户', 'warning');
                 return;
             }
@@ -223,42 +190,51 @@ let app = new Vue({
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
-                let idList = [];
+                let userList = [];
                 if(type === 'single') {
-                    let id = val;
-                    idList.push({
-                        id: id
+                    val.recordStatus = 4;
+                    userList.push({
+                        id: val.id,
+                        recordStatus: val.recordStatus
                     });
                     this.dialog.viewDetail.visible = false;
                 } else {
                     let selectionList = val;
                     for (let i = 0; i < selectionList.length; i++) {
-                        idList.push({
-                            id: selectionList[i].id
-                        });
-                    }
-                }
-                // 以下应该为前后端交互代码，暂时只有前端
-                let bool = false;
-                for (let i = 0; i < idList.length; i++) {
-                    for (let j = 0; j < this.table.data.length; j++) {
-                        if (idList[i].id === this.table.data[j].id) {
-                            if (this.table.data[j].filingStatus !== '未审核') {
-                                bool = true;
-                                break;
-                            }
-                            this.table.data[j].filingStatus = '已退回';
-                            this.table.data[j].operatable = false;
-                            break;
+                        if(selectionList[i].recordStatus === '未审核'){
+                            userList.push({
+                                id: selectionList[i].id,
+                                recordStatus: 4
+                            });
                         }
                     }
                 }
-                if (bool) {
-                    window.parent.app.showMessage('提示：所选项包含已处理过的备案', 'info');
+                if(userList.length === 0) {
+                    window.parent.app.showMessage('未选中可操作备案', 'info');
+                    return;
                 }
+                this.fullScreenLoading = true;
+                let app = this;
+                ajaxPostJSON(this.urls.updateUserList, userList, function(d) {
+                    window.parent.app.showMessage('批量退回成功', 'success');
+                    app.table.params.pageIndex = 1;
+                    app.getUserList();
+                }, function() {
+                    app.fullScreenLoading = false;
+                    window.parent.app.showMessage('批量退回失败', 'error');
+                });
             }).catch(() => {
                 window.parent.app.showMessage('已取消退回', 'warning');
             });
         }
+    },
+    mounted: function () {
+        let app = this;
+        app.fullScreenLoading = true;
+        ajaxPostJSON(app.urls.getCompleteUserInfo, parent.app.user, function (d) {
+            app.user = d.data;
+            app.user.actionType = 1;    //查询备案动作
+            app.getUserList();
+        });
     }
 });
