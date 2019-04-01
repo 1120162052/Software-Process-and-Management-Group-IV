@@ -90,4 +90,13 @@ public class ViewController extends BaseController {
         return "functions/record/userManagerOfProvince";
     }
     /** 备案模块 **/
+
+    /**
+     * 报表模块
+     */
+    @RequestMapping(value = "functions/report/reportSubmit", method = RequestMethod.GET)
+    public String report_submit() {
+        return "functions/report/reportSubmit";
+    }
+    /** 报表 **/
 }
