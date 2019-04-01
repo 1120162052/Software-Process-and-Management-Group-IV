@@ -147,7 +147,7 @@ let app = new Vue({
                 type: 'info'
             }).then(() => {
                 let userList = [];
-                if(type === 'single') {
+                if(type === 'single' && val.recordStatus === '未审核') {
                     val.recordStatus = 2;
                     userList.push({
                         id: val.id,
@@ -195,7 +195,7 @@ let app = new Vue({
                 type: 'warning'
             }).then(() => {
                 let userList = [];
-                if(type === 'single') {
+                if(type === 'single' && val.recordStatus === '未审核') {
                     val.recordStatus = 4;
                     userList.push({
                         id: val.id,
