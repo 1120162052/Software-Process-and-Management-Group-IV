@@ -19,6 +19,177 @@ let app = new Vue({
                     magnification: ''
                 }
             },
+            form2: {
+                name: '按产业分组的需求人数',
+                content: {
+                    paymentType:'',
+                    orderID:'',
+                    paymentType:''
+                }
+            },
+            form3: {
+                name: '按行业分组的需求人数',
+                content: {
+                    farm:'',
+                    mining:'',
+                    create:'',
+                    electric:'',
+                    structure:'',
+                    traffic:'',
+                    information:'',
+                    wholesale:'',
+                    room:'',
+                    financial:'',
+                    estate:'',
+                    lease:'',
+                    research:'',
+                    water:'',
+                    resident:'',
+                    education:'',
+                    health:'',
+                    culture:'',
+                    management:'',
+                    international:''
+                }
+            },
+            form4: {
+                name: '按用人单位性质分组的需求人数',
+                content: {
+                    state:'',
+                    collective:'',
+                    cooperation:'',
+                    joint:'',
+                    limited:'',
+                    share:'',
+                    private:'',
+                    other:'',
+                    hk:'',
+                    foreign:'',
+                    self:'',
+                }
+            },
+            form5: {
+                name: '按职业分组的供求人数',
+                content: {
+                    perChaDemand:'',
+                    perChaHunt:'',
+                    proSkillDemand:'',
+                    proSkillHunt:'',
+                    staffDemand:'',
+                    staffHunt:'',
+                    busDemand:'',
+                    busHunt:'',
+                    productDemand:'',
+                    productHunt:'',
+                    tranDemand:'',
+                    tranHunt:'',
+                    otherHunt:''
+                }
+            },
+            form6: {
+                name: '需求小于求职缺口最大的前十个职业',
+                content: {
+                    smallDemandType:'',
+                    careerID:'',
+                    smallDemandHunt:'',
+                    smallDemandHunt:''
+                }
+            },
+            form7: {
+                name: '需求大于求职缺口最大的前十个职业',
+                content: {
+                    bigDemandType:'',
+                    careerID2:'',
+                    bigDemandHunt:'',
+                    bigDemandHunt:''
+                }
+            },
+            form8: {
+                name: '按求职人员类别分组的求职人数',
+                content: {
+                    growHuntNum:'',
+                    empToUnempHuntNum:'',
+                    otherHuntNum:'',
+                    practHuntNum:'',
+                    laidOffHuntNum:'',
+                    retireHuntNum:'',
+                    instructorHuntNum:'',
+                    cityHuntNum:'',
+                    outCityHuntNum:''
+                }
+            },
+            form9: {
+                name: '按性别分组的供求人数',
+                content: {
+                    maleReqNum:'',
+                    femaleReqNum:'',
+                    noRequestReqNum:'',
+                    maleHuntNum:'',
+                    femaleHuntNum:'',
+                    noRequestHuntNum:''
+                }
+            },
+            form10: {
+                name: '按年龄分组的供求人数',
+                content: {
+                    Range1ReqNum:'',
+                    Range2ReqNum:'',
+                    Range3ReqNum:'',
+                    Range4ReqNum:'',
+                    noRequestReqNum:'',
+                    Range1HuntNum:'',
+                    Range2HuntNum:'',
+                    Range3HuntNum:'',
+                    Range4HuntNum:'',
+                    noRequestHuntNum:''
+                }
+            },
+            form11: {
+                name: '按文化程度分组的供求人数',
+                content: {
+                    juniorHighSchoolReqNum:'',
+                    vocReqNum:'',
+                    tecReqNum:'',
+                    secReqNum:'',
+                    collegeReqNum:'',
+                    universityReqNum:'',
+                    masterReqNum:'',
+                    noRequestReqNum:'',
+                    juniorHighSchoolHuntNum:'',
+                    vocHuntNum:'',
+                    tecHuntNum:'',
+                    secHuntNum:'',
+                    collegeHuntNum:'',
+                    universityHuntNum:'',
+                    masterHuntNum:'',
+                    noRequestHuntNum:''
+                }
+            },
+            form12: {
+                name: '按技术等级分组的供求人数',
+                content: {
+                    careerQualFiveReqNum:'',
+                    careerQualFourReqNum:'',
+                    careerQualThreeReqNum:'',
+                    careerQualTwoReqNum:'',
+                    careerQualOneReqNum:'',
+                    priTechCareerReqNum:'',
+                    medTechCareerReqNum:'',
+                    advTechCareerReqNum:'',
+                    noTechCareerReqNum:'',
+                    noRequestReqNum:'',
+                    careerQualFiveHuntNum:'',
+                    careerQualFourHuntNum:'',
+                    careerQualThreeHuntNum:'',
+                    careerQualTwoHuntNum:'',
+                    careerQualOneHuntNum:'',
+                    priTechCareerHuntNum:'',
+                    medTechCareerHuntNum:'',
+                    advTechCareerHuntNum:'',
+                    noTechCareerHuntNum:'',
+                    noRequestHuntNum:''
+                }
+            },
             // requireNumber:'',
             // trueNumber:'',
             // magnification:'',
