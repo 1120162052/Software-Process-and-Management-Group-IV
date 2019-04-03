@@ -5,6 +5,11 @@
     <resultMap id="noticePublishBean" type="noticepublish">
         <id column="id" property="id"/>
 
+        <result column="title" property="title"/>
+        <result column="content" property="content"/>
+        <result column="publish_date" property="publishDate"/>
+        <result column="publisher_id" property="publisherId"/>
+
         <result column="remarks" property="remarks"/>
         <result column="create_user_id" property="createUserId"/>
         <result column="modify_user_id" property="modifyUserId"/>
@@ -18,8 +23,9 @@
         a.*
         from sys_entity_notice_publish a
         <where>
+            a.publisher_id = #{publisherId}
             <if test="page.searchKey != null and page.searchKey !=''">
-                a.title like concat('%', #{page.searchKey}, '%')
+                and a.title like concat('%', #{page.searchKey}, '%')
             </if>
         </where>
         order by a.publish_date
@@ -31,8 +37,9 @@
         count(*)
         from sys_entity_notice_publish a
         <where>
+            a.publisher_id = #{publisherId}
             <if test="page.searchKey != null and page.searchKey !=''">
-                a.title like concat('%', #{page.searchKey}, '%')
+                and a.title like concat('%', #{page.searchKey}, '%')
             </if>
         </where>
     </select>

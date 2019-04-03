@@ -27,6 +27,7 @@ public class User extends DataEntity<User> {
     private Dict city;
 
     private List<Role> roleList; // 相关角色列表
+    private List<User> exceptUserList; // 排除在外的用户的id列表(查询时使用的临时参数)
 
     public String getUsername() {
         return username;
@@ -170,5 +171,13 @@ public class User extends DataEntity<User> {
 
     public void setActionType(int actionType) {
         this.actionType = actionType;
+    }
+
+    public List<User> getExceptUserList() {
+        return exceptUserList;
+    }
+
+    public void setExceptUserList(List<User> exceptUserList) {
+        this.exceptUserList = exceptUserList;
     }
 }

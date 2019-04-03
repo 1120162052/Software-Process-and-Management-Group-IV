@@ -1,0 +1,11 @@
+.el-dialog{
+    margin-top: 20px !important;
+}
+
+.el-dialog__body{
+    padding: 10px 0 0 0 !important;
+}
+
+.el-dialog__headerbtn{
+    top: 10px;
+}

@@ -12,10 +12,10 @@
     <%-- 顶栏 --%>
     <div style="padding: 15px 20px 0 15px;">
         <span class="button-group">
-            <el-button size="small" type="success" @click="dialog.insertEntity.visible=true">
-                <span>添加</span>
+            <el-button size="small" type="success" @click="dialog.visible=true;dialog.loading=true">
+                <span>发布通知</span>
             </el-button>
-            <el-button size="small" type="danger" @click="deleteEntityListByIds(table.entity.selectionList)"
+            <el-button size="small" type="danger" @click="deleteListByIds(table.entity.selectionList)"
                        style="margin-left: 10px;">
                 <span>批量删除</span>
             </el-button>
@@ -36,11 +36,14 @@
               style="width: 100%;overflow-y: hidden;margin-top: 20px;" class="scroll-bar"
               @selection-change="onSelectionChange_entity" stripe>
         <el-table-column type="selection" width="40"></el-table-column>
-        <el-table-column label="创建时间">
+        <el-table-column label="标题" width="250" prop="title"></el-table-column>
+        <el-table-column label="内容" width="500" prop="content"></el-table-column>
+        <el-table-column label="发布时间" width="180">
             <template slot-scope="scope">
-                {{ formatTimestamp(scope.row.createDate) }}
+                {{ formatTimestamp(scope.row.publishDate) }}
             </template>
         </el-table-column>
+        <el-table-column></el-table-column>
         <el-table-column label="操作" width="190" header-align="center" align="center">
             <template slot-scope="scope">
                 <el-button type="warning" size="mini" style="position:relative;bottom: 1px;"
@@ -48,12 +51,11 @@
                     <span>编辑</span>
                 </el-button>
                 <el-button type="danger" size="mini" style="position:relative;bottom: 1px;margin-left: 6px;"
-                           @click="deleteEntityListByIds([{id: scope.row.id}])">
+                           @click="deleteListByIds([{id: scope.row.id}])">
                     <span>删除</span>
                 </el-button>
             </template>
         </el-table-column>
-        <el-table-column width="50"></el-table-column>
     </el-table>
     <%-- entity分页 --%>
     <el-pagination style="text-align: center;margin: 8px auto;"
@@ -65,41 +67,12 @@
                    :total="table.entity.params.total"
                    layout="total, sizes, prev, pager, next, jumper">
     </el-pagination>
-    <%-- entity添加窗口 --%>
-    <el-dialog title="添加" :visible.sync="dialog.insertEntity.visible" @closed="resetForm('form_insertEntity')">
-        <el-form label-position="left" label-width="80px" style="padding: 0 100px;"
-                 :model="dialog.insertEntity.formData" :rules="dialog.insertEntity.rules"
-                 ref="form_insertEntity" v-loading="dialog.insertEntity.loading" status-icon>
-            <el-form-item label="角色名" prop="name">
-                <el-input v-model="dialog.insertEntity.formData.name"></el-input>
-            </el-form-item>
-            <el-form-item label="角色代码" prop="code">
-                <el-input v-model="dialog.insertEntity.formData.code"></el-input>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button size="medium" @click="dialog.insertEntity.visible=false">取 消</el-button>
-            <el-button size="medium" type="primary" @click="insertEntity()" style="margin-left: 10px;">提 交
-            </el-button>
-        </div>
-    </el-dialog>
-    <%-- entity编辑窗口 --%>
-    <el-dialog title="编辑" :visible.sync="dialog.updateEntity.visible" @closed="resetForm('form_updateEntity')">
-        <el-form label-position="left" label-width="80px"
-                 style="padding: 0 100px;overflow-y: scroll;"
-                 :model="dialog.updateEntity.formData" :rules="dialog.updateEntity.rules"
-                 ref="form_updateEntity" v-loading="dialog.updateEntity.loading" status-icon size="medium">
-            <el-form-item label="角色名" prop="name">
-                <el-input v-model="dialog.updateEntity.formData.name"></el-input>
-            </el-form-item>
-            <el-form-item label="角色代码" prop="code">
-                <el-input v-model="dialog.updateEntity.formData.code"></el-input>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button size="medium" @click="dialog.updateEntity.visible=false">取 消</el-button>
-            <el-button size="medium" type="primary" @click="updateEntity()" style="margin-left: 10px;">提 交
-            </el-button>
+    <%-- 发布或编辑通知窗口 --%>
+    <el-dialog title="发布通知" :visible.sync="dialog.visible" class="my-dialog" @close="refreshTable_entity()">
+        <div v-loading="dialog.loading" style="height: 400px;">
+            <iframe v-if="dialog.visible" :src="'/functions/notice/publishNoticeForm'"
+                    style="border: 0;height: 100%;width: 100%;"
+                    @load="dialog.loading=false;"></iframe>
         </div>
     </el-dialog>
 </div>

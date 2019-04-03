@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import team.abc.ssm.common.persistence.Page;
 import team.abc.ssm.common.utils.UserUtils;
 import team.abc.ssm.common.web.BaseApi;
 import team.abc.ssm.common.web.MsgType;
@@ -95,5 +96,15 @@ public class UserApi extends BaseApi {
     @ResponseBody
     public Object getCompleteUserInfo(@RequestBody User user) {
         return retMsg.Set(MsgType.SUCCESS, userService.getUserByUsername(user));
+    }
+
+    // used in notice publish when add a user to receiver list
+    @RequestMapping(value = "selectListByPage2", method = RequestMethod.POST)
+    @ResponseBody
+    public Object selectListByPage2(@RequestBody User user){
+        Page<User> page = new Page<>();
+        page.setResultList(userService.selectListByPage2(user));
+        page.setTotal(userService.selectSearchCount2(user));
+        return retMsg.Set(MsgType.SUCCESS, page);
     }
 }

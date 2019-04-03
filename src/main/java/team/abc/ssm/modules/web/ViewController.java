@@ -75,6 +75,11 @@ public class ViewController extends BaseController {
         return "functions/notice/publishNotice";
     }
 
+    @RequestMapping(value = "functions/notice/publishNoticeForm", method = RequestMethod.GET)
+    public String notice_publishNoticeForm(){
+        return "functions/notice/publishNoticeForm";
+    }
+
     @RequestMapping(value = "functions/notice/receiveNotice", method = RequestMethod.GET)
     public String notice_receiveNotice(){
         return "functions/notice/receiveNotice";
