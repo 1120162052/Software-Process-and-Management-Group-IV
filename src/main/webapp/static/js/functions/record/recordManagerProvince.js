@@ -57,16 +57,18 @@ let app = new Vue({
             ajaxPostJSON(this.urls.getUserList, this.user, function(d){
                 app.fullScreenLoading = false;
                 app.table.data = d.data.resultList;
-                for(let i = 0; i < app.table.data.length; i++) {
-                    if(app.table.data[i].recordStatus === 2) {
-                        app.table.data[i].recordStatus = '未审核';
-                        app.table.data[i].operate = true;
-                    } else if(app.table.data[i].recordStatus === 3) {
-                        app.table.data[i].recordStatus = '已通过';
-                        app.table.data[i].operate = false;
-                    } else if(app.table.data[i].recordStatus === 4) {
-                        app.table.data[i].recordStatus = '已退回';
-                        app.table.data[i].operate = false;
+                if(app.table.data != null) {
+                    for(let i = 0; i < app.table.data.length; i++) {
+                        if(app.table.data[i].recordStatus === 2) {
+                            app.table.data[i].recordStatus = '未审核';
+                            app.table.data[i].operate = true;
+                        } else if(app.table.data[i].recordStatus === 3) {
+                            app.table.data[i].recordStatus = '已通过';
+                            app.table.data[i].operate = false;
+                        } else if(app.table.data[i].recordStatus === 4) {
+                            app.table.data[i].recordStatus = '已退回';
+                            app.table.data[i].operate = false;
+                        }
                     }
                 }
                 app.table.params.total = d.data.total;

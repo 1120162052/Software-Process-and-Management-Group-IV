@@ -108,14 +108,13 @@ public class ViewController extends BaseController {
     /**
      * 报表模块
      */
-    @RequestMapping(value = "functions/report/reportSubmit", method = RequestMethod.GET)
-    public String report_submit() {
-        return "functions/report/reportSubmit";
+    @RequestMapping(value = "functions/report/releaseReport", method = RequestMethod.GET)
+    public String release_report() {
+        return "functions/report/releaseReport";
     }
 
-    @RequestMapping(value = "functions/report/reportManager", method = RequestMethod.GET)
-    public String report_manager() {
-        return "functions/report/reportManager";
+    @RequestMapping(value = "functions/report/reportManagerCity", method = RequestMethod.GET)
+    public String report_manager_city() {
+        return "functions/report/reportManagerCity";
     }
-    /** 报表 **/
 }
