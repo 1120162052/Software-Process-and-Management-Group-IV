@@ -12,7 +12,7 @@
 <head>
     <title>ssm</title>
     <%@include file="/WEB-INF/views/include/blankHead.jsp" %>
-    <link rel="stylesheet" href="/static/css/functions/report/reportManager.css"/>
+    <link rel="stylesheet" href="/static/css/functions/report/reportManagerProvince.css"/>
 </head>
 <body>
 <div id="app" v-cloak style="background: white;height: 100%;overflow: hidden;" v-loading="fullScreenLoading">
@@ -85,6 +85,6 @@
     </el-pagination>
 </div>
 <%@include file="/WEB-INF/views/include/blankScript.jsp" %>
-<script src="/static/js/functions/report/reportManager.js"></script>
+<script src="/static/js/functions/report/reportManagerProvince.js"></script>
 </body>
 </html>

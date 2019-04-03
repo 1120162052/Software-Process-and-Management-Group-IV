@@ -12,10 +12,10 @@ let app = new Vue({
         dataForm: {
             requireNumber:'',
             trueNumber:'',
-            Magnification:'',
-            PaymentID:'',
-            OrderID:'',
-            PaymentType:'',
+            magnification:'',
+            paymentID:'',
+            orderID:'',
+            paymentType:'',
 
             Farm:'',
             Mining:'',

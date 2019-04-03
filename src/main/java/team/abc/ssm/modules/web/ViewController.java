@@ -122,4 +122,14 @@ public class ViewController extends BaseController {
     public String report_manager_city() {
         return "functions/report/reportManagerCity";
     }
+
+    @RequestMapping(value = "functions/report/reportManagerProvince", method = RequestMethod.GET)
+    public String report_manager_province() {
+        return "functions/report/reportManagerProvince";
+    }
+
+    @RequestMapping(value = "functions/report/reportSubmit", method = RequestMethod.GET)
+    public String report_submit() {
+        return "functions/report/reportSubmit";
+    }
 }

@@ -59,162 +59,91 @@ public class UnitInfo {
 	*/
     private Integer selfEnterPrise;
 
-
-
-    /**
-	* 用户id
-	*/
-    private String userId;
-
-    public Integer getId() {
-        return id;
+    public Integer getStateEnterprise() {
+        return stateEnterprise;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setStateEnterprise(Integer stateEnterprise) {
+        this.stateEnterprise = stateEnterprise;
     }
 
-    public Integer getState() {
-        return state;
+    public Integer getCollectiveEnterprise() {
+        return collectiveEnterprise;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setCollectiveEnterprise(Integer collectiveEnterprise) {
+        this.collectiveEnterprise = collectiveEnterprise;
     }
 
-    public Integer getCollective() {
-        return collective;
+    public Integer getCooperationEnterPrise() {
+        return cooperationEnterPrise;
     }
 
-    public void setCollective(Integer collective) {
-        this.collective = collective;
+    public void setCooperationEnterPrise(Integer cooperationEnterPrise) {
+        this.cooperationEnterPrise = cooperationEnterPrise;
     }
 
-    public Integer getCooperation() {
-        return cooperation;
+    public Integer getJointEnterPrise() {
+        return jointEnterPrise;
     }
 
-    public void setCooperation(Integer cooperation) {
-        this.cooperation = cooperation;
+    public void setJointEnterPrise(Integer jointEnterPrise) {
+        this.jointEnterPrise = jointEnterPrise;
     }
 
-    public Integer getJoint() {
-        return joint;
+    public Integer getLimitedEnterPrise() {
+        return limitedEnterPrise;
     }
 
-    public void setJoint(Integer joint) {
-        this.joint = joint;
+    public void setLimitedEnterPrise(Integer limitedEnterPrise) {
+        this.limitedEnterPrise = limitedEnterPrise;
     }
 
-    public Integer getLimited() {
-        return limited;
+    public Integer getShareEnterPrise() {
+        return shareEnterPrise;
     }
 
-    public void setLimited(Integer limited) {
-        this.limited = limited;
+    public void setShareEnterPrise(Integer shareEnterPrise) {
+        this.shareEnterPrise = shareEnterPrise;
     }
 
-    public Integer getShare() {
-        return share;
+    public Integer getPrivateEnterprise() {
+        return privateEnterprise;
     }
 
-    public void setShare(Integer share) {
-        this.share = share;
-    }
-
-    public Integer getPrivate() {
-        return private;
-    }
-
-    public void setPrivate(Integer privateEnterprise) {
+    public void setPrivateEnterprise(Integer privateEnterprise) {
         this.privateEnterprise = privateEnterprise;
     }
 
-    public Integer getOther() {
-        return other;
+    public Integer getOtherEnterPrise() {
+        return otherEnterPrise;
     }
 
-    public void setOther(Integer other) {
-        this.other = other;
+    public void setOtherEnterPrise(Integer otherEnterPrise) {
+        this.otherEnterPrise = otherEnterPrise;
     }
 
-    public Integer getHk() {
-        return hk;
+    public Integer getHkEnterPrise() {
+        return hkEnterPrise;
     }
 
-    public void setHk(Integer hk) {
-        this.hk = hk;
+    public void setHkEnterPrise(Integer hkEnterPrise) {
+        this.hkEnterPrise = hkEnterPrise;
     }
 
-    public Integer getForeign() {
-        return foreign;
+    public Integer getForeignEnterPrise() {
+        return foreignEnterPrise;
     }
 
-    public void setForeign(Integer foreign) {
-        this.foreign = foreign;
+    public void setForeignEnterPrise(Integer foreignEnterPrise) {
+        this.foreignEnterPrise = foreignEnterPrise;
     }
 
-    public Integer getSelf() {
-        return self;
+    public Integer getSelfEnterPrise() {
+        return selfEnterPrise;
     }
 
-    public void setSelf(Integer self) {
-        this.self = self;
-    }
-
-    public String getCommonRemarks() {
-        return commonRemarks;
-    }
-
-    public void setCommonRemarks(String commonRemarks) {
-        this.commonRemarks = commonRemarks;
-    }
-
-    public String getCommonDelFlag() {
-        return commonDelFlag;
-    }
-
-    public void setCommonDelFlag(String commonDelFlag) {
-        this.commonDelFlag = commonDelFlag;
-    }
-
-    public String getCommonCreateUserId() {
-        return commonCreateUserId;
-    }
-
-    public void setCommonCreateUserId(String commonCreateUserId) {
-        this.commonCreateUserId = commonCreateUserId;
-    }
-
-    public String getCommonModifyUserId() {
-        return commonModifyUserId;
-    }
-
-    public void setCommonModifyUserId(String commonModifyUserId) {
-        this.commonModifyUserId = commonModifyUserId;
-    }
-
-    public Date getCommonCreateDate() {
-        return commonCreateDate;
-    }
-
-    public void setCommonCreateDate(Date commonCreateDate) {
-        this.commonCreateDate = commonCreateDate;
-    }
-
-    public Date getCommonModifyDate() {
-        return commonModifyDate;
-    }
-
-    public void setCommonModifyDate(Date commonModifyDate) {
-        this.commonModifyDate = commonModifyDate;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setSelfEnterPrise(Integer selfEnterPrise) {
+        this.selfEnterPrise = selfEnterPrise;
     }
 }
