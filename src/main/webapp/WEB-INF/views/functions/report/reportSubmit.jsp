@@ -17,22 +17,22 @@
 <body>
 <div id="app" v-cloak style="background: white; height: 100%; overflow: hidden" v-loading="fullScreenLoading">
     <div class="reportWrapper">
-        <h2>{{}}</h2>
+        <h2>{{showingFormName}}</h2>
 
-        <el-form label-position="right" :model="dataForm" :rules="rules" label-width="150px"
+        <el-form label-position="right" :model="dataForm" label-width="150px"
                  style="width: 60%; margin: 100px auto" v-if="page == 1">
             <el-form-item label="需求人数" prop="requireNumber">
-                <el-input v-model="dataForm.requireNumber" :disabled="hasSubmit"></el-input>
+                <el-input v-model="dataForm.form1.content.requireNumber" :disabled="hasSubmit"></el-input>
             </el-form-item>
             <el-form-item label="求职人数" prop="trueNumber">
-                <el-input v-model="dataForm.trueNumber" :disabled="hasSubmit"></el-input>
+                <el-input v-model="dataForm.form1.content.trueNumber" :disabled="hasSubmit"></el-input>
             </el-form-item>
             <el-form-item label="求人倍率" prop="magnification">
-                <el-input v-model="dataForm.magnification" :disabled="hasSubmit"></el-input>
+                <el-input v-model="dataForm.form1.content.magnification" :disabled="hasSubmit"></el-input>
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :model="dataForm" :rules="rules" label-width="150px"
+        <el-form label-position="right" :model="dataForm" label-width="150px"
                  style="width: 60%; margin: 100px auto" v-if="page == 2">
             <el-form-item label="第一产业" prop="paymentType">
                 <el-input v-model="dataForm.paymentType" size="mini"></el-input>
@@ -45,7 +45,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  style="width: 90%; margin: 50px auto" v-if="page == 3">
             <el-form-item label="农、林、牧、渔业" prop="farm">
                 <el-input v-model="dataForm.farm"></el-input>
@@ -109,7 +109,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  label-width="300px" style="width: 100%; margin: 10px auto" v-if="page == 4">
             <el-form-item label="国有企业" prop="state">
                 <el-input v-model="dataForm.state"></el-input>
@@ -146,7 +146,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  label-width="300px" style="width: 100%; margin: 10px auto" v-if="page == 5">
             <el-form-item label="国有企业" prop="state">
                 <el-input v-model="dataForm.state"></el-input>
@@ -183,7 +183,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  label-width="300px" style="width: 100%; margin: 10px auto" v-if="page == 6">
             <el-form-item label="单位负责人需求人数" prop="perChaDemand">
                 <el-input v-model="dataForm.perChaDemand"></el-input>
@@ -226,7 +226,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :model="dataForm" :rulers="rules" label-width="300px"
+        <el-form label-position="right" :model="dataForm" label-width="300px"
                  style="width: 100%; margin: 10px auto" v-if="page == 7">
             <el-form-item label="职业" prop="smallDemandType">
                 <el-input v-model="dataForm.smallDemandType"></el-input>
@@ -242,7 +242,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :model="dataForm" :rulers="rules" label-width="300px"
+        <el-form label-position="right" :model="dataForm" label-width="300px"
                  style="width: 100%; margin: 10px auto" v-if="page == 8">
             <el-form-item label="职业" prop="bigDemandType">
                 <el-input v-model="dataForm.bigDemandType"></el-input>
@@ -258,7 +258,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  label-width="300px" style="width: 100%; margin: 10px auto" v-if="page == 9">
             <el-form-item label="新成长失业青年" prop="growHuntNum">
                 <el-input v-model="dataForm.growHuntNum"></el-input>
@@ -289,7 +289,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  label-width="300px" style="width: 100%; margin: 10px auto" v-if="page == 10">
             <el-form-item label="男性需求人数" prop="maleReqNum">
                 <el-input v-model="dataForm.maleReqNum"></el-input>
@@ -311,7 +311,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  label-width="300px" style="width: 100%; margin: 10px auto" v-if="page == 11">
             <el-form-item label="16~24岁需求人数" prop="Range1ReqNum">
                 <el-input v-model="dataForm.Range1ReqNum"></el-input>
@@ -345,7 +345,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  label-width="300px" style="width: 100%; margin: 10px auto" v-if="page == 12">
             <el-form-item label="初中及以下需求人数" prop="juniorHighSchoolReqNum">
                 <el-input v-model="dataForm.juniorHighSchoolReqNum"></el-input>
@@ -397,7 +397,7 @@
             </el-form-item>
         </el-form>
 
-        <el-form label-position="right" :inline="true" :model="dataForm" :rulers="rules"
+        <el-form label-position="right" :inline="true" :model="dataForm"
                  style="width: 90%; margin: 20px auto" v-if="page == 13">
             <el-form-item label="职业资格五级需求人数" prop="careerQualFiveReqNum">
                 <el-input v-model="dataForm.careerQualFiveReqNum"></el-input>
