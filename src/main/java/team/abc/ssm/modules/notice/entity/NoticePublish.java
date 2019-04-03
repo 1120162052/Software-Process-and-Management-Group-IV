@@ -1,13 +1,16 @@
-package team.abc.ssm.modules.sys.entity;
+package team.abc.ssm.modules.notice.entity;
 
 import team.abc.ssm.common.persistence.DataEntity;
 
+import java.util.Date;
+
 public class NoticePublish extends DataEntity<NoticePublish> {
+
     private String title;
     private String publisherId;
-    private String publishDate;
+    private Date publishDate;
     private String content;
-    private int status; // 状态: 0-草稿，1-发布
+    private String status;
 
     public String getTitle() {
         return title;
@@ -25,11 +28,11 @@ public class NoticePublish extends DataEntity<NoticePublish> {
         this.publisherId = publisherId;
     }
 
-    public String getPublishDate() {
+    public Date getPublishDate() {
         return publishDate;
     }
 
-    public void setPublishDate(String publishDate) {
+    public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
     }
 
@@ -41,11 +44,11 @@ public class NoticePublish extends DataEntity<NoticePublish> {
         this.content = content;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 }

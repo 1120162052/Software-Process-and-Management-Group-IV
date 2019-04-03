@@ -56,16 +56,30 @@ public class ViewController extends BaseController {
 
     @RequestMapping(value = "functions/sys/dictManager", method = RequestMethod.GET)
     @RequiresPermissions("sys:dict")
-    public String sys_dict(){
+    public String sys_dict() {
         return "functions/sys/dictManager";
     }
 
     @RequestMapping(value = "functions/sys/dictTypeManager", method = RequestMethod.GET)
     @RequiresPermissions("sys:dict")
-    public String sys_dictType(){
+    public String sys_dictType() {
         return "functions/sys/dictTypeManager";
     }
     /** 系统功能 **/
+
+    /**
+     * 通知模块
+     */
+    @RequestMapping(value = "functions/notice/publishNotice", method = RequestMethod.GET)
+    public String notice_publishNotice(){
+        return "functions/notice/publishNotice";
+    }
+
+    @RequestMapping(value = "functions/notice/receiveNotice", method = RequestMethod.GET)
+    public String notice_receiveNotice(){
+        return "functions/notice/receiveNotice";
+    }
+    /** 通知模块 **/
 
     /**
      * 备案模块

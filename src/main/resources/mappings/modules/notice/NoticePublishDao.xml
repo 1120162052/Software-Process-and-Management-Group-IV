@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="team.abc.ssm.modules.notice.dao.NoticePublishDao">
+
+    <resultMap id="noticePublishBean" type="noticepublish">
+        <id column="id" property="id"/>
+
+        <result column="remarks" property="remarks"/>
+        <result column="create_user_id" property="createUserId"/>
+        <result column="modify_user_id" property="modifyUserId"/>
+        <result column="create_date" property="createDate"/>
+        <result column="modify_date" property="modifyDate"/>
+        <result column="del_flag" property="delFlag"/>
+    </resultMap>
+
+    <select id="selectListByPage" parameterType="noticepublish" resultMap="noticePublishBean">
+        select
+        a.*
+        from sys_entity_notice_publish a
+        <where>
+            <if test="page.searchKey != null and page.searchKey !=''">
+                a.title like concat('%', #{page.searchKey}, '%')
+            </if>
+        </where>
+        order by a.publish_date
+        limit #{page.pageStart}, #{page.pageSize}
+    </select>
+
+    <select id="selectSearchCount" parameterType="noticepublish" resultType="int">
+        select
+        count(*)
+        from sys_entity_notice_publish a
+        <where>
+            <if test="page.searchKey != null and page.searchKey !=''">
+                a.title like concat('%', #{page.searchKey}, '%')
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteListByIds" parameterType="noticepublish">
+        delete from sys_entity_notice_publish where id in
+        <foreach collection="list" open="(" separator="," close=")" item="item">
+            #{item.id}
+        </foreach>
+    </delete>
+
+    <insert id="insertOrUpdate" parameterType="noticepublish">
+        insert into sys_entity_notice_publish (title,
+                                               publisher_id,
+                                               publish_date,
+                                               content,
+                                               status,
+                                               id,
+                                               remarks,
+                                               create_user_id,
+                                               modify_user_id,
+                                               create_date,
+                                               modify_date,
+                                               del_flag)
+        values (#{title},
+                #{publisherId},
+                #{publishDate},
+                #{content},
+                #{status},
+                #{id},
+                #{remarks},
+                #{createUserId},
+                #{modifyUserId},
+                #{createDate},
+                #{modifyDate},
+                #{delFlag})
+        on duplicate key update title          = #{title},
+                                publisher_id   = #{publisherId},
+                                publish_date   = #{publishDate},
+                                content        = #{content},
+                                status         = #{status},
+                                id             = #{id},
+                                remarks        = #{remarks},
+                                create_user_id = #{createUserId},
+                                modify_user_id = #{modifyUserId},
+                                create_date    = #{createDate},
+                                modify_date    = #{modifyDate},
+                                del_flag       = #{delFlag}
+
+    </insert>
+</mapper>
