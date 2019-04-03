@@ -117,5 +117,10 @@ public class ViewController extends BaseController {
     public String report_submit() {
         return "functions/report/reportSubmit";
     }
+
+    @RequestMapping(value = "functions/report/reportManager", method = RequestMethod.GET)
+    public String report_manager() {
+        return "functions/report/reportManager";
+    }
     /** 报表 **/
 }

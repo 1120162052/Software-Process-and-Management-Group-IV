@@ -89,7 +89,6 @@ let app = new Vue({
              * 状态3：省审核通过
              * 状态4：未通过审核
              */
-            app.user.re
             if (app.user.recordStatus !== 0) {
                 app.hasSubmit = true;
                 if(app.user.recordStatus === 4) {
