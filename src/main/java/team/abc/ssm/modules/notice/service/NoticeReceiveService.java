@@ -30,4 +30,17 @@ public class NoticeReceiveService {
         noticeReceiveDao.insertList(noticeReceiveList);
         return true;
     }
+
+    public List<NoticeReceive> selectListByPage(NoticeReceive noticeReceive) {
+        return noticeReceiveDao.selectListByPage(noticeReceive);
+    }
+
+    public int selectSearchCount(NoticeReceive noticeReceive) {
+        return noticeReceiveDao.selectSearchCount(noticeReceive);
+    }
+
+    public boolean updateStatusTo1(List<NoticeReceive> noticeReceiveList) {
+        noticeReceiveDao.updateStatusTo1(noticeReceiveList);
+        return true;
+    }
 }

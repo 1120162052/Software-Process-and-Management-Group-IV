@@ -28,7 +28,7 @@
         from sys_entity_role a
     </select>
 
-    <select id="selectByPage" resultMap="roleBean" parameterType="team.abc.ssm.modules.sys.entity.Role">
+    <select id="selectByPage" resultMap="roleBean" parameterType="page">
         select a.id
         from sys_entity_role a
         <where>

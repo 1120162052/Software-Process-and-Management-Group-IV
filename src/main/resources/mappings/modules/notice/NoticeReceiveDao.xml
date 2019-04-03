@@ -10,7 +10,8 @@
         <result column="content" property="content"/>
         <result column="publish_date" property="publishDate"/>
         <association property="publisher" javaType="user">
-
+            <result column="userId" property="id"/>
+            <result column="username" property="username"/>
         </association>
     </resultMap>
 
@@ -41,18 +42,45 @@
         </foreach>
     </insert>
 
-    <!--<select id="selectListByPage" parameterType="noticereceive" resultMap="noticeReceiveBean">-->
-        <!--select-->
-        <!--a.*-->
-        <!--from sys_entity_notice_receive a-->
-        <!--left join sys_entity_notice_publish b on b.id = a.notice_id-->
-        <!--left join sys_entity_user c on c.id = b.publisher_id-->
+    <select id="selectListByPage" parameterType="noticereceive" resultMap="noticeReceiveBean">
+        select
+        a.*,
+        b.title,
+        b.content,
+        b.publish_date,
+        c.id as userId,
+        c.username as username
+        from sys_entity_notice_receive a
+        left join sys_entity_notice_publish b on b.id = a.notice_id
+        left join sys_entity_user c on c.id = b.publisher_id
+        <where>
+            a.receiver_id = #{receiverId} and a.status = #{status}
+            <if test="page.searchKey != null and page.searchKey != ''">
+                and b.title like concat('%', #{page.searchKey}, '%')
+            </if>
+        </where>
+        order by b.publish_date desc
+        limit #{page.pageStart}, #{page.pageSize}
+    </select>
 
-        <!--<where>-->
-            <!--a.receiver_id = #{receiverId}-->
-            <!--<if test="">-->
+    <select id="selectSearchCount" parameterType="noticereceive" resultType="int">
+        select
+        count(*)
+        from sys_entity_notice_receive a
+        left join sys_entity_notice_publish b on b.id = a.notice_id
+        <where>
+            a.receiver_id = #{receiverId} and a.status = #{status}
+            <if test="page.searchKey != null and page.searchKey != ''">
+                and b.title like concat('%', #{page.searchKey}, '%')
+            </if>
+        </where>
+        limit #{page.pageStart}, #{page.pageSize}
+    </select>
 
-            <!--</if>-->
-        <!--</where>-->
-    <!--</select>-->
+    <update id="updateStatusTo1" parameterType="noticereceive">
+        update sys_entity_notice_receive set status = '1' where id in
+        <foreach collection="list" separator="," open="(" close=")" item="item">
+            #{item.id}
+        </foreach>
+    </update>
 </mapper>
