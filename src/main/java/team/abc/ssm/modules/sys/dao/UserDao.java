@@ -29,4 +29,10 @@ public interface UserDao {
 
     // 删除指定id的用户
     int deleteByIds(List<User> userList);
+
+    // used in notice publish when add a user to receiver list
+    List<User> selectListByPage2(User user);
+
+    // used in notice publish when add a user to receiver list
+    int selectSearchCount2(User user);
 }

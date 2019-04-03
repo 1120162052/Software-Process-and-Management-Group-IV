@@ -45,8 +45,12 @@
 
 /* 弹窗 */
 .el-dialog{
-    width: 654px;
+    /*width: 900px;*/
     margin-top: 30px !important;
+}
+
+.el-dialog__body{
+    padding: 0;
 }
 
 /* 弹窗固定上下移动 */

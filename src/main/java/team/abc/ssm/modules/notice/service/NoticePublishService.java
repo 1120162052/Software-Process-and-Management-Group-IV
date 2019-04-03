@@ -28,6 +28,13 @@ public class NoticePublishService {
     }
 
     public boolean insertOrUpdate(NoticePublish noticePublish) {
+        if (noticePublish.getId() == null) {
+            noticePublish.preInsert();
+            noticePublish.setPublisherId(noticePublish.getCreateUserId());
+            noticePublish.setPublishDate(noticePublish.getCreateDate());
+        } else {
+            noticePublish.preUpdate();
+        }
         return noticePublishDao.insertOrUpdate(noticePublish) == 1;
     }
 }

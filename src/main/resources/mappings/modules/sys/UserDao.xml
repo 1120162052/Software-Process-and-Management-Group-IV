@@ -46,28 +46,26 @@
 
     <!-- 通过用户名获取用户信息 -->
     <select id="selectByUsername" parameterType="team.abc.ssm.modules.sys.entity.User" resultMap="userBean">
-        select
-        a.*,
-        c.id as roleId,
-        c.name as roleName,
-        c.code as roleCode
+        select a.*,
+               c.id   as roleId,
+               c.name as roleName,
+               c.code as roleCode
         from sys_entity_user a
-        left join sys_map_user_role b on a.id = b.user_id
-        left join sys_entity_role c on b.role_id = c.id
+                 left join sys_map_user_role b on a.id = b.user_id
+                 left join sys_entity_role c on b.role_id = c.id
         where a.username = #{username}
         limit 1
     </select>
 
     <!-- 获取所有用户列表 -->
     <select id="selectAll" resultMap="userBean">
-        select
-        a.*,
-        c.id as roleId,
-        c.name as roleName,
-        c.code as roleCode
+        select a.*,
+               c.id   as roleId,
+               c.name as roleName,
+               c.code as roleCode
         from sys_entity_user a
-        left join sys_map_user_role b on a.id = b.user_id
-        left join sys_entity_role c on b.role_id = c.id
+                 left join sys_map_user_role b on a.id = b.user_id
+                 left join sys_entity_role c on b.role_id = c.id
     </select>
 
     <!-- 分页 + 搜索(模糊匹配用户名)获取用户id列表 -->
@@ -198,8 +196,7 @@
                                      contact_name,
                                      contact_mobile,
                                      contact_phone,
-                                     fax
-        )
+                                     fax)
         values (#{username},
                 #{password},
                 #{id},
@@ -227,7 +224,7 @@
     <!-- 更新指定id用户的信息 -->
     <update id="update" parameterType="team.abc.ssm.modules.sys.entity.User">
         update sys_entity_user
-            <trim prefix="set" suffixOverrides=",">
+        <trim prefix="set" suffixOverrides=",">
             <if test="password != null">`password` = #{password},</if>
             <if test="remarks != null">remarks = #{remarks},</if>
             <if test="modifyUserId != null">modify_user_id = #{modifyUserId},</if>
@@ -254,4 +251,38 @@
             #{item.id}
         </foreach>
     </delete>
+
+    <select id="selectListByPage2" parameterType="user" resultType="user">
+        select
+        a.id as id,
+        a.username as username
+        from sys_entity_user a
+        <where>
+            <if test="exceptUserList != null and exceptUserList.size() > 0">
+                a.id not in
+                <foreach collection="exceptUserList" item="user" separator="," open="(" close=")">
+                    #{user.id}
+                </foreach>
+            </if>
+            <if test="page.searchKey != null and page.searchKey != ''">
+                and a.username like concat('%', #{page.searchKey}, '%')
+            </if>
+        </where>
+        limit #{page.pageStart}, #{page.pageSize}
+    </select>
+
+    <select id="selectSearchCount2" parameterType="user" resultType="int">
+        select count(*) from sys_entity_user a
+        <where>
+            <if test="exceptUserList != null and exceptUserList.size() > 0">
+                a.id not in
+                <foreach collection="exceptUserList" item="user" separator="," open="(" close=")">
+                    #{user.id}
+                </foreach>
+            </if>
+            <if test="page.searchKey != null and page.searchKey != ''">
+                and a.username like concat('%', #{page.searchKey}, '%')
+            </if>
+        </where>
+    </select>
 </mapper>
