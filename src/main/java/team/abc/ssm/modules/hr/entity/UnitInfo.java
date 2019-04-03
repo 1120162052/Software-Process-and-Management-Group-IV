@@ -3,92 +3,63 @@ package team.abc.ssm.modules.hr.entity;
 import java.util.Date;
 
 public class UnitInfo {
-    private Integer id;
 
     /**
-	* 国有企业人数
+	* 国有企业
 	*/
-    private Integer state;
+    private Integer stateEnterprise;
 
     /**
 	* 集体企业
 	*/
-    private Integer collective;
+    private Integer collectiveEnterprise;
 
     /**
 	* 股份合作
 	*/
-    private Integer cooperation;
+    private Integer cooperationEnterPrise;
 
     /**
 	* 联营企业
 	*/
-    private Integer joint;
+    private Integer jointEnterPrise;
 
     /**
 	* 有限责任企业
 	*/
-    private Integer limited;
+    private Integer limitedEnterPrise;
 
     /**
 	* 股份合作企业
 	*/
-    private Integer share;
+    private Integer shareEnterPrise;
 
     /**
 	* 私营企业
 	*/
-    private Integer private;
+    private Integer privateEnterprise;
 
     /**
 	* 其他企业
 	*/
-    private Integer other;
+    private Integer otherEnterPrise;
 
     /**
 	* 港澳台企业
 	*/
-    private Integer hk;
+    private Integer hkEnterPrise;
 
     /**
 	* 外商投资企业
 	*/
-    private Integer foreign;
+    private Integer foreignEnterPrise;
 
     /**
 	* 个体经营
 	*/
-    private Integer self;
+    private Integer selfEnterPrise;
 
-    /**
-	* 备注
-	*/
-    private String commonRemarks;
 
-    /**
-	* 删除标记
-	*/
-    private String commonDelFlag;
-
-    /**
-	* 创建者id
-	*/
-    private String commonCreateUserId;
-
-    /**
-	* 最后修改者id
-	*/
-    private String commonModifyUserId;
-
-    /**
-	* 创建日期
-	*/
-    private Date commonCreateDate;
-
-    /**
-	* 最后修改日期
-	*/
-    private Date commonModifyDate;
 
     /**
 	* 用户id
@@ -155,8 +126,8 @@ public class UnitInfo {
         return private;
     }
 
-    public void setPrivate(Integer private) {
-        this.private = private;
+    public void setPrivate(Integer privateEnterprise) {
+        this.privateEnterprise = privateEnterprise;
     }
 
     public Integer getOther() {
