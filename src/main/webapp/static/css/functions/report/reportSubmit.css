@@ -3,8 +3,14 @@
 }
 
 .reportWrapper {
-    margin-left: auto;
+    margin: 0 auto;
     width: 80%;
     height: 80%;
     overflow-y: auto;
+}
+
+.buttonWrapper {
+    margin: 20px auto;
+    width: 60%;
+    margin-left: auto;
 }

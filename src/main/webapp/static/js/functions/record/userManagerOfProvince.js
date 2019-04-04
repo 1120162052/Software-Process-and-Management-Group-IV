@@ -34,6 +34,7 @@ let app = new Vue({
             getAllRoleList: '/api/sys/role/getAllList',
             getCompleteUserInfo: '/api/sys/user/getCompleteUserInfo',
             getCityList: '/api/sys/dict/selectSonList',
+            insertOrUpdateNotice: '/api/notice/noticePublish/insertOrUpdate'
         },
         userTypeMap: [
             "管理员",
@@ -63,7 +64,7 @@ let app = new Vue({
             options: [{
                 value: 2,
                 label: '市用户'
-            },{
+            }, {
                 value: 3,
                 label: '监测点用户'
             }],
@@ -147,7 +148,7 @@ let app = new Vue({
                 app.table.params.total = d.data.total;
             });
         },
-        getCityList: function() {
+        getCityList: function () {
             let app = this;
             let data = {
                 id: this.user.provinceId
@@ -155,7 +156,7 @@ let app = new Vue({
             this.fullScreenLoading = true;
             ajaxPostJSON(this.urls.getCityList, data, function (d) {
                 app.fullScreenLoading = false;
-                for(let i = 0; i < d.data.length; i++) {
+                for (let i = 0; i < d.data.length; i++) {
                     app.cityList.push({
                         label: d.data[i].nameCn,
                         value: d.data[i].id
@@ -178,11 +179,11 @@ let app = new Vue({
             this.getUserList();
         },
         // 展开行或收起行时调用
-        expandChange: function(row, expandedRows) {
-            if(expandedRows.length > 0) {
+        expandChange: function (row, expandedRows) {
+            if (expandedRows.length > 0) {
                 this.table.expandKeys = [];
                 this.table.detailInfoLoading = true;
-                if(row) {
+                if (row) {
                     this.table.expandKeys.push(row.id);
                 }
             } else {
@@ -190,13 +191,13 @@ let app = new Vue({
                 this.table.detailInfoLoading = true;
             }
         },
-        getRowKeys: function(row){
+        getRowKeys: function (row) {
             return row.id;
         },
         // 添加用户时，当用户的类型被选定时调用此方法（用户类型即用户角色）
-        onUserTypeSelected: function(selectedType) {
+        onUserTypeSelected: function (selectedType) {
             // 当选择的用户是r4（即检测点用户）
-            if(selectedType === 3) {
+            if (selectedType === 3) {
                 this.dialog.isMonitorPoint = true;
                 this.dialog.isCity = false;
                 this.dialog.addUser.formData.roleList = [];
@@ -207,7 +208,7 @@ let app = new Vue({
                 this.dialog.editUser.formData.roleList.push({
                     id: 'r4'
                 });
-            } else if(selectedType === 2) {
+            } else if (selectedType === 2) {
                 this.dialog.isMonitorPoint = false;
                 this.dialog.isCity = true;
                 this.dialog.addUser.formData.roleList = [];
@@ -220,7 +221,7 @@ let app = new Vue({
                 });
             }
         },
-        onUserTypeCleared: function() {
+        onUserTypeCleared: function () {
             this.dialog.addUser.formData.userType = '';
             this.dialog.isMonitorPoint = false;
             this.dialog.isCity = false;
@@ -230,18 +231,27 @@ let app = new Vue({
             this.dialog.editUser.visible = true;
             this.dialog.editUser.formData = copy(userInfo);
         },
-        addUser: function() {
+        addUser: function () {
             this.$refs['form_addUser'].validate((valid) => {
                 if (valid) {
                     let data = this.dialog.addUser.formData;
                     data.provinceId = this.user.provinceId;
                     let app = this;
                     app.dialog.addUser.loading = true;
-                    ajaxPostJSON(this.urls.putUser, data, function () {
+                    ajaxPostJSON(this.urls.putUser, data, function (d) {
                         app.dialog.addUser.loading = false;
                         app.dialog.addUser.visible = false;
                         window.parent.app.showMessage('添加成功！', 'success');
-                        app.getUserList(); // 添加完成后刷新页面
+                        let notice = {
+                            title: '请填写备案信息',
+                            content: '账号已创建完毕，请尽快填写备案信息',
+                            userList: [
+                                {id: d.data.id}
+                            ]
+                        };
+                        ajaxPostJSON(app.urls.insertOrUpdateNotice, notice, function (d) {
+                            app.getUserList(); // 添加完成后刷新页面
+                        });
                     }, function () {
                         app.dialog.addUser.loading = false;
                         app.dialog.addUser.visible = false;
@@ -328,7 +338,7 @@ let app = new Vue({
         // 获取该省所属的市和检测点用户列表
         let app = this;
         app.fullScreenLoading = true;
-        ajaxPostJSON(app.urls.getCompleteUserInfo, parent.app.user, function(d){
+        ajaxPostJSON(app.urls.getCompleteUserInfo, parent.app.user, function (d) {
             app.user = d.data;
             ajaxPost(app.urls.getAllRoleList, null, function (d) {
                 app.fullScreenLoading = false;
